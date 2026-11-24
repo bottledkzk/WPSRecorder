@@ -1,0 +1,31 @@
+{
+  "version": "2.2.0",
+  "release": "passed",
+  "debug": "passed",
+  "binaries": [
+    {
+      "configuration": "Release",
+      "name": "wpsrecorder.exe",
+      "bytes": 714752,
+      "sha256": "b3acd666eb2c74946635a659defcded5ce39001a0e778b0f48be89e33003094d"
+    },
+    {
+      "configuration": "Release",
+      "name": "wpsrecorder_cli.exe",
+      "bytes": 333824,
+      "sha256": "1784afec8ff35c1f854f803f287e2f38a40ea36afdf58bd4ae11111cfe0298fe"
+    },
+    {
+      "configuration": "Debug",
+      "name": "wpsrecorder.exe",
+      "bytes": 2758656,
+      "sha256": "80b2fb48eb024f73cb6aaa07c3b119b923bf7313ea5082dd51e2d82d9445db2a"
+    },
+    {
+      "configuration": "Debug",
+      "name": "wpsrecorder_cli.exe",
+      "bytes": 1071104,
+      "sha256": "8bf9a5410f8cbdd76fb4dc21e09757dba34c52d586a5b4aab785365f5734bec0"
+    }
+  ]
+}

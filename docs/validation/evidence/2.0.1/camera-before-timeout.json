@@ -1,0 +1,17 @@
+{
+    "app_container": false,
+    "camera_devices": [
+        {
+            "index": 0,
+            "name": "USB2.0 HD UVC WebCam"
+        }
+    ],
+    "camera_track_collision_rejected": true,
+    "cases": [
+    ],
+    "complete": false,
+    "integrity_rid": 8192,
+    "native_camera_height": 720,
+    "native_camera_width": 1280,
+    "version": 1
+}

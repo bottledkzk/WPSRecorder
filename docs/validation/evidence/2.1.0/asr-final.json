@@ -1,0 +1,31 @@
+{
+    "cases": [
+        {
+            "audio_tracks": 2,
+            "case": "source_analysis",
+            "duration_ms": 12000,
+            "passed": true,
+            "thumbnails": 12,
+            "waveforms": 2
+        },
+        {
+            "audio_track": 1,
+            "captions": 1,
+            "case": "selected_track_automatic_captions",
+            "expected_word_found": true,
+            "passed": true
+        },
+        {
+            "case": "timeline_export",
+            "duration_ms": 12000,
+            "output": "D:\\Study\\Work\\WPSwork\\recorder-editor-qa\\asr-final.mp4",
+            "passed": true
+        }
+    ],
+    "complete": true,
+    "error": "",
+    "last_ui_status": "导出完成：D:\\Study\\Work\\WPSwork\\recorder-editor-qa\\asr-final.mp4。点击“预览成片”查看结果。",
+    "passed": true,
+    "stage": 6,
+    "wall_ms": 8405
+}

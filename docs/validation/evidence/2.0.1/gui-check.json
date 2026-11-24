@@ -1,0 +1,19 @@
+{
+  "camera_preview_first_received_frames": 9,
+  "camera_preview_later_received_frames": 614,
+  "camera_preview_native_size": "1280x720",
+  "camera_preview_closed_released": true,
+  "new_theme_main_and_settings_observed": true,
+  "final_chevron_and_checkbox_assets_observed": true,
+  "camera_gui_recording": "passed",
+  "automatic_preview_controls_appeared": true,
+  "automatic_preview_position_ms": 5437,
+  "file": "C:\\Users\\bottl\\Videos\\WPSRecorder\\recording-20261102-221101-782.mp4",
+  "video_frames": 842,
+  "camera_frames": 842,
+  "width": 1920,
+  "height": 1080,
+  "duration_sec": 28.066,
+  "media_not_in_repository": true,
+  "sha256": "f3b2d53912392aa65d6319ad63ada35eb3e9e7377b5121fe5dfbb2a354416d56"
+}

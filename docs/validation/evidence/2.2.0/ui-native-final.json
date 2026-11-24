@@ -1,0 +1,107 @@
+{
+    "annotation": {
+        "compact": true,
+        "draw": true,
+        "error": "",
+        "escape_exit": true,
+        "escape_pointer": true,
+        "passed": true,
+        "presented": true,
+        "toolbar_hit_while_pen": true,
+        "toolbar_input_hole": true,
+        "undo": true
+    },
+    "awareness": 2,
+    "brush_tools": {
+        "eraser": true,
+        "passed": true,
+        "redo_eraser": true,
+        "undo_eraser": true,
+        "width_10": true
+    },
+    "dpi": 144,
+    "floating_controls": {
+        "capture_excluded": true,
+        "error": "",
+        "passed": true,
+        "pause_signal": 1,
+        "paused_text": true,
+        "saving_disabled": true,
+        "screenshot_signal": 1,
+        "stop_signal": 1
+    },
+    "full_coverage": true,
+    "monitors": [
+        {
+            "dpi_x": 144,
+            "dpi_y": 144,
+            "height": 1600,
+            "name": "\\\\.\\DISPLAY1",
+            "primary": true,
+            "scale_percent": 150,
+            "width": 2560,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "dpi_x": 120,
+            "dpi_y": 120,
+            "height": 1440,
+            "name": "\\\\.\\DISPLAY2",
+            "primary": false,
+            "scale_percent": 125,
+            "width": 2560,
+            "x": 2560,
+            "y": -90
+        }
+    ],
+    "native_geometry": [
+        0,
+        -90,
+        5120,
+        1690
+    ],
+    "passed": true,
+    "pip_drag_resize": {
+        "drag": true,
+        "letterbox_top": 47,
+        "passed": true,
+        "resize": true
+    },
+    "qt_geometry": [
+        0,
+        -90,
+        5120,
+        1690
+    ],
+    "selections": [
+        {
+            "bottom_hit": true,
+            "bottom_selection_exact": true,
+            "monitor": "\\\\.\\DISPLAY1",
+            "selected": [
+                30,
+                1479,
+                301,
+                118
+            ]
+        },
+        {
+            "bottom_hit": true,
+            "bottom_selection_exact": true,
+            "monitor": "\\\\.\\DISPLAY2",
+            "selected": [
+                2590,
+                1229,
+                301,
+                118
+            ]
+        }
+    ],
+    "virtual": [
+        0,
+        -90,
+        5120,
+        1690
+    ]
+}

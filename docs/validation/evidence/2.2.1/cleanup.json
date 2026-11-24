@@ -1,0 +1,143 @@
+{
+  "applied": true,
+  "delivery_commit_verified_before_cleanup": "52a037ae19422e0b2f421a1d8b337dd87bf862d7",
+  "targets": [
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\recorder-qa-v221",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-Preview221",
+      "files": 455,
+      "bytes": 787107765,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder\\edit-cache-oiVesh",
+      "files": 13,
+      "bytes": 215540,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder\\edit-cache-rDlCAt",
+      "files": 13,
+      "bytes": 215540,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder-editor-qa",
+      "files": 0,
+      "bytes": 0,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder-workbench-qa",
+      "files": 1,
+      "bytes": 1117,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_qa_surface.exe",
+      "files": 1,
+      "bytes": 31744,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_qa_surface.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_camera_qa.exe",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_camera_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_ui_qa.exe",
+      "files": 1,
+      "bytes": 162816,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_ui_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_editor_qa.exe",
+      "files": 1,
+      "bytes": 423936,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_editor_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_workbench_qa.exe",
+      "files": 1,
+      "bytes": 756736,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_workbench_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_narration_qa.exe",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_narration_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_cleanup_qa.exe",
+      "files": 1,
+      "bytes": 23040,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_cleanup_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    }
+  ],
+  "removed_files": 487.0,
+  "removed_bytes": 788938234.0,
+  "user_files_preserved_count": 3,
+  "all_existing_user_file_hashes_unchanged": true,
+  "formal_packages_installations_source_and_dependencies_kept": true,
+  "settings_backup_kept_locally": true,
+  "count_scope": "Remaining files removed on retry. First attempt removed the QA media root and part of runtime before a hidden task-owned GUI held dsengine.dll; its first-attempt file count was not persisted."
+}

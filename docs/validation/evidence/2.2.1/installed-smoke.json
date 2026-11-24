@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "system_path_only": true,
+  "version": "wpsrecorder 2.2.1",
+  "frames": 64,
+  "duration": "2.133000",
+  "size": [
+    640,
+    360
+  ],
+  "encoder": "Lavc61.19.101 h264_nvenc",
+  "complete_decode": true,
+  "isolated_instance": true
+}

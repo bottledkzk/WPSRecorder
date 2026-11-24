@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "workbench",
+      "passed": true,
+      "main": {
+        "width": 640,
+        "height": 360,
+        "frames": 183,
+        "fps": "30/1",
+        "audio_tracks": 2
+      },
+      "camera": {
+        "width": 640,
+        "height": 480,
+        "frames": 183,
+        "fps": "30/1",
+        "audio_tracks": 0
+      }
+    },
+    {
+      "case": "workbench-hd",
+      "passed": true,
+      "main": {
+        "width": 1920,
+        "height": 1080,
+        "frames": 363,
+        "fps": "363000/6049",
+        "audio_tracks": 2
+      },
+      "camera": {
+        "width": 640,
+        "height": 480,
+        "frames": 363,
+        "fps": "60/1",
+        "audio_tracks": 0
+      }
+    }
+  ]
+}

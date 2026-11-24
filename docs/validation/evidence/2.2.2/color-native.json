@@ -1,0 +1,179 @@
+{
+    "cases": [
+        {
+            "case": "fp16_gpu_formats_and_white",
+            "passed": true
+        },
+        {
+            "case": "gpu_exposure_minus_one",
+            "passed": true
+        },
+        {
+            "case": "highlight_rolloff",
+            "passed": true
+        },
+        {
+            "case": "native_gpu_format",
+            "format": 28,
+            "passed": true
+        },
+        {
+            "case": "native_gpu_format",
+            "format": 87,
+            "passed": true
+        },
+        {
+            "case": "native_gpu_format",
+            "format": 24,
+            "passed": true
+        },
+        {
+            "capture": {
+                "api": "DXGI",
+                "gpu_color_conversion": false,
+                "hdr_active": false,
+                "reconnecting": false,
+                "source_format": 87,
+                "system_sdr_white_nits": 80,
+                "white_detected": true
+            },
+            "case": "native_screen_color",
+            "monitor": "B160QAN02.7",
+            "passed": true,
+            "pixels": [
+                {
+                    "actual": "#000000",
+                    "expected": "#000000",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#ffffff",
+                    "expected": "#ffffff",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#808080",
+                    "expected": "#808080",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#ff0000",
+                    "expected": "#ff0000",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#00ff00",
+                    "expected": "#00ff00",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#0000ff",
+                    "expected": "#0000ff",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#404040",
+                    "expected": "#404040",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#c0c0c0",
+                    "expected": "#c0c0c0",
+                    "max_error": 0
+                }
+            ]
+        },
+        {
+            "capture": {
+                "api": "DXGI",
+                "color_mode": "auto",
+                "exposure_ev": 0,
+                "gpu_color_conversion": true,
+                "hdr_active": true,
+                "reconnecting": false,
+                "sdr_white_nits": 320,
+                "source_format": 10,
+                "system_sdr_white_nits": 320,
+                "warning": "",
+                "white_detected": true
+            },
+            "case": "native_screen_color",
+            "monitor": "G72 Max",
+            "passed": true,
+            "pixels": [
+                {
+                    "actual": "#000000",
+                    "expected": "#000000",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#ffffff",
+                    "expected": "#ffffff",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#808080",
+                    "expected": "#808080",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#ff0000",
+                    "expected": "#ff0000",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#00ff00",
+                    "expected": "#00ff00",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#0000ff",
+                    "expected": "#0000ff",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#404040",
+                    "expected": "#404040",
+                    "max_error": 0
+                },
+                {
+                    "actual": "#c0c0c0",
+                    "expected": "#c0c0c0",
+                    "max_error": 0
+                }
+            ]
+        }
+    ],
+    "error": "",
+    "passed": true,
+    "recording": {
+        "avg_fps": 30,
+        "capture": {
+            "api": "DXGI",
+            "color_mode": "highlights",
+            "exposure_ev": 0,
+            "gpu_color_conversion": true,
+            "hdr_active": true,
+            "reconnecting": false,
+            "sdr_white_nits": 320,
+            "source_format": 10,
+            "system_sdr_white_nits": 320,
+            "warning": "",
+            "white_detected": true
+        },
+        "cpu_pct": 0,
+        "duplicate_frames": 10,
+        "duration_sec": 7,
+        "encoder": "h264_nvenc",
+        "error": "",
+        "frames_written": 210,
+        "mem_mb": 100.6796875,
+        "output": "D:\\Study\\Work\\WPSwork\\recorder-qa-v222\\color-final/hdr-color-recording.mp4",
+        "paused": false,
+        "phase": "idle",
+        "pid": 31340,
+        "pipeline_stage": "idle",
+        "source": "screen",
+        "state": "idle"
+    }
+}

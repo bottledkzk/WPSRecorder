@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "installed_version": "2.2.2",
+  "observed": [
+    "System monitor name G72 Max and HDR indicator visible",
+    "Basic encoder controls remain above screen color group",
+    "Automatic SDR-white mode selected by default",
+    "Brightness controls collapsed by default; expand/collapse works; exposure 0 EV and reference white follows system",
+    "Formal main window idle"
+  ],
+  "personal_recording_started": false
+}

@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/assistant">
+    <file alias="recording-workflows.md">../skills/recorder-workbench/references/recording-workflows.md</file>
+  </qresource>
+</RCC>

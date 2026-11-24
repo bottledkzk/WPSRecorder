@@ -1,0 +1,54 @@
+{
+    "cases": [
+        {
+            "case": "live_camera_and_floating_bar",
+            "passed": true,
+            "preview_sequence": 10
+        },
+        {
+            "case": "external_floating_toggle",
+            "checked_text": "悬浮条：开",
+            "passed": true
+        },
+        {
+            "case": "drag_updates_recording_scene",
+            "height": 35,
+            "passed": true,
+            "width": 25,
+            "x": 35,
+            "y": 35
+        },
+        {
+            "case": "shared_memory_preview",
+            "fps": 22.347682898141613,
+            "interval_p95_ms": 70,
+            "passed": true,
+            "sample_ms": 4251,
+            "unique_frames": 95
+        },
+        {
+            "case": "floating_pause_screenshot_resume",
+            "passed": true,
+            "visible_while_main_minimized": true
+        },
+        {
+            "audio_tracks": 2,
+            "case": "floating_stop_auto_preview",
+            "duration_ms": 6050,
+            "output": "D:/Study/Work/WPSwork/recorder-qa-v221/workbench-hd-r2/recording-20261103-030133-855.mp4",
+            "passed": true
+        },
+        {
+            "case": "fullscreen_transport",
+            "passed": true,
+            "pause_position_ms": 3630,
+            "return_preserves_position": true,
+            "seek_ms": 3035
+        }
+    ],
+    "complete": true,
+    "error": "",
+    "integrity_rid": 8192,
+    "passed": true,
+    "wall_ms": 12509
+}

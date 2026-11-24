@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "scene": {
+    "clicks": true,
+    "cursor": true,
+    "effects": { "spotlight": true, "magnifier": true, "shapes": [], "masks": [] }
+  }
+}

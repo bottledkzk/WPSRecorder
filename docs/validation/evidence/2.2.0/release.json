@@ -1,0 +1,13 @@
+{
+  "version": "2.2.0",
+  "archive": "D:/Study/Work/WPSwork/deliverables/gongweichao-v2.2.0-preview/gongweichao.zip",
+  "installed": "C:/Users/bottl/AppData/Local/Programs/WPSRecorder2-2.2.0",
+  "archive_bytes": 552497975,
+  "archive_sha256": "a20c22d969820843d35e8ea93d84ee4f04789e89abb11611d877e427f82be48e",
+  "sample_sha256": "fe0d04c59d1ee78e558ee69c30affbcd7a634fac02cf562c69008da0f0f93e54",
+  "manifest_files": 492,
+  "runtime_files": 468,
+  "installed_smoke_passed": true,
+  "source_media_in_git": false,
+  "personal_settings_in_package": false
+}

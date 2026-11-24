@@ -1,0 +1,8 @@
+The bundled mandarin-female profile contains Audio8 0.1B reference codes.
+The reference waveform was synthesized locally using voice 3 from the
+Apache-2.0 Kokoro-82M v1.1-zh model
+https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh
+
+The profile was registered with the Audio8 0.1B INT8 codec encoder from
+https://huggingface.co/Edge0/audio8-TTS-0.1B-ONNX-INT8
+revision 317c12d4e0da83847b594fcf8bd74bf2c76615ec.

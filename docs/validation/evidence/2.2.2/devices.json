@@ -1,0 +1,40 @@
+{
+  "monitors": [
+    {
+      "dpi_x": 144,
+      "dpi_y": 144,
+      "friendly_name": "B160QAN02.7",
+      "hdr_active": false,
+      "height": 1600,
+      "name": "\\\\.\\DISPLAY1",
+      "output_bits_per_color": 8,
+      "output_color_space": 0,
+      "primary": true,
+      "scale_percent": 150,
+      "system_sdr_white_nits": 80,
+      "white_detected": true,
+      "width": 2560,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "dpi_x": 120,
+      "dpi_y": 120,
+      "friendly_name": "G72 Max",
+      "hdr_active": true,
+      "height": 1440,
+      "name": "\\\\.\\DISPLAY2",
+      "output_bits_per_color": 10,
+      "output_color_space": 12,
+      "primary": false,
+      "scale_percent": 125,
+      "system_sdr_white_nits": 320,
+      "white_detected": true,
+      "width": 2560,
+      "x": 2560,
+      "y": -90
+    }
+  ],
+  "process_app_container": false,
+  "process_integrity_rid": 8192
+}

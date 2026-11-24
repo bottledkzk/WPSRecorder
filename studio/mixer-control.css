@@ -1,0 +1,84 @@
+.mixer-dock .panel-head { gap: 4px; }
+.mixer-head-actions { gap: 3px; }
+.mixer-head-actions select {
+  min-height: 22px; max-width: 108px; padding: 2px 4px; font-size: 11px; line-height: 1.2;
+}
+.mixer-dock .scroll-body { padding: 6px 7px; }
+.mixer-source-list { gap: 3px; }
+.mixer-source-choice {
+  display: flex; align-items: center; gap: 8px; min-height: 33px; padding: 4px 7px;
+  border: 1px solid transparent; border-radius: var(--radius); cursor: pointer;
+}
+.mixer-source-choice:hover { background: var(--field); }
+.mixer-source-choice:has(input:checked) { background: var(--blue-dark); border-color: #4d6b9b; }
+.audio-channel .channel-name { gap: 4px; }
+.audio-channel .db { white-space: nowrap; }
+.audio-channel .mini { min-height: 19px; padding-block: 1px; font-size: 11px; }
+.audio-channel .mini.icon-btn { width: 19px; }
+.audio-channel .icon { height: 13px; width: 13px; }
+.audio-channel .mixer-mute.input-channel:not([aria-pressed="true"]) { color: var(--green); }
+.audio-channel .mixer-mute.output-channel:not([aria-pressed="true"]) { color: var(--blue); }
+.audio-channel .mixer-mute[aria-pressed="true"] { color: #ffa6ad; border-color: #74454b; background: #4a3037; }
+.audio-channel .noise-toggle[aria-pressed="true"] {
+  color: #8ce4c3; border-color: #346854; background: #263f38;
+}
+.audio-channel .noise-toggle[aria-pressed="true"]:hover { background: #305749; }
+.mixer-meter {
+  position: relative; height: 8px; margin: 3px 0 1px; background: #313844;
+  mask-image: repeating-linear-gradient(90deg, #000 0 calc(1.25% - .8px), transparent calc(1.25% - .8px) 1.25%);
+}
+.mixer-meter::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, #43c598 0 69%, #e6b656 69% 85%, #ec6b67 85%);
+  clip-path: inset(0 calc(100% - var(--meter-level)) 0 0);
+}
+.control-dock .record-clock {
+  font-family: "Bahnschrift", "DIN Alternate", "Segoe UI", sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600; letter-spacing: .5px; white-space: nowrap;
+}
+.control-dock .rec-state { white-space: nowrap; }
+.control-dock .record-time { gap: 7px; }
+.control-dock .record-time .rec-state { margin-left: auto; }
+.control-dock .record-command { gap: 0; }
+.control-dock .record-command .btn {
+  height: 35px; color: var(--text); background: #181b22; border-color: #454c59;
+}
+.control-dock .record-command .btn:hover:not(:disabled) { background: #262c36; }
+.control-dock .record-primary { font-size: 14px; font-weight: 650; border-radius: var(--radius) 0 0 var(--radius); }
+.control-dock .record-options-toggle { margin-left: -1px; border-radius: 0 var(--radius) var(--radius) 0; }
+.control-dock .record-options-toggle[aria-expanded="true"] .icon { rotate: 180deg; }
+.control-dock .record-secondary .btn { gap: 4px; min-width: 0; padding-inline: 4px; }
+.mixer-dock, .control-dock { container-type: inline-size; }
+@container (max-width: 180px) {
+  .mixer-head-actions select { max-width: 39cqw; }
+  .audio-channel .db { display: none; }
+  .control-dock .record-secondary .optional-label { display: none; }
+}
+@container (max-width: 156px) {
+  .mixer-dock .section-title .icon, .noise-toggle .optional-label { display: none; }
+  .mixer-head-actions select { max-width: max(40px, calc(100cqw - 76px)); }
+  .audio-channel .noise-toggle { padding-inline: 3px; }
+}
+
+:lang(en) .control-dock .record-time { flex-wrap: wrap; }
+:lang(en) .control-dock .record-secondary .btn { gap: 3px; padding-inline: 3px; }
+
+@container (max-width: 210px) {
+  :lang(en) .control-dock .record-secondary .optional-label { display: none; }
+}
+
+@container (max-width: 156px) {
+  :lang(en) .mixer-dock .panel-head { flex-wrap: wrap; gap: 2px 4px; padding-inline: 5px; }
+  :lang(en) .mixer-head-actions { flex: none; }
+  :lang(en) .mixer-head-actions select { max-width: none; }
+  :lang(en) .mixer-head-actions .icon-btn { width: 20px; }
+}
+
+@container (max-width: 125px) {
+  :lang(en) .control-dock :is(.section-title, .record-primary) .icon { display: none; }
+  :lang(en) .control-dock .scroll-body { padding-inline: 5px; }
+  :lang(en) .control-dock .record-clock { font-size: 18px; }
+  :lang(en) .control-dock .record-primary { font-size: 12px; padding-inline: 3px; }
+  :lang(en) .control-dock .record-options-toggle { width: 24px; }
+}

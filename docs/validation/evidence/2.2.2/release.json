@@ -1,0 +1,14 @@
+{
+  "version": "2.2.2",
+  "date": "2026-11-03",
+  "archive": "D:/Study/Work/WPSwork/deliverables/gongweichao-v2.2.2-preview/gongweichao.zip",
+  "installed": "C:/Users/bottl/AppData/Local/Programs/WPSRecorder2-2.2.2",
+  "desktop_shortcut": "WPS Recorder 2.2.2",
+  "archive_bytes": 552622980,
+  "archive_sha256": "c71927ca69b7911148fdbeaef9af385016b4f829b2cca2a6393d38f5276a3e29",
+  "sample_sha256": "fb21a25abfd1f38ee1e70ba01c25d9d395ba1a8ba88b1e0871aee05d527c6435",
+  "sample_kind": "actual capture of self-owned Qt window",
+  "source_binary_hashes": "build.json",
+  "original_user_directory_preserved": true,
+  "cleanup": "after remote delivery verification; see cleanup.json"
+}

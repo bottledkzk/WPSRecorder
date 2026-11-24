@@ -1,0 +1,42 @@
+{
+  "camera_only_live_preview": true,
+  "observed_live_sequences": [
+    466,
+    881,
+    896,
+    1121
+  ],
+  "pause_label_confirmed": true,
+  "automatic_playback_confirmed": true,
+  "playback_position_observed_ms": 35547,
+  "save_directory_changed_in_ui": true,
+  "save_directory_restored_after_reopen": true,
+  "restore_default_button_confirmed": true,
+  "pip_final_main_frames": 750,
+  "pip_final_camera_frames": 750,
+  "pip_final_audio_names": [
+    "mic",
+    "system"
+  ],
+  "pip_source_preserved_after_gui_open": "image",
+  "floating_window_title_observed": "摄像头 · 实时监看",
+  "floating_status_observed": "● 正在录制 摄像头实时画面 · 主窗口查看合成效果",
+  "capture_excluded_screenshot_not_used_as_camera_pixel_evidence": true,
+  "media": [
+    {
+      "name": "pip-final.mp4",
+      "bytes": 3989828,
+      "sha256": "ef8b72a1262bc39b86946fdfd8ed26f653340cea5dbe02f1159d32cf526ed1a6"
+    },
+    {
+      "name": "pip-final.mp4.camera.mkv",
+      "bytes": 8647094,
+      "sha256": "fc0dc25b71ab05cee4f0f4275804e988501da17882432be35da42fdf78ce2723"
+    },
+    {
+      "name": "recording-20261102-224958-954.mp4",
+      "bytes": 29409997,
+      "sha256": "3d04bf1fe88d2bf44b50ed1ce34174621d584c072f93139eebbbc7aa3fde007f"
+    }
+  ]
+}

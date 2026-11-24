@@ -1,0 +1,15 @@
+{
+  "source": "actual primary screen with camera PiP",
+  "passed": true,
+  "main_frames": 91,
+  "camera_frames": 91,
+  "duration": "3.033000",
+  "audio_tracks": [
+    "mic",
+    "system"
+  ],
+  "pip_pixel_mae": 4.150811209439528,
+  "wrong_mirror_mae": 98.63525073746312,
+  "sha256": "ac0d9208af5371a6c9caf509c89f0211b0bfa3f386c28e853f664876db849391",
+  "media_not_in_repository": true
+}

@@ -1,0 +1,56 @@
+{
+  "archive": "D:\\Study\\Work\\WPSwork\\deliverables\\gongweichao-v2.0.1-preview\\gongweichao.zip",
+  "bytes": 215573689,
+  "sha256": "81bcd516f622993a98fc6c8c4c914893016b88978dd0ee4954c0be6261658e4b",
+  "manifest_files_verified": 95,
+  "crc_verified": true,
+  "settings_and_qa_excluded": true,
+  "only_media": [
+    "sample/screen-recording.mp4"
+  ],
+  "sample_matches_previous_verified_qa_window": true,
+  "installed_directory": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-Preview201",
+  "version": "wpsrecorder 2.0.1",
+  "installed_runtime_files_verified": 79,
+  "path_only_system32": true,
+  "installed_camera_pip_recording": {
+    "avg_fps": 30,
+    "cpu_pct": 0,
+    "duplicate_frames": 0,
+    "duration_sec": 2.1,
+    "encoder": "h264_nvenc",
+    "error": "",
+    "frames_written": 63,
+    "mem_mb": 36.39453125,
+    "ok": true,
+    "output": "D:/Study/Work/WPSwork/recorder-package-check-v201/installed-pip.mp4",
+    "paused": false,
+    "phase": "idle",
+    "pid": 38804,
+    "pipeline_stage": "idle",
+    "source": "image",
+    "state": "idle"
+  },
+  "decoded_main_frames": 63,
+  "decoded_camera_frames": 63,
+  "audio_track_names": [
+    "mic",
+    "system"
+  ],
+  "offline_subtitle_verified": true,
+  "installed_actual_screen_pip": {
+    "source": "actual primary screen with camera PiP",
+    "passed": true,
+    "main_frames": 91,
+    "camera_frames": 91,
+    "duration": "3.033000",
+    "audio_tracks": [
+      "mic",
+      "system"
+    ],
+    "pip_pixel_mae": 4.150811209439528,
+    "wrong_mirror_mae": 98.63525073746312,
+    "sha256": "ac0d9208af5371a6c9caf509c89f0211b0bfa3f386c28e853f664876db849391",
+    "media_not_in_repository": true
+  }
+}

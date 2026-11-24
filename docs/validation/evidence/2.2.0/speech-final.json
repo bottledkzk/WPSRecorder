@@ -1,0 +1,117 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "kokoro_chinese_english_and_voices",
+      "passed": true,
+      "chinese": {
+        "duration": 6.807958,
+        "rms": 0.06828182190656662,
+        "peak": 0.4341322183609009,
+        "wall_seconds": 17.422
+      },
+      "english": {
+        "duration": 4.475125,
+        "rms": 0.041517022997140884,
+        "peak": 0.21828803420066833,
+        "wall_seconds": 12.203
+      },
+      "male": {
+        "duration": 6.789625,
+        "rms": 0.05182206630706787,
+        "peak": 0.5108977556228638,
+        "wall_seconds": 16.985
+      }
+    },
+    {
+      "case": "voice_speed_volume",
+      "passed": true,
+      "normal": {
+        "duration": 6.807958,
+        "rms": 0.06828182190656662,
+        "peak": 0.4341322183609009,
+        "wall_seconds": 17.422
+      },
+      "faster": {
+        "duration": 4.281667,
+        "rms": 0.06879471242427826,
+        "peak": 0.38397902250289917,
+        "wall_seconds": 12.203
+      },
+      "quieter": {
+        "duration": 6.808958,
+        "rms": 0.023839693516492844,
+        "peak": 0.15203118324279785,
+        "wall_seconds": 16.594
+      }
+    },
+    {
+      "case": "windows_local_tts",
+      "passed": true,
+      "voices": [
+        {
+          "language": "zh",
+          "name": "Microsoft Huihui Desktop - Chinese (Simplified)",
+          "duration": 8.551583,
+          "rms": 0.05725458636879921,
+          "peak": 0.9100940227508545,
+          "wall_seconds": 0.891
+        },
+        {
+          "language": "en",
+          "name": "Microsoft Zira Desktop - English (United States)",
+          "duration": 6.15825,
+          "rms": 0.09862294793128967,
+          "peak": 0.6772217154502869,
+          "wall_seconds": 0.672
+        }
+      ]
+    },
+    {
+      "case": "narration_mix_alignment_and_stream_copy",
+      "passed": true,
+      "begin_seconds": 2,
+      "output_seconds": 20,
+      "silent_before_voice": 0.0,
+      "voice_signal": 0.06432030349969864,
+      "video_packets_unchanged": true
+    },
+    {
+      "case": "speech_output_safety",
+      "passed": true,
+      "original_sha256": "95b72f18cbf21d6c584779fc9771d89cab67ce8ed35a82d83af7d32cca3ce12e",
+      "overrun_rejected": true,
+      "overwrite_rejected": true,
+      "bad_speed_rejected": true
+    },
+    {
+      "case": "public_multilingual_asr_smoke",
+      "passed": true,
+      "model": "small-q5_1",
+      "samples": [
+        {
+          "language": "zh",
+          "source_sha256": "0e64de19e4ff9a02e682955c9112f32d2317cfdbb5bc2f3504664044c993f195",
+          "seconds": 3.547,
+          "expected_keyword": "开放时间",
+          "srt": "1\n00:00:00,000 --> 00:00:05,640\n开放时间早上9点至下午5点\n\n"
+        },
+        {
+          "language": "en",
+          "source_sha256": "f10378336a4e584f3f63799e62f99d5add3c2a401b51d3abe7d3a3a82f255ada",
+          "seconds": 3.688,
+          "expected_keyword": "gold",
+          "srt": "1\n00:00:00,000 --> 00:00:03,830\n The tribal chieftain called for the boy and\n\n2\n00:00:03,830 --> 00:00:07,000\n presented him with fifty pieces of gold.\n\n"
+        },
+        {
+          "language": "ja",
+          "source_sha256": "496dbc43b289e1d0d0cb916df9737450bca56acd8aaca046a7a2472363b1be53",
+          "seconds": 4.078,
+          "expected_keyword": "中学",
+          "srt": "1\n00:00:00,000 --> 00:00:08,000\nうちの中学は弁当性で持っていきない場合は50円の学校販売のパンを買う。\n\n"
+        }
+      ],
+      "boundary": "Three short public examples and keyword checks; not a corpus accuracy benchmark."
+    }
+  ]
+}

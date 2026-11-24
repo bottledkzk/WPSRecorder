@@ -1,0 +1,12 @@
+{
+  "case": "gui_camera_stop_before_fix",
+  "gui_error": "Control request timed out or disconnected",
+  "event_id": 1000,
+  "exception": "0xc0000005",
+  "fault_module": "OLEAUT32.dll",
+  "fault_offset": "0x00000000000a0b5f",
+  "service_binary": "wpsrecorder_cli.exe",
+  "main_video_published": false,
+  "raw_media_retained_locally": true,
+  "fix": "release pending camera sample before MFShutdown and CoUninitialize; initialize CLI main COM lifetime"
+}

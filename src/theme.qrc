@@ -1,0 +1,8 @@
+<RCC><qresource prefix="/ui">
+  <file alias="chevron-down.svg">assets/chevron-down.svg</file>
+  <file alias="chevron-up.svg">assets/chevron-up.svg</file>
+  <file alias="check.svg">assets/check.svg</file>
+  <file alias="recorder.ico">assets/recorder.ico</file>
+  <file alias="floating-app.svg">../studio/assets/app.svg</file>
+  <file alias="user-guide.md">../docs/guide/USER-GUIDE.md</file>
+</qresource></RCC>

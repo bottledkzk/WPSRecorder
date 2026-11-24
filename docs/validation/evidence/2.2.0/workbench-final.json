@@ -1,0 +1,33 @@
+{
+    "cases": [
+        {
+            "case": "live_camera_and_floating_bar",
+            "passed": true,
+            "preview_sequence": 6
+        },
+        {
+            "case": "drag_updates_recording_scene",
+            "height": 35,
+            "passed": true,
+            "width": 25,
+            "x": 35,
+            "y": 35
+        },
+        {
+            "case": "floating_pause_screenshot_resume",
+            "passed": true
+        },
+        {
+            "audio_tracks": 2,
+            "case": "floating_stop_auto_preview",
+            "duration_ms": 3333,
+            "output": "D:/Study/Work/WPSwork/recorder-advanced-qa/workbench-final/recording-20261103-014446-530.mp4",
+            "passed": true
+        }
+    ],
+    "complete": true,
+    "error": "",
+    "integrity_rid": 8192,
+    "passed": true,
+    "wall_ms": 7917
+}

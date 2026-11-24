@@ -1,0 +1,101 @@
+.record-canvas-wrap {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.annotation-toolbar {
+  position: fixed;
+  z-index: 8;
+  bottom: auto;
+  transform: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  width: max-content;
+  max-width: calc(100vw - 12px);
+  max-height: calc(100vh - 12px);
+  overflow: auto;
+  padding: 3px 4px;
+  color: #c7d1df;
+  background: #151a23f5;
+  border-color: #3a434f;
+  border-radius: 5px;
+  box-shadow: 0 4px 16px #0008;
+}
+
+.annotation-row,
+.annotation-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.annotation-row {
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.annotation-secondary {
+  border-top: 1px solid #373f4b;
+  padding-top: 3px;
+}
+
+.annotation-group {
+  gap: 2px;
+}
+
+.annotation-instruments {
+  border: 1px solid #2d3744;
+  border-radius: 5px;
+  background: #0f141c;
+  padding: 2px;
+}
+
+.annotation-toolbar .btn {
+  min-height: 24px;
+  font-size: 12px;
+  gap: 4px;
+}
+
+.annotation-toolbar .annotation-grip {
+  width: 18px;
+  cursor: grab;
+  touch-action: none;
+  color: #8795a9;
+}
+.annotation-toolbar .annotation-grip:active { cursor: grabbing; }
+
+.annotation-toolbar .btn[aria-pressed="true"] {
+  color: #d3e6ff;
+  background: #1d3558;
+  border-color: #3a5e8f;
+}
+
+.annotation-toolbar [data-value="blur"][aria-pressed="true"],
+.annotation-toolbar [data-value="mask"][aria-pressed="true"] {
+  color: #f8d79d;
+  background: #4b3c27;
+  border-color: #775d36;
+}
+
+.annotation-toolbar input[type="color"] {
+  width: 23px;
+  height: 23px;
+  padding: 2px;
+  border: 1px solid #5a6677;
+  border-radius: 50%;
+  background: #10151d;
+}
+
+.annotation-toolbar input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.annotation-toolbar input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 50%; }
+.annotation-toolbar input[type="color"]::-moz-color-swatch { border: 0; border-radius: 50%; }
+.annotation-history { padding-left: 4px; border-left: 1px solid #373f4b; }
+
+.annotation-toolbar.annotation-compact { flex-direction: row; align-items: center; gap: 1px; padding: 2px; }
+.annotation-canvas[data-tool="cursor"] { cursor: default; }
+.annotation-canvas[data-tool="text"] { cursor: text; }

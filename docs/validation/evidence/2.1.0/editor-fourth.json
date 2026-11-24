@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "timeline_concat_crop",
+      "frames": 90,
+      "duration": 3,
+      "crop": [
+        80,
+        40,
+        480,
+        240
+      ],
+      "source_unchanged": true
+    },
+    {
+      "case": "source_frame_mapping",
+      "source_times": [
+        1.2,
+        4.7
+      ],
+      "output_times": [
+        0.2,
+        2.2
+      ],
+      "crop_mae_below": 10
+    },
+    {
+      "case": "burned_and_optional_captions",
+      "pixel_diff": 3.444019097222222,
+      "trimmed_and_remapped_srt": "1\n00:00:00,500 --> 00:00:01,500\n讲解重点 · Cut 01\n\n2\n00:00:01,500 --> 00:00:02,000\n讲解重点 · Cut 01\n\n"
+    },
+    {
+      "case": "independent_audio_edits",
+      "mic_before": 0.08818164467811584,
+      "mic_cut": 0.0,
+      "mic_after": 0.08799603581428528,
+      "system_during_mic_cut": 0.030979551374912262
+    },
+    {
+      "case": "mixed_audio_export",
+      "tracks": 1,
+      "signal_during_mic_cut": 0.030959390103816986
+    },
+    {
+      "case": "validation_and_original_safety",
+      "invalid_plans_rejected": 5,
+      "overwrite_rejected": true,
+      "source_sha256": "0b5389b1205bfdffb219b10212fc88abca58eb2fd6bdc0bec83c63b562982562"
+    }
+  ]
+}

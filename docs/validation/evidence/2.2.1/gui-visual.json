@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "observed": [
+    "Main toolbar: floating toggle visible outside More; enabled red tint and on/off text",
+    "Editor: frame buttons, timeline zoom label, disabled position slider at 1x, picture and tracks visible together"
+  ],
+  "fullscreen": "Native real GUI acceptance in workbench.json and workbench-hd.json; fullscreen return position preserved",
+  "limitations": "Computer Use could inspect native file picker tree but could not reliably target its child elements; fullscreen transport verified by application-owned native acceptance instead."
+}

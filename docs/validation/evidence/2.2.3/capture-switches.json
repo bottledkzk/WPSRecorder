@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "frames": 97,
+  "duration_sec": 6.466666666666667,
+  "disabled_initial": true,
+  "enabled_both": true,
+  "disabled_both": true,
+  "decoded_pip_change_on": 81.787,
+  "decoded_pip_delta_after_off": 0.45,
+  "mic_track": "mic",
+  "mic_rms": [
+    0.0,
+    0.017394978553056717,
+    0.0
+  ]
+}

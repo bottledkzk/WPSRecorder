@@ -1,0 +1,729 @@
+/* ==========================================================================
+   NEON-THEME ARTWORK, CONTRAST, MICRO-ORNAMENT & CONTRAST CARD POLISH LAYER
+   Applies exclusively to the 9 redrawn themes (01-09); baseline themes
+   "botanical-sage" and "wisteria-ribbon" remain completely untouched.
+   ========================================================================== */
+
+:root[data-theme="spring-creek"] {
+  --radius: 10px;
+  --secondary: #415d55;
+  --muted: #5c7870;
+  --title-left: url("assets/themes/spring-creek/header-left.webp") 33.6% 58% / 178px auto no-repeat;
+  --title-right: url("assets/themes/spring-creek/header-right.webp") 71.8% 58% / 182px auto no-repeat;
+  --title-wash: linear-gradient(104deg, #e7f3f7 0%, #f8fbf8 44%, #fcf5f7 66%, #e9f2e6 100%);
+  --portrait-image: url("assets/themes/spring-creek/portrait-wash.webp");
+  --portrait-inset: auto auto 44px 3%;
+  --portrait-width: min(430px, 58%);
+  --portrait-opacity: .29;
+  --portrait-mask: linear-gradient(91deg, #000 58%, transparent);
+  /* Delicate spring-moss hairline + tiny sakura blossom & sunny forsythia dots */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%233d8882' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%233d8882' stop-opacity='0.36'/%3E%3Cstop offset='0.6' stop-color='%233d8882' stop-opacity='0.36'/%3E%3Cstop offset='1' stop-color='%233d8882' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 7 H62 M94 7 H148' stroke='url(%23g)' stroke-width='0.9'/%3E%3Ccircle cx='71' cy='7' r='1.7' fill='%236cb04d' fill-opacity='0.82'/%3E%3Ccircle cx='78' cy='7' r='2.3' fill='%23e57896' fill-opacity='0.86'/%3E%3Ccircle cx='78' cy='7' r='0.9' fill='%23fff8fa'/%3E%3Ccircle cx='85' cy='7' r='1.7' fill='%23e3b42b' fill-opacity='0.88'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="golden-wheat"] {
+  --radius: 11px;
+  --secondary: #564a3b;
+  --muted: #756550;
+  --title-left: url("assets/themes/golden-wheat/header-left.webp") 33.0% 58% / 178px auto no-repeat;
+  --title-right: url("assets/themes/golden-wheat/header-right.webp") 70.6% 62% / 192px auto no-repeat;
+  --title-wash: linear-gradient(99deg, #f9edcf 0%, #fffcf1 36%, #f8ecd3 62%, #edf0f6 100%);
+  --portrait-image: url("assets/themes/golden-wheat/portrait-wash.webp");
+  --portrait-inset: auto 1.6% 50px auto;
+  --portrait-width: min(470px, 62%);
+  --portrait-opacity: .34;
+  --portrait-mask: linear-gradient(90deg, transparent, #000 35%);
+  /* Fine copperplate honey-gold hairline + minimalist wheat-ear & poppy crest */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%23c48c2a' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%23c48c2a' stop-opacity='0.4'/%3E%3Cstop offset='0.6' stop-color='%23c48c2a' stop-opacity='0.4'/%3E%3Cstop offset='1' stop-color='%23c48c2a' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 7 H60 M96 7 H148' stroke='url(%23g)' stroke-width='0.9'/%3E%3Cpath d='M68 9 L72 5 M73 9 L77 5 M83 5 L87 9' stroke='%23c48c2a' stroke-width='1.1' stroke-opacity='0.82' stroke-linecap='round'/%3E%3Ccircle cx='80' cy='7' r='2' fill='%23de5a3b' fill-opacity='0.84'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="riverside-sakura"] {
+  --radius: 7px;
+  --secondary: #415b66;
+  --muted: #5d7884;
+  --title-left: url("assets/themes/riverside-sakura/header-left.webp") 33.0% 66% / 196px auto no-repeat;
+  --title-right: url("assets/themes/riverside-sakura/header-right.webp") 71.8% 58% / 156px auto no-repeat;
+  --title-wash: linear-gradient(110deg, #dceff1 0%, #f3f8fa 42%, #e3eaf6 60%, #f6edf3 100%);
+  --portrait-image: url("assets/themes/riverside-sakura/portrait-wash.webp");
+  --portrait-inset: 22% auto auto 4%;
+  --portrait-width: min(475px, 68%);
+  --portrait-opacity: .26;
+  --portrait-mask: linear-gradient(135deg, #000 32%, #0008 66%, transparent 98%);
+  /* Serene sumi-e jade hairline + concentric canal water-ripple rings */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%233d878e' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%233d878e' stop-opacity='0.36'/%3E%3Cstop offset='0.6' stop-color='%233d878e' stop-opacity='0.36'/%3E%3Cstop offset='1' stop-color='%233d878e' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 7 H58 M98 7 H148' stroke='url(%23g)' stroke-width='0.85'/%3E%3Cellipse cx='76' cy='7.5' rx='10' ry='3.2' fill='none' stroke='%233d878e' stroke-width='0.95' stroke-opacity='0.66'/%3E%3Cellipse cx='83' cy='8.5' rx='5.8' ry='1.9' fill='none' stroke='%236a86c4' stroke-width='0.85' stroke-opacity='0.68'/%3E%3Ccircle cx='71' cy='6.2' r='1.35' fill='%23e596bc'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="snow-sakura"] {
+  --radius: 5px;
+  --secondary: #4d4868;
+  --muted: #6c6687;
+  --title-left: url("assets/themes/snow-sakura/header-left.webp") 32.8% 52% / 168px auto no-repeat;
+  --title-right: url("assets/themes/snow-sakura/header-right.webp") 71.2% 48% / 192px auto no-repeat;
+  --title-wash: linear-gradient(113deg, #f7f6fd 0%, #ffffff 36%, #ffffff 58%, #faf0f5 82%, #f8f7fc 100%);
+  --portrait-image: url("assets/themes/snow-sakura/portrait-wash.webp");
+  --portrait-inset: auto auto 14% 1%;
+  --portrait-width: min(515px, 72%);
+  --portrait-opacity: .30;
+  --portrait-mask: linear-gradient(118deg, #000 18%, #000 58%, transparent 99%);
+  /* Couture double sailor-indigo hairline + single crimson silk diamond */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%23433d63' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%23433d63' stop-opacity='0.36'/%3E%3Cstop offset='0.6' stop-color='%23433d63' stop-opacity='0.36'/%3E%3Cstop offset='1' stop-color='%23433d63' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M10 5.5 H64 M92 5.5 H146 M18 8.5 H64 M92 8.5 H138' stroke='url(%23g)' stroke-width='0.75'/%3E%3Cpolygon points='78,3.6 81.8,7 78,10.4 74.2,7' fill='%23c93363' fill-opacity='0.86'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="sakura-hillside"] {
+  --radius: 12px;
+  --secondary: #624d66;
+  --muted: #806885;
+  --title-left: url("assets/themes/sakura-hillside/header-left.webp") 32.6% 64% / 196px auto no-repeat;
+  --title-right: url("assets/themes/sakura-hillside/header-right.webp") 72.0% 48% / 162px auto no-repeat;
+  --title-wash: linear-gradient(113deg, #f2e6f1 0%, #faeef2 34%, #fff8f5 50%, #f3e8f2 84%, #f8eef4 100%);
+  --portrait-image: url("assets/themes/sakura-hillside/portrait-wash.webp");
+  --portrait-inset: auto 18% 40px auto;
+  --portrait-width: min(470px, 66%);
+  --portrait-opacity: .32;
+  --portrait-mask: linear-gradient(180deg, transparent, #000 24%, #000 87%, #000a);
+  /* Nostalgic mauve-mist hairline + micro slope guardrail stripe & sakura petal */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%239b789c' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%239b789c' stop-opacity='0.36'/%3E%3Cstop offset='0.6' stop-color='%239b789c' stop-opacity='0.36'/%3E%3Cstop offset='1' stop-color='%239b789c' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 7 H61 M95 7 H148' stroke='url(%23g)' stroke-width='0.85'/%3E%3Crect x='67' y='5.6' width='5' height='2.8' rx='1' fill='%23e27a88' fill-opacity='0.74'/%3E%3Crect x='75' y='5.6' width='5' height='2.8' rx='1' fill='%23b590b8' fill-opacity='0.64'/%3E%3Crect x='83' y='5.6' width='5' height='2.8' rx='1' fill='%23e27a88' fill-opacity='0.74'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="dusk-park"] {
+  --radius: 8px;
+  --secondary: #485662;
+  --muted: #66747e;
+  --title-left: url("assets/themes/dusk-park/header-left.webp") 33.5% 60% / 178px auto no-repeat;
+  --title-right: url("assets/themes/dusk-park/header-right.webp") 71.6% 42% / 192px auto no-repeat;
+  --title-wash: linear-gradient(103deg, #edeadd 0%, #fff5e0 38%, #f6ecd6 62%, #eaecdd 100%);
+  --portrait-image: url("assets/themes/dusk-park/portrait-wash.webp");
+  --portrait-inset: auto auto 34px -1%;
+  --portrait-width: min(530px, 68%);
+  --portrait-opacity: .29;
+  --portrait-mask: linear-gradient(90deg, #000 56%, transparent);
+  /* Warm impasto gouache brush-taper hairline + aqua/olive/berry palette dabs */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%238d7e55' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%238d7e55' stop-opacity='0.38'/%3E%3Cstop offset='0.6' stop-color='%238d7e55' stop-opacity='0.38'/%3E%3Cstop offset='1' stop-color='%238d7e55' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 7 H60 M96 7 H148' stroke='url(%23g)' stroke-width='0.95'/%3E%3Cellipse cx='70' cy='7' rx='4.2' ry='1.7' transform='rotate(-14 70 7)' fill='%23a4b82e' fill-opacity='0.85'/%3E%3Cellipse cx='78.5' cy='7' rx='3.8' ry='1.6' transform='rotate(10 78.5 7)' fill='%233eaad6' fill-opacity='0.84'/%3E%3Cellipse cx='86.5' cy='7' rx='3.4' ry='1.5' transform='rotate(-12 86.5 7)' fill='%23df6996' fill-opacity='0.82'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="azure-sky"] {
+  --radius: 11px;
+  --secondary: #3b5e76;
+  --muted: #5a7d96;
+  --title-left: url("assets/themes/azure-sky/header-left.webp") 32.8% 44% / 162px auto no-repeat;
+  --title-right: url("assets/themes/azure-sky/header-right.webp") 71.4% 54% / 196px auto no-repeat;
+  --title-wash: linear-gradient(116deg, #e1f5fc 6%, #f6fdff 40%, #f3fbfd 58%, #dceff9 90%);
+  --portrait-image: url("assets/themes/azure-sky/portrait-wash.webp");
+  --portrait-inset: 58px 6% auto auto;
+  --portrait-width: min(430px, 60%);
+  --portrait-opacity: .34;
+  --portrait-blend: multiply;
+  --portrait-mask: linear-gradient(174deg, #000 45%, transparent);
+  /* Airy cerulean breeze hairline + soaring sky-dove crest & daisy gold dot */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%231696c9' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%231696c9' stop-opacity='0.34'/%3E%3Cstop offset='0.6' stop-color='%231696c9' stop-opacity='0.34'/%3E%3Cstop offset='1' stop-color='%231696c9' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 7 H60 M96 7 H148' stroke='url(%23g)' stroke-width='0.85'/%3E%3Cpath d='M67 8.5 C70 4.6 74 4.8 76.5 7.4 C78.8 4.4 82.8 4.4 85.5 6.8' fill='none' stroke='%231696c9' stroke-width='1.15' stroke-opacity='0.78' stroke-linecap='round'/%3E%3Ccircle cx='88.5' cy='8.2' r='1.55' fill='%23e5ae28' fill-opacity='0.9'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="autumn-ginkgo"] {
+  --radius: 7px;
+  --secondary: #5a4036;
+  --muted: #7a5e50;
+  --title-left: url("assets/themes/autumn-ginkgo/header-left.webp") 32.6% 54% / 178px auto no-repeat;
+  --title-right: url("assets/themes/autumn-ginkgo/header-right.webp") 71.6% 52% / 182px auto no-repeat;
+  --title-wash: linear-gradient(109deg, #f4e5c8 0%, #fff9e8 44%, #faeee2 62%, #efe0c6 100%);
+  --portrait-image: url("assets/themes/autumn-ginkgo/portrait-wash.webp");
+  --portrait-inset: auto auto 52px 3.5%;
+  --portrait-width: min(480px, 62%);
+  --portrait-opacity: .32;
+  --portrait-mask: linear-gradient(83deg, #000 48%, #000b 75%, transparent);
+  /* Kyoto gold-foil hairline + classic golden ginkgo fan & kanoko diamonds */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%23cc8b14' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%23cc8b14' stop-opacity='0.4'/%3E%3Cstop offset='0.6' stop-color='%23cc8b14' stop-opacity='0.4'/%3E%3Cstop offset='1' stop-color='%23cc8b14' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 7 H60 M96 7 H148' stroke='url(%23g)' stroke-width='0.9'/%3E%3Cpolygon points='69,7 71.4,4.6 73.8,7 71.4,9.4' fill='%23b8422d' fill-opacity='0.78'/%3E%3Cpath d='M78 11 L78 8 C75 7.8 73.8 5.2 75.2 3.4 C76.4 2.8 77.4 4.2 78 5.2 C78.6 4.2 79.6 2.8 80.8 3.4 C82.2 5.2 81 7.8 78 8 Z' fill='%23de9c18' fill-opacity='0.88'/%3E%3Cpolygon points='84.6,7 87,4.6 89.4,7 87,9.4' fill='%235c7c8d' fill-opacity='0.78'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="cobalt-seaside"] {
+  --radius: 6px;
+  --secondary: #3f5070;
+  --muted: #5d6e8f;
+  --title-left: url("assets/themes/cobalt-seaside/header-left.webp") 32.8% 62% / 196px auto no-repeat;
+  --title-right: url("assets/themes/cobalt-seaside/header-right.webp") 72.0% 48% / 186px auto no-repeat;
+  --title-wash: linear-gradient(101deg, #dceafc 0%, #eff6ff 41%, #dbeef8 70%, #efe8f3 100%);
+  --portrait-image: url("assets/themes/cobalt-seaside/portrait-wash.webp");
+  --portrait-inset: auto 2% 44px auto;
+  --portrait-width: min(590px, 80%);
+  --portrait-ratio: 3 / 2;
+  --portrait-opacity: .34;
+  --portrait-mask: linear-gradient(90deg, transparent, #000 32%, #000 87%, #0008);
+  /* Crisp architectural horizon rail + holographic turquoise/cobalt/magenta pips */
+  --heading-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='156' height='14' viewBox='0 0 156 14'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%231858be' stop-opacity='0'/%3E%3Cstop offset='0.4' stop-color='%231858be' stop-opacity='0.36'/%3E%3Cstop offset='0.6' stop-color='%231858be' stop-opacity='0.36'/%3E%3Cstop offset='1' stop-color='%231858be' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 7 H60 M96 7 H148' stroke='url(%23g)' stroke-width='0.85'/%3E%3Crect x='67' y='5.5' width='5' height='3' rx='1' fill='%2318b0c4' fill-opacity='0.86'/%3E%3Crect x='74.5' y='4.6' width='7' height='4.8' rx='1' fill='%231858be' fill-opacity='0.8'/%3E%3Crect x='84' y='5.5' width='5' height='3' rx='1' fill='%23cc4494' fill-opacity='0.86'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   SHARED LAYOUT, CONTRAST & MICRO-INTERACTION POLISH FOR THE 9 REDRAWN THEMES
+   ========================================================================== */
+:root:is(
+  [data-theme="spring-creek"], [data-theme="golden-wheat"], [data-theme="riverside-sakura"],
+  [data-theme="snow-sakura"], [data-theme="sakura-hillside"], [data-theme="dusk-park"],
+  [data-theme="azure-sky"], [data-theme="autumn-ginkgo"], [data-theme="cobalt-seaside"]
+) {
+  & .titlebar {
+    background: var(--title-left), var(--title-right), var(--title-wash);
+  }
+
+  /* Signature crisp bottom accent hairline on active workspace tab */
+  & .titlebar .workspace-nav .btn.active,
+  & .titlebar .workspace-nav .btn[aria-pressed="true"] {
+    box-shadow: inset 0 -2px 0 var(--blue), 0 1px 4px rgba(24, 34, 48, 0.09);
+  }
+
+  /* Per-theme consistent panel corner radius */
+  & .panel {
+    border-radius: calc(var(--radius) + 1px);
+  }
+
+  /* Cleanly retire legacy crossed-wave flourishes on ALL panels AND dialogs */
+  & .panel-head {
+    background-image: linear-gradient(180deg, var(--head-top, var(--panel)), var(--head));
+    background-position: 0 0;
+    background-size: 100% 100%;
+  }
+
+  /* Harmonize mixer noise-reduction pill with each theme's exact ok-tag palette */
+  & .audio-channel .noise-toggle[aria-pressed="true"] {
+    color: var(--theme-tag-ok-fg);
+    border-color: var(--theme-tag-ok-stroke);
+    background: var(--theme-tag-ok-bg);
+  }
+  & .audio-channel .noise-toggle[aria-pressed="true"]:hover {
+    filter: brightness(0.96);
+  }
+
+  /* Keep timeline clip labels color-harmonized and razor-legible */
+  & .clip.audio .clip-label,
+  & .clip.subtitle .clip-label {
+    color: var(--text);
+  }
+
+  /* Keep AI message bubbles crisp porcelain over any watercolor portrait */
+  & .agent-center .message {
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 2px 8px rgba(24, 34, 48, 0.06), 0 0 0 1px var(--soft-stroke);
+    backdrop-filter: blur(4px);
+  }
+  & .agent-center .message.user {
+    background: color-mix(in srgb, var(--theme-user-msg-bg) 94%, #ffffff);
+    box-shadow: 0 2px 8px rgba(24, 34, 48, 0.06), 0 0 0 1px var(--theme-user-msg-stroke);
+  }
+
+  /* Smooth hover elevation on Settings theme gallery cards */
+  & .theme-card {
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+  }
+  & .theme-card:hover {
+    transform: translateY(-2px);
+  }
+  & .theme-card-desc {
+    color: var(--secondary);
+  }
+
+  /* Prevent mixer dropdown label wrapping at 1280px */
+  & .panel-head select {
+    white-space: nowrap;
+  }
+
+  /* Centered bespoke calligraphic crest on major wide panel headers */
+  & :is(.record-monitor, .review-player, .program-monitor, .timeline, .agent-center):not(:fullscreen, .presenting) > .panel-head {
+    position: relative;
+  }
+  & :is(.record-monitor, .review-player, .program-monitor, .timeline, .agent-center):not(:fullscreen, .presenting) > .panel-head::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 156px;
+    transform: translateX(-50%);
+    background: var(--heading-mark) center / 156px 14px no-repeat;
+    pointer-events: none;
+  }
+
+  /* Redrawn AI watercolor background placement */
+  & .agent-center::before {
+    inset: var(--portrait-inset);
+    width: var(--portrait-width);
+    aspect-ratio: var(--portrait-ratio, 4 / 3);
+    background: var(--portrait-image) center / contain no-repeat;
+    opacity: var(--portrait-opacity);
+    mix-blend-mode: var(--portrait-blend, multiply);
+    mask-image: var(--portrait-mask);
+  }
+}
+
+/* Subtle per-theme architectural panel nuances */
+:root[data-theme="snow-sakura"] .panel {
+  box-shadow: 0 1px 4px rgba(45, 39, 72, 0.05);
+}
+:root[data-theme="dusk-park"] .panel:not(.control-dock) {
+  box-shadow: var(--theme-shadow-sm), inset 0 0 0 1px rgba(255, 253, 244, 0.88);
+}
+:root[data-theme="autumn-ginkgo"] .panel:not(.control-dock) > .panel-head {
+  box-shadow: inset 0 -1px 0 rgba(214, 156, 46, 0.2);
+}
+:root[data-theme="cobalt-seaside"] .panel:not(.control-dock) {
+  box-shadow: var(--theme-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+/* Hide section-title badge inside narrow docks with selects (fixes 1280px mixer wrap) */
+@container (max-width: 260px) {
+  :root:is(
+    [data-theme="spring-creek"], [data-theme="golden-wheat"], [data-theme="riverside-sakura"],
+    [data-theme="snow-sakura"], [data-theme="sakura-hillside"], [data-theme="dusk-park"],
+    [data-theme="azure-sky"], [data-theme="autumn-ginkgo"], [data-theme="cobalt-seaside"]
+  ) .panel > .panel-head:has(select) .section-title::after {
+    display: none;
+  }
+}
+
+/* Hide centered header crest if a wide panel is resized narrow */
+@container (max-width: 520px) {
+  :root:is(
+    [data-theme="spring-creek"], [data-theme="golden-wheat"], [data-theme="riverside-sakura"],
+    [data-theme="snow-sakura"], [data-theme="sakura-hillside"], [data-theme="dusk-park"],
+    [data-theme="azure-sky"], [data-theme="autumn-ginkgo"], [data-theme="cobalt-seaside"]
+  ) :is(.record-monitor, .review-player, .program-monitor, .timeline, .agent-center) > .panel-head::after {
+    display: none;
+  }
+}
+
+@media (max-width: 1180px) {
+  :root:is(
+    [data-theme="spring-creek"], [data-theme="golden-wheat"], [data-theme="riverside-sakura"],
+    [data-theme="snow-sakura"], [data-theme="sakura-hillside"], [data-theme="dusk-park"],
+    [data-theme="azure-sky"], [data-theme="autumn-ginkgo"], [data-theme="cobalt-seaside"]
+  ) .titlebar {
+    background:
+      linear-gradient(color-mix(in srgb, var(--head) 54%, transparent), color-mix(in srgb, var(--head) 54%, transparent)),
+      var(--title-left),
+      var(--title-right),
+      var(--title-wash);
+  }
+}
+
+/* ==========================================================================
+   DIFFERENTIATED FEATURED "录制控制" CONTRAST ARCHITECTURES (DRAG-PROOF!)
+   High-contrast enabled & disabled button clarity across all 9 themes.
+   Strictly bound to .control-dock[data-dock="control"] so every dock swap
+   and splitter resize preserves styling 100%.
+   ========================================================================== */
+
+/* 01. 春溪樱雨: Fresh Forest-Moss Split-Header Card */
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] {
+  background-image:
+    var(--spring-hero-sakura),
+    radial-gradient(ellipse 84% 70% at 12% 96%, rgba(164, 218, 198, 0.34), transparent 64%),
+    linear-gradient(158deg, #fcfffb 0%, #f1f9f3 58%, #fef3f6 100%);
+  background-position: right -4px bottom -4px, 0 0, 0 0;
+  background-size: 94px 94px, 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  border-color: #8abcb0;
+  color: #1c4743;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 4px 16px rgba(42, 106, 98, 0.13);
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .panel-head {
+  background: linear-gradient(96deg, #276963 0%, #317c72 62%, #3a8a78 100%);
+  border-bottom-color: #215953;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .section-title {
+  color: #f8fdf9;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .section-title .icon {
+  color: #f5d25c;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .panel-head .section-title::after {
+  filter: brightness(1.38) saturate(1.1);
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .panel-head .btn.flat {
+  color: #e4f6f1;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .panel-head .btn.flat:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .record-time {
+  border-bottom: 2px dotted rgba(224, 176, 40, 0.56);
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .record-clock {
+  color: #19423e;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .dot.green {
+  color: #42963b;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .rec-state {
+  color: #256e4b;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .record-command .btn {
+  background: linear-gradient(180deg, #e56283 0%, #cd486a 100%);
+  border-color: #f089a3;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(205, 72, 106, 0.24);
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .record-command .btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ec708f 0%, #d85375 100%);
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .record-command .record-options-toggle {
+  background: linear-gradient(180deg, #d35072 0%, #b93a5b 100%);
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: #ffffff;
+  border-color: #9dc8bc;
+  color: #19423e;
+  box-shadow: 0 1px 2px rgba(34, 84, 76, 0.08);
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .record-secondary .btn:hover:not(:disabled) {
+  background: #ffffff;
+  border-color: #469184;
+  color: #102e2b;
+}
+:root[data-theme="spring-creek"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.82;
+  background: rgba(255, 255, 255, 0.62);
+  border-color: #bed9d1;
+  color: #3e645e;
+  box-shadow: none;
+}
+
+/* 02. 麦浪晴光: Backlit Sunlit-Wheat & Cornflower Postcard */
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cpath d='M14 86 C32 66 52 44 76 18' fill='none' stroke='%23b57f22' stroke-width='1.7' stroke-opacity='0.22' stroke-linecap='round'/%3E%3Cg fill='%23c48d28' fill-opacity='0.18'%3E%3Cellipse cx='52' cy='36' rx='4.6' ry='9.2' transform='rotate(-40 52 36)'/%3E%3Cellipse cx='62' cy='26' rx='4.1' ry='8.2' transform='rotate(-40 62 26)'/%3E%3Cellipse cx='42' cy='47' rx='4.6' ry='9.2' transform='rotate(-40 42 47)'/%3E%3Cellipse cx='60' cy='44' rx='4.6' ry='9.2' transform='rotate(30 60 44)'/%3E%3Cellipse cx='50' cy='55' rx='4.6' ry='9.2' transform='rotate(30 50 55)'/%3E%3C/g%3E%3Ccircle cx='72' cy='68' r='8.5' fill='%23de5a3b' fill-opacity='0.14'/%3E%3Ccircle cx='72' cy='68' r='2.6' fill='%23415e95' fill-opacity='0.18'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 92% 76% at 14% 6%, rgba(252, 224, 146, 0.62), transparent 64%),
+    linear-gradient(156deg, #fef6e0 0%, #f8e8c2 54%, #eef2fa 100%);
+  background-position: right -4px bottom -4px, 0 0, 0 0;
+  background-size: 96px 96px, 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  border-color: #c8a86a;
+  color: #253b68;
+  box-shadow:
+    inset 0 3px 0 #3f5e96,
+    inset 0 4px 0 rgba(255, 253, 245, 0.82),
+    0 4px 16px rgba(154, 114, 42, 0.14);
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .panel-head {
+  background: linear-gradient(90deg, rgba(246, 227, 178, 0.72), rgba(232, 238, 250, 0.64));
+  border-bottom-color: rgba(196, 158, 86, 0.44);
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .section-title {
+  color: #263d6b;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .section-title .icon {
+  color: #bd7d14;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .panel-head .section-title::after {
+  filter: none;
+  opacity: 0.92;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .panel-head .btn.flat {
+  color: #3f5785;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .panel-head .btn.flat:hover:not(:disabled) {
+  background: rgba(65, 94, 149, 0.12);
+  color: #1c325b;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .record-time {
+  border-bottom: 2px dotted rgba(198, 138, 34, 0.54);
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .record-clock {
+  color: #213764;
+  text-shadow: 0 1px 0 rgba(255, 253, 244, 0.8);
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .dot.green {
+  color: #4c863c;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .dot.live {
+  color: #d94c2c;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .rec-state {
+  color: #3b6b30;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .rec-state.is-live {
+  color: #be3b1e;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .record-command .btn {
+  background: linear-gradient(180deg, #e46342 0%, #c84829 100%);
+  border-color: #f08e72;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(200, 72, 41, 0.25);
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .record-command .btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ec7050 0%, #d45232 100%);
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .record-command .record-options-toggle {
+  background: linear-gradient(180deg, #cf5030 0%, #b43b1e 100%);
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: #ffffff;
+  border-color: #cbb588;
+  color: #243b68;
+  box-shadow: 0 1px 2px rgba(124, 92, 34, 0.08);
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .record-secondary .btn:hover:not(:disabled) {
+  background: #ffffff;
+  border-color: #4f70aa;
+  color: #182c52;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.82;
+  background: rgba(255, 253, 246, 0.64);
+  border-color: #d8c6a0;
+  color: #4a5a78;
+  box-shadow: none;
+}
+:root[data-theme="golden-wheat"] .control-dock[data-dock="control"].dock-drop-target {
+  box-shadow: 0 0 0 2px #415e95, inset 0 3px 0 #3f5e96, 0 4px 16px rgba(65, 94, 149, 0.2);
+}
+
+/* 03. 碧水樱影: Deep Viridian-Canal Card with Serene Concentric Ripple Halo */
+:root[data-theme="riverside-sakura"] .control-dock[data-dock="control"] {
+  background-image:
+    var(--river-hero-petals),
+    repeating-radial-gradient(circle at 18% 28%, transparent 0 16px, rgba(168, 224, 228, 0.06) 16px 17px),
+    linear-gradient(152deg, #25646b 0%, #1b4d55 58%, #143a42 100%);
+  background-position: right -2px bottom -2px, 0 0, 0 0;
+  background-size: 96px 96px, 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 1px 0 rgba(196, 238, 240, 0.22),
+    0 4px 16px rgba(20, 58, 66, 0.25);
+}
+:root[data-theme="riverside-sakura"] .control-dock[data-dock="control"] .panel-head {
+  background: rgba(14, 42, 48, 0.44);
+}
+:root[data-theme="riverside-sakura"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: rgba(246, 254, 255, 0.20);
+  border-color: rgba(226, 248, 250, 0.42);
+  color: #ffffff;
+}
+:root[data-theme="riverside-sakura"] .control-dock[data-dock="control"] .record-secondary .btn:hover:not(:disabled) {
+  background: rgba(246, 254, 255, 0.30);
+  border-color: rgba(226, 248, 250, 0.62);
+}
+:root[data-theme="riverside-sakura"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.78;
+  background: rgba(246, 254, 255, 0.09);
+  border-color: rgba(226, 248, 250, 0.26);
+  color: rgba(242, 252, 253, 0.90);
+}
+
+/* 04. 雪樱绯风: Couture Snow-White & Sailor-Collar Framed Gallery Card */
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg transform='translate(60,58)'%3E%3Cg fill='%23635c8f' fill-opacity='0.09'%3E%3Cpath d='M0 -24 C7 -19 9 -7 0 -3 C-9 -7 -7 -19 0 -24 Z'/%3E%3Cpath d='M0 -24 C7 -19 9 -7 0 -3 C-9 -7 -7 -19 0 -24 Z' transform='rotate(72)'/%3E%3Cpath d='M0 -24 C7 -19 9 -7 0 -3 C-9 -7 -7 -19 0 -24 Z' transform='rotate(144)'/%3E%3Cpath d='M0 -24 C7 -19 9 -7 0 -3 C-9 -7 -7 -19 0 -24 Z' transform='rotate(216)'/%3E%3Cpath d='M0 -24 C7 -19 9 -7 0 -3 C-9 -7 -7 -19 0 -24 Z' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='3.2' fill='%23c93363' fill-opacity='0.2'/%3E%3C/g%3E%3Cellipse cx='22' cy='72' rx='7' ry='3.8' transform='rotate(-24 22 72)' fill='%23d43568' fill-opacity='0.14'/%3E%3C/svg%3E"),
+    linear-gradient(165deg, #ffffff 0%, #fbf9fe 64%, #fef3f7 100%);
+  background-position: right -4px bottom -4px, 0 0;
+  background-size: 96px 96px, 100% 100%;
+  background-repeat: no-repeat;
+  border: 1.5px solid #3f3961;
+  color: #2a2444;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 5px 18px rgba(45, 39, 72, 0.13);
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .panel-head {
+  background: linear-gradient(96deg, #322c4f 0%, #403864 100%);
+  border-bottom: 2px solid #ffffff;
+  box-shadow: 0 2px 0 #3f3961;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .section-title {
+  color: #ffffff;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .section-title .icon {
+  color: #ff9ec0;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .panel-head .section-title::after {
+  filter: brightness(1.4);
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .panel-head .btn.flat {
+  color: #e6e3f7;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .panel-head .btn.flat:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .record-time {
+  border-bottom: 2px dotted rgba(201, 51, 99, 0.44);
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .record-clock {
+  color: #262040;
+  text-shadow: none;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .dot.green {
+  color: #318e76;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .dot.live {
+  color: #d62d63;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .rec-state {
+  color: #24725e;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .rec-state.is-live {
+  color: #b81e4f;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .record-command .btn {
+  background: linear-gradient(180deg, #df376c 0%, #bf2254 100%);
+  border-color: #f06e96;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(191, 34, 84, 0.25);
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .record-command .btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, #e84478 0%, #cb2a5d 100%);
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .record-command .record-options-toggle {
+  background: linear-gradient(180deg, #c6285a 0%, #a51845 100%);
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: #ffffff;
+  border-color: #bcb5d6;
+  color: #2b2546;
+  box-shadow: 0 1px 2px rgba(45, 39, 72, 0.06);
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .record-secondary .btn:hover:not(:disabled) {
+  background: #f8f6fc;
+  border-color: #544d7e;
+  color: #1c1732;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.82;
+  background: rgba(248, 246, 252, 0.72);
+  border-color: #d3cee6;
+  color: #50496e;
+  box-shadow: none;
+}
+:root[data-theme="snow-sakura"] .control-dock[data-dock="control"].dock-drop-target {
+  box-shadow: 0 0 0 2px #c93363, 0 5px 18px rgba(201, 51, 99, 0.22);
+}
+
+/* 05. 樱坂晨雾: Dreamy Coral-Blush & Mauve Morning-Mist Card with Guardrail Accent */
+:root[data-theme="sakura-hillside"] .control-dock[data-dock="control"] .panel-head {
+  background: linear-gradient(90deg, rgba(246, 214, 224, 0.82), rgba(235, 218, 240, 0.72));
+}
+:root[data-theme="sakura-hillside"] .control-dock[data-dock="control"] .record-time {
+  border-bottom: none;
+  padding-bottom: 7px;
+  background: repeating-linear-gradient(
+    -52deg,
+    rgba(222, 109, 123, 0.44) 0 6px,
+    rgba(255, 255, 255, 0.7) 6px 12px
+  ) left bottom / 100% 3px no-repeat;
+}
+:root[data-theme="sakura-hillside"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: #ffffff;
+  border-color: #dfb9c8;
+  color: #4f3554;
+  box-shadow: 0 1px 2px rgba(138, 104, 141, 0.08);
+}
+:root[data-theme="sakura-hillside"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.82;
+  background: rgba(255, 252, 254, 0.66);
+  border-color: #e9ced8;
+  color: #6f5374;
+  box-shadow: none;
+}
+
+/* 06. 暮光林荫: Deep Prussian-Navy Gouache Hoodie Card with Painterly Aqua Rim */
+:root[data-theme="dusk-park"] .control-dock[data-dock="control"] {
+  box-shadow:
+    inset 0 2px 0 rgba(108, 208, 242, 0.48),
+    0 4px 16px rgba(14, 42, 78, 0.28);
+}
+:root[data-theme="dusk-park"] .control-dock[data-dock="control"] .panel-head {
+  background: rgba(8, 26, 52, 0.44);
+}
+:root[data-theme="dusk-park"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: rgba(214, 242, 255, 0.20);
+  border-color: rgba(154, 218, 244, 0.42);
+  color: #ffffff;
+}
+:root[data-theme="dusk-park"] .control-dock[data-dock="control"] .record-secondary .btn:hover:not(:disabled) {
+  background: rgba(214, 242, 255, 0.30);
+  border-color: rgba(154, 218, 244, 0.62);
+}
+:root[data-theme="dusk-park"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.78;
+  background: rgba(214, 242, 255, 0.09);
+  border-color: rgba(154, 218, 244, 0.26);
+  color: rgba(236, 248, 255, 0.90);
+}
+
+/* 07. 晴空飞鸽: Translucent Frosted Daisy-Cape Glass Card */
+:root[data-theme="azure-sky"] .control-dock[data-dock="control"] {
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    inset 0 0 0 1px rgba(255, 255, 255, 0.64),
+    0 5px 18px rgba(16, 124, 174, 0.14);
+}
+:root[data-theme="azure-sky"] .control-dock[data-dock="control"] .panel-head {
+  background: linear-gradient(90deg, rgba(202, 237, 252, 0.82), rgba(250, 234, 242, 0.74));
+}
+:root[data-theme="azure-sky"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: #ffffff;
+  border-color: #9ed0e8;
+  color: #133c57;
+  box-shadow: 0 1px 2px rgba(16, 108, 152, 0.08);
+}
+:root[data-theme="azure-sky"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.82;
+  background: rgba(255, 255, 255, 0.66);
+  border-color: #bcdff0;
+  color: #365e78;
+  box-shadow: none;
+}
+
+/* 08. 金杏和风: Imperial Kyoto Urushi-Lacquer Box with Gold-Foil Inner Frame */
+:root[data-theme="autumn-ginkgo"] .control-dock[data-dock="control"] {
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 206, 118, 0.30),
+    inset 0 1px 0 rgba(255, 234, 174, 0.42),
+    0 4px 16px rgba(68, 22, 16, 0.30);
+}
+:root[data-theme="autumn-ginkgo"] .control-dock[data-dock="control"] .panel-head {
+  background: rgba(46, 12, 12, 0.44);
+}
+:root[data-theme="autumn-ginkgo"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: rgba(255, 242, 210, 0.20);
+  border-color: rgba(244, 206, 128, 0.44);
+  color: #ffffff;
+}
+:root[data-theme="autumn-ginkgo"] .control-dock[data-dock="control"] .record-secondary .btn:hover:not(:disabled) {
+  background: rgba(255, 242, 210, 0.30);
+  border-color: rgba(244, 206, 128, 0.64);
+}
+:root[data-theme="autumn-ginkgo"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.78;
+  background: rgba(255, 242, 210, 0.09);
+  border-color: rgba(244, 206, 128, 0.28);
+  color: rgba(255, 246, 228, 0.90);
+}
+
+/* 09. 湛海听风: Midnight Cobalt Rail Card with Iridescent Prism Top Spectrum Bar */
+:root[data-theme="cobalt-seaside"] .control-dock[data-dock="control"] {
+  background-image:
+    linear-gradient(90deg, #3ee2f2 0%, #2a78e8 52%, #e858b2 100%),
+    var(--cobalt-hero-watermark),
+    radial-gradient(ellipse 88% 72% at 14% 8%, rgba(54, 212, 232, 0.24), transparent 64%),
+    linear-gradient(150deg, #134494 0%, #152e69 58%, #1d1e46 100%);
+  background-position: top left, right -2px bottom -2px, 0 0, 0 0;
+  background-size: 100% 2.5px, 96px 96px, 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+}
+:root[data-theme="cobalt-seaside"] .control-dock[data-dock="control"] .panel-head {
+  background: rgba(12, 24, 58, 0.44);
+}
+:root[data-theme="cobalt-seaside"] .control-dock[data-dock="control"] .record-secondary .btn {
+  background: rgba(196, 242, 255, 0.20);
+  border-color: rgba(116, 220, 240, 0.42);
+  color: #ffffff;
+}
+:root[data-theme="cobalt-seaside"] .control-dock[data-dock="control"] .record-secondary .btn:hover:not(:disabled) {
+  background: rgba(196, 242, 255, 0.30);
+  border-color: rgba(116, 220, 240, 0.64);
+}
+:root[data-theme="cobalt-seaside"] .control-dock[data-dock="control"] .record-secondary .btn:disabled {
+  opacity: 0.78;
+  background: rgba(196, 242, 255, 0.09);
+  border-color: rgba(116, 220, 240, 0.26);
+  color: rgba(235, 248, 255, 0.90);
+}

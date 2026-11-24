@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "binaries": {
+    "Release": {
+      "wpsrecorder.exe": "391d746c08899e11b9d4b1f8c941245644ff9b2084946c862b4bac9981bf4e81",
+      "wpsrecorder_cli.exe": "b701037ad7725fc53ae5ae3c30eafc6abfa4ec29e6a634c92aae1f61e147c14d"
+    },
+    "Debug": {
+      "wpsrecorder.exe": "4953c760b7acf130ce20d01237996dbdb87cea7e3ffe30757391ec4f7491706a",
+      "wpsrecorder_cli.exe": "c402306327f006a6d4ea58010b702d58fc220c4c12490347fde82c6df14c3cee"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "main_window": "WPS Recorder 2 录制工作台",
+  "settings_pages": [
+    "画面来源",
+    "画质与编码",
+    "声音与分轨",
+    "摄像头样式",
+    "鼠标与讲解",
+    "保存与倒计时"
+  ],
+  "settings_source_contextual": true,
+  "save_path_changed_in_ui": true,
+  "record_started_in_gui": true,
+  "recording_seconds": 67.53333333333333,
+  "frames_written": 2026,
+  "automatic_preview": true,
+  "automatic_preview_position_ms": 4512,
+  "annotation_window_exclusion_succeeded": true,
+  "annotation_drawing_automation": "not performed: capture-excluded windows are not targetable",
+  "camera_activation": "IMFActivate::ActivateObject",
+  "camera_hresult": "0x80070005",
+  "process_app_container": false
+}

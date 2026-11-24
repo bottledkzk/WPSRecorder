@@ -1,0 +1,15 @@
+{
+  "original_bytes": 9494874,
+  "original_sha256": "b0010fc5abeb30afd7cc1d91fd61f540c8e40d99c2780505cebe9e5c8e624db6",
+  "duration_seconds": 49.666,
+  "decoded_frames": 1490,
+  "codec": "h264",
+  "size": [
+    2560,
+    1440
+  ],
+  "original_directory_preserved": true,
+  "observation": "50 one-second samples show purple/green corruption already encoded in the picture; decoder reported no errors",
+  "root_cause": "Original capture code wrapped every acquired texture as BGRA8. Native DISPLAY2/G72 Max probe returned DXGI format 10 = RGBA16_FLOAT, HDR color space 12.",
+  "lossless_recovery_of_discarded_pixel_data_possible": false
+}

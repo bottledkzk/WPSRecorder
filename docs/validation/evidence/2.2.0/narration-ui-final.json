@@ -1,0 +1,27 @@
+{
+    "cases": [
+        {
+            "case": "cancel_and_restart_worker",
+            "passed": true
+        },
+        {
+            "case": "native_voice_generation",
+            "passed": true
+        },
+        {
+            "case": "stale_voice_preview_guard",
+            "passed": true
+        },
+        {
+            "audio_tracks": 1,
+            "case": "native_narration_export",
+            "duration_ms": 17000,
+            "passed": true
+        }
+    ],
+    "complete": true,
+    "error": "",
+    "last_ui_status": "旁白视频已保存：D:\\Study\\Work\\WPSwork\\recorder-advanced-qa\\narration-ui-final.mp4",
+    "passed": true,
+    "wall_ms": 15232
+}

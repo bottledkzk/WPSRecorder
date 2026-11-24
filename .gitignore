@@ -1,0 +1,22 @@
+# Personal preferences and local recording/QA output never belong in source delivery.
+/build/
+/bin/
+/dist/
+__pycache__/
+*.f32
+settings.ini
+ui-settings.ini
+ui-qa.json
+.wpsrecorder-*/
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.flv
+*.webm
+*.wav
+!/src/assets/voice-samples/*.wav
+*.pcm
+*.m4a
+*.mp3
+*.lock

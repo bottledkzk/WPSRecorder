@@ -1,0 +1,1 @@
+Camera failed at IMFActivate::ActivateObject (0x80070005). Current process has Low integrity (4096). Extract the delivery ZIP into a normal user folder outside the development workspace, then launch it normally. Running the same Low-labeled EXE again retains its restriction.

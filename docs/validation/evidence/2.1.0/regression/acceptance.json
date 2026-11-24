@@ -1,0 +1,15 @@
+[
+  {
+    "case": "cli_contract",
+    "version": "wpsrecorder 2.1.0",
+    "idle_json": {
+      "avg_fps": 0,
+      "cpu_pct": 0,
+      "duration_sec": 0,
+      "frames_written": 0,
+      "mem_mb": 0,
+      "state": "idle"
+    },
+    "invalid_input_rejected": true
+  }
+]

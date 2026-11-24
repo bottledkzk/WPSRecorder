@@ -1,0 +1,39 @@
+{
+    "cases": [
+        {
+            "case": "inline_click_seeks",
+            "passed": true
+        },
+        {
+            "case": "inline_drag_seeks",
+            "passed": true
+        },
+        {
+            "case": "workarea_controls_inside_taskbar_boundary",
+            "passed": true
+        },
+        {
+            "case": "expanded_click_seeks",
+            "passed": true
+        },
+        {
+            "case": "true_fullscreen_covers_monitor",
+            "passed": true
+        },
+        {
+            "case": "top_right_close_preserves_playhead",
+            "passed": true
+        },
+        {
+            "case": "escape_returns_preview",
+            "passed": true
+        },
+        {
+            "case": "second_monitor_workarea",
+            "passed": true
+        }
+    ],
+    "error": "",
+    "passed": true,
+    "stage": 8
+}

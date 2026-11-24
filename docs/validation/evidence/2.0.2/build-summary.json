@@ -1,0 +1,14 @@
+{
+  "executables": [
+    {
+      "sha256": "857e7e2dd69b1207e1d3c7c2f9630a7c8a89c70044c39642a673de38ac36fc25",
+      "name": "wpsrecorder_cli.exe"
+    },
+    {
+      "sha256": "4742f22302257bbc3da9df3368e9de72a4c2595a0fea0c35326839e0e2bd001b",
+      "name": "wpsrecorder.exe"
+    }
+  ],
+  "release": "passed",
+  "debug": "passed"
+}

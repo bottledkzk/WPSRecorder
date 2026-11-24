@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "duration_sec": 60.5,
+  "frames": 907,
+  "dimensions": [
+    1216,
+    684
+  ],
+  "audio_codec": "aac",
+  "audio_rms_opening_still": 0.0,
+  "audio_rms_first_narration": 0.0659,
+  "camera_nonblack_samples": [
+    {
+      "at_sec": 4,
+      "mean": 128.41,
+      "non_black_fraction": 1.0
+    },
+    {
+      "at_sec": 13,
+      "mean": 126.99,
+      "non_black_fraction": 1.0
+    },
+    {
+      "at_sec": 28,
+      "mean": 133.72,
+      "non_black_fraction": 1.0
+    },
+    {
+      "at_sec": 43,
+      "mean": 130.99,
+      "non_black_fraction": 1.0
+    },
+    {
+      "at_sec": 55,
+      "mean": 138.45,
+      "non_black_fraction": 1.0
+    },
+    {
+      "at_sec": 59,
+      "mean": 130.14,
+      "non_black_fraction": 1.0
+    }
+  ],
+  "sha256": "bfdfb35d7ac5155718f70268051197775a648da1fb4b0e2d6df9b2b1df94541d"
+}

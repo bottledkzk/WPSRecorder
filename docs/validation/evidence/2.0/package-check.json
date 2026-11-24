@@ -1,0 +1,29 @@
+{
+  "archive": "D:\\Study\\Work\\WPSwork\\deliverables\\gongweichao-v2-preview\\gongweichao.zip",
+  "bytes": 215543215,
+  "sha256": "96810c42856eb3de1f56453da3c980031f5aad326ff3a9d16e4655fb34bf8d2a",
+  "manifest_files_verified": 92,
+  "version": "wpsrecorder 2.0.0",
+  "recording": {
+    "avg_fps": 30,
+    "cpu_pct": 0,
+    "duplicate_frames": 0,
+    "duration_sec": 2.033333333333333,
+    "encoder": "h264_nvenc",
+    "error": "",
+    "frames_written": 61,
+    "mem_mb": 20.46875,
+    "ok": true,
+    "output": "D:/Study/Work/WPSwork/recorder-package-check-v2/installed-recording.mp4",
+    "paused": false,
+    "phase": "idle",
+    "pid": 37576,
+    "source": "image",
+    "state": "idle"
+  },
+  "offline_subtitle_verified": true,
+  "path_only_system32": true,
+  "settings_ini_excluded": true,
+  "installed_runtime_files_verified": 79,
+  "decoded_recording_frames": 61
+}

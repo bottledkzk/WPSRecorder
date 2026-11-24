@@ -1,0 +1,5 @@
+<RCC><qresource prefix="/i18n">
+  <file alias="en.json">@CMAKE_CURRENT_SOURCE_DIR@/i18n/en.json</file>
+  <file alias="diagnostics.zh-CN.json">@CMAKE_CURRENT_SOURCE_DIR@/i18n/diagnostics.zh-CN.json</file>
+  <file alias="qtbase_zh_CN.qm">@RECORDER_QT_ZH_QM@</file>
+</qresource></RCC>

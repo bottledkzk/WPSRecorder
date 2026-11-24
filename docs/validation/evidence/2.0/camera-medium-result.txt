@@ -1,0 +1,24 @@
+app_container=0 token_restricted=0 elevation_type=3 integrity_rid=8192
+=== Media Foundation MTA ===
+CoInitializeEx hr=0x0
+MFStartup hr=0x0
+MFEnumDeviceSources hr=0x0
+devices=1
+IMFActivate::ActivateObject hr=0x0
+MFCreateSourceReader hr=0x0
+SetCurrentMediaType RGB32 hr=0x0
+MF_RGB32_frame_received bytes=3686400
+=== Media Foundation STA ===
+CoInitializeEx hr=0x0
+MFStartup hr=0x0
+MFEnumDeviceSources hr=0x0
+devices=1
+IMFActivate::ActivateObject hr=0x0
+MFCreateSourceReader hr=0x0
+SetCurrentMediaType RGB32 hr=0x0
+MF_RGB32_frame_received bytes=3686400
+=== WinRT STA ===
+DeviceAccessInformation.CurrentStatus=1
+MediaCapture.InitializeAsync succeeded
+StartReader hr=0x8001010e
+应用程序调用一个已为另一线程整理的接口。

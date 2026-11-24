@@ -1,0 +1,6 @@
+app_container=0 token_restricted=0 elevation_type=3 integrity_rid=4096
+CoInitializeEx hr=0x0
+MFStartup hr=0x0
+MFEnumDeviceSources hr=0x0
+devices=1
+IMFActivate::ActivateObject hr=0x80070005

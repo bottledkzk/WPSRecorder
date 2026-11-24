@@ -1,0 +1,157 @@
+{
+  "applied": true,
+  "delivery_commit_verified_before_cleanup": "8c823ac98c51c3987fab658f1e4329535c12db2c",
+  "targets": [
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\recorder-editor-qa",
+      "files": 56,
+      "bytes": 61852989,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\recorder-advanced-qa",
+      "files": 110,
+      "bytes": 87661820,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-Preview210",
+      "files": 75,
+      "bytes": 363497504,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-Preview220",
+      "files": 469,
+      "bytes": 787973380,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder-editor-qa",
+      "files": 0,
+      "bytes": 0,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder-workbench-qa",
+      "files": 1,
+      "bytes": 1055,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder-speech-qa",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\tools\\speech\\sherpa-onnx-v2.0.1-win-x64-shared-MD-Release",
+      "files": 32,
+      "bytes": 65050698,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\tools\\speech\\sherpa-onnx-v2.0.1-win-x64-shared-MD-Release.tar.bz2",
+      "files": 1,
+      "bytes": 21921136,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_qa_surface.exe",
+      "files": 1,
+      "bytes": 31744,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_qa_surface.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_camera_qa.exe",
+      "files": 1,
+      "bytes": 197632,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_camera_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_ui_qa.exe",
+      "files": 1,
+      "bytes": 154112,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_ui_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_editor_qa.exe",
+      "files": 1,
+      "bytes": 416256,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_editor_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_workbench_qa.exe",
+      "files": 1,
+      "bytes": 726016,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_workbench_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_narration_qa.exe",
+      "files": 1,
+      "bytes": 217600,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_narration_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_cleanup_qa.exe",
+      "files": 1,
+      "bytes": 23040,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_cleanup_qa.pdb",
+      "files": 0,
+      "bytes": 0,
+      "removed": true,
+      "already_absent": true
+    }
+  ],
+  "removed_files": 751.0,
+  "removed_bytes": 1389724982.0,
+  "existing_user_record_preserved": true,
+  "user_settings_backup_kept_locally": true,
+  "formal_packages_installations_and_build_dependencies_kept": true
+}

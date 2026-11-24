@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "source_frame": 9,
+      "pixel_mae": 0.0,
+      "sha256": "3047b03c315f05870323751c3d6efc489c0dab9faea00c79427273cfd0a4efed"
+    },
+    {
+      "source_frame": 10,
+      "pixel_mae": 0.0,
+      "sha256": "a612e104aea3e480cb0aa9acfce778118bd0c905d7f76b0f008a3c1b073c15a1"
+    }
+  ]
+}

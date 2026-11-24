@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "version": "wpsrecorder 2.2.0",
+  "system_path_only": true,
+  "isolated_service": true,
+  "recording": {
+    "avg_fps": 30,
+    "cpu_pct": 0,
+    "duplicate_frames": 0,
+    "duration_sec": 2.1,
+    "encoder": "h264_nvenc",
+    "error": "",
+    "frames_written": 63,
+    "mem_mb": 44.99609375,
+    "ok": true,
+    "output": "D:/Study/Work/WPSwork/recorder-advanced-qa/installed-smoke-final/recording.mp4",
+    "paused": false,
+    "phase": "idle",
+    "pid": 34460,
+    "pipeline_stage": "idle",
+    "source": "screen",
+    "state": "idle"
+  },
+  "kokoro_wav_bytes": 319334,
+  "small_model_chinese_keyword": true
+}

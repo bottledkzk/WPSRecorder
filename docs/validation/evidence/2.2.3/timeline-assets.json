@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "frames": 225,
+  "duration": 7.5,
+  "green_caption_pixels": 2396,
+  "external_track_rms": [
+    0.0,
+    0.0618392676115036,
+    0.0,
+    0.0,
+    0.06183721125125885
+  ],
+  "soft_subtitles": "1\n00:00:00,021 --> 00:00:01,021\nOpening card\n\n2\n00:00:02,521 --> 00:00:03,521\nStyled subtitle\n\n3\n00:00:03,521 --> 00:00:05,021\nLocal image\n\n4\n00:00:05,021 --> 00:00:06,021\nStyled subtitle\n\n",
+  "sources_unchanged": true
+}

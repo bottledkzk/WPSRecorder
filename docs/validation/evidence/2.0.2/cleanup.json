@@ -1,0 +1,131 @@
+{
+  "applied": true,
+  "targets": [
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\recorder-qa",
+      "files": 219,
+      "bytes": 405601731,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\recorder-package-check",
+      "files": 135,
+      "bytes": 492267162,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\recorder-package-check-v2",
+      "files": 178,
+      "bytes": 726995247,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\recorder-package-check-v201",
+      "files": 5,
+      "bytes": 3114899,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\deliverables\\camera-ui-qa-v201",
+      "files": 2,
+      "bytes": 158517928,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\camera-diagnostics\\build",
+      "files": 66,
+      "bytes": 1546057,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\camera-diagnostics\\stack\\build",
+      "files": 64,
+      "bytes": 499993,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\camera-diagnostics\\camera-probe-normal-launch.zip",
+      "files": 1,
+      "bytes": 34662,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\ui-before-v202.json",
+      "files": 1,
+      "bytes": 1366,
+      "removed": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\ui-after-v202.json",
+      "files": 1,
+      "bytes": 1533,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-CameraCheck",
+      "files": 94,
+      "bytes": 364098595,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-Preview201-Test",
+      "files": 62,
+      "bytes": 209430431,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-Preview201-R2",
+      "files": 97,
+      "bytes": 255279428,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-Preview202",
+      "files": 122,
+      "bytes": 412187451,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\Videos\\WPSRecorder\\.wpsrecorder-891b692b-c998-45a2-895f-aee551259981",
+      "files": 4,
+      "bytes": 13798665,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\Videos\\WPSRecorder\\recording-20261102-220205-793.mp4.lock",
+      "files": 1,
+      "bytes": 71,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\Videos\\WPSRecorder\\recording-20261102-221101-782.mp4",
+      "files": 1,
+      "bytes": 21699016,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\Videos\\WPSRecorder\\recording-20261102-221101-782.mp4.camera.mkv",
+      "files": 1,
+      "bytes": 9236360,
+      "removed": true
+    },
+    {
+      "path": "C:\\Users\\bottl\\OneDrive\\桌面\\CameraProbe",
+      "files": 2,
+      "bytes": 87797,
+      "removed": true
+    }
+  ],
+  "files": 1056,
+  "bytes": 3074398392,
+  "all_removed": true,
+  "user_recording_preserved": true,
+  "user_recording_sha256": "c607f10a4337d2e8187f70a89524bd069457ff4f34274a08f39e645b5bb9cf65",
+  "retained": [
+    "Source and numeric evidence",
+    "Formal delivery ZIPs and samples",
+    "Compiler Qt FFmpeg Whisper dependencies",
+    "Normal WPSRecorder2 installation",
+    "Unidentified user recordings"
+  ]
+}

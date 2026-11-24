@@ -1,0 +1,5 @@
+101 ICON "assets/recorder.ico"
+STRINGTABLE
+BEGIN
+    102 "WPS Recorder"
+END

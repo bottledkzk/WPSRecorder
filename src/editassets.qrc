@@ -1,0 +1,5 @@
+<RCC><qresource prefix="/edit">
+  <file alias="intermission.png">assets/intermission.png</file>
+  <file alias="alpine-lake.png">assets/alpine-lake.png</file>
+  <file alias="study-at-dusk.png">assets/study-at-dusk.png</file>
+</qresource></RCC>

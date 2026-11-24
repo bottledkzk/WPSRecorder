@@ -1,0 +1,116 @@
+{
+  "version": "2.2.8",
+  "toolbar": {
+    "passed": true,
+    "rounded_popup_corners": true,
+    "tool_group_right_margin_px": 0,
+    "verified": [
+      "initial_disabled",
+      "right_aligned_tools",
+      "collapse",
+      "valid_source",
+      "unified_speech",
+      "recording_disabled",
+      "stop_restored",
+      "trial_excluded"
+    ]
+  },
+  "dubbing_columns": {
+    "passed": true,
+    "empty": {
+      "dubbing_width": 162,
+      "fits": true,
+      "time_width": 261
+    },
+    "populated": {
+      "dubbing_width": 162,
+      "fits": true,
+      "time_width": 261
+    }
+  },
+  "camera_main": {
+    "passed": true,
+    "preview_updates": true,
+    "frame_sequence_delta": 12,
+    "released_for_trial": true
+  },
+  "camera_pip": {
+    "passed": true,
+    "preview_updates": true,
+    "frame_sequence_delta": 12,
+    "released_for_trial": true
+  },
+  "camera_separate_track": {
+    "passed": true,
+    "preview_updates": true,
+    "frame_sequence_delta": 11,
+    "released_for_trial": true
+  },
+  "mv_preview": {
+    "ready": true,
+    "wall_ms": 6499.4754,
+    "media_ms": 6499,
+    "received_frames": 195,
+    "painted_frames": 195,
+    "painted_fps": 30.00242142619695,
+    "frame_gap_p95_ms": 36.1364,
+    "frame_gap_p99_ms": 37.4095,
+    "recoveries": 0
+  },
+  "gameplay_preview": {
+    "ready": true,
+    "wall_ms": 6500.7965,
+    "media_ms": 6501,
+    "received_frames": 390,
+    "painted_frames": 390,
+    "painted_fps": 59.99264859313777,
+    "frame_gap_p95_ms": 19.2999,
+    "frame_gap_p99_ms": 20.6091,
+    "recoveries": 0
+  },
+  "preview_stability": {
+    "passed": true,
+    "monitor_count": 2
+  },
+  "original_dubbing": {
+    "passed": true,
+    "generated_without_translation": true,
+    "edit_applied": true
+  },
+  "translated_dubbing": {
+    "passed": true,
+    "saved_take": true,
+    "fitted_ms": 1066,
+    "track_ms": 247933
+  },
+  "narration": {
+    "passed": true,
+    "cancel_and_restart": true,
+    "track_cut_restored": true,
+    "export_audio_tracks": 2
+  },
+  "mock_tts": {
+    "passed": true,
+    "narration_custom_voice": true,
+    "requests": 3
+  },
+  "chapter_narration": {
+    "passed": true,
+    "disabled_original_tracks_stayed_muted": true
+  },
+  "still_export": {
+    "passed": true,
+    "frames": 225,
+    "duration": 7.5,
+    "default_still_rgb_error": 3.1830327321309286,
+    "green_caption_pixels": 2396,
+    "external_track_rms": [
+      0.0,
+      0.0618392676115036,
+      0.0,
+      0.0,
+      0.06183721125125885
+    ],
+    "sources_unchanged": true
+  }
+}

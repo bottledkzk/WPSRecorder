@@ -1,0 +1,82 @@
+{
+    "cases": [
+        {
+            "cancel": "取消",
+            "color_fields": [
+                "基本颜色(B)",
+                "\n",
+                "自定义颜色(C)",
+                "色相(E)：",
+                "饱和度(S)：",
+                "明度(V)：",
+                "红(R)：",
+                "绿(G)：",
+                "蓝(U)：",
+                "透明度通道(A)：",
+                "HTML(H)："
+            ],
+            "color_title": "选择颜色",
+            "file_name_label": "文件名称(N)：",
+            "language": "zh-CN",
+            "main": "WPS Recorder 2 · 录制工作台",
+            "no": "否(N)",
+            "requested_switch": "en",
+            "subtitle_style": "字幕样式",
+            "voice_preview": "生成试听",
+            "yes": "是(Y)"
+        },
+        {
+            "cancel": "Cancel",
+            "color_fields": [
+                "Basic colors",
+                "\n",
+                "Custom colors",
+                "Hue:",
+                "Sat:",
+                "Val:",
+                "Red:",
+                "Green:",
+                "Blue:",
+                "Alpha channel:",
+                "HTML:"
+            ],
+            "color_title": "Select Color",
+            "file_name_label": "File name:",
+            "language": "en",
+            "main": "WPS Recorder 2 · Recording studio",
+            "no": "No",
+            "requested_switch": "zh-CN",
+            "subtitle_style": "Subtitle style",
+            "voice_preview": "Generate preview",
+            "yes": "Yes"
+        },
+        {
+            "cancel": "取消",
+            "color_fields": [
+                "基本颜色(B)",
+                "\n",
+                "自定义颜色(C)",
+                "色相(E)：",
+                "饱和度(S)：",
+                "明度(V)：",
+                "红(R)：",
+                "绿(G)：",
+                "蓝(U)：",
+                "透明度通道(A)：",
+                "HTML(H)："
+            ],
+            "color_title": "选择颜色",
+            "file_name_label": "文件名称(N)：",
+            "language": "zh-CN",
+            "main": "WPS Recorder 2 · 录制工作台",
+            "no": "否(N)",
+            "requested_switch": "en",
+            "subtitle_style": "字幕样式",
+            "voice_preview": "生成试听",
+            "yes": "是(Y)"
+        }
+    ],
+    "error": "",
+    "passed": true,
+    "production_reload": true
+}

@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-02",
+  "probe_sha256": "6fa74ad79e7d3786dea58d879b84f22e32287584753b9198c9e8ec3f044d2be8",
+  "workspace_probe": {
+    "app_container": 0,
+    "token_restricted": 0,
+    "integrity_rid": 4096,
+    "mf_activate_hresult": "0x80070005"
+  },
+  "desktop_probe": {
+    "winrt_reader_hresult": "0x8001010e",
+    "token_restricted": 0,
+    "mf_mta_rgb32_bytes": 3686400,
+    "winrt_access_status": 1,
+    "winrt_reader_passed": false,
+    "integrity_rid": 8192,
+    "app_container": 0,
+    "mf_sta_rgb32_bytes": 3686400,
+    "winrt_initialize_succeeded": true
+  },
+  "normal_recorder": {
+    "gui_camera_preview": "passed",
+    "camera_recording": "not_tested",
+    "preview_closed_after_test": true,
+    "independent_camera_track": "not_tested",
+    "camera_media_saved": false,
+    "picture_in_picture": "not_tested",
+    "exe_sha256": "0a4f111f2d7b3f004e04b4def24a97f2524fa6224ebcfaaf1376d61172c9b2b7",
+    "low_file_label_present": false
+  },
+  "diagnostic_cli": {
+    "release_build": "passed",
+    "process_integrity_rid": 4096,
+    "process_app_container": true,
+    "included_in_existing_preview_zip": false
+  },
+  "settings_changed": [],
+  "evidence": [
+    "camera-low-result.txt",
+    "camera-medium-result.txt"
+  ]
+}

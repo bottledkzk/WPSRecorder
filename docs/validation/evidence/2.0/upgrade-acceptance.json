@@ -1,0 +1,142 @@
+[
+  {
+    "case": "device_enumeration",
+    "cameras": [
+      {
+        "index": 0,
+        "name": "USB2.0 HD UVC WebCam"
+      }
+    ],
+    "monitors": [
+      {
+        "height": 1600,
+        "name": "\\\\.\\DISPLAY1",
+        "primary": true,
+        "width": 2560,
+        "x": 0,
+        "y": 0
+      },
+      {
+        "height": 1728,
+        "name": "\\\\.\\DISPLAY2",
+        "primary": false,
+        "width": 3072,
+        "x": 3072,
+        "y": -108
+      }
+    ],
+    "process_app_container": false
+  },
+  {
+    "case": "monitor_nvenc_120fps",
+    "status": {
+      "avg_fps": 120.00000000000001,
+      "cpu_pct": 0,
+      "duplicate_frames": 220,
+      "duration_sec": 3.058333333333333,
+      "encoder": "h264_nvenc",
+      "error": "",
+      "frames_written": 367,
+      "mem_mb": 40.875,
+      "ok": true,
+      "output": "D:/Study/Work/WPSwork/recorder-qa/v2-upgrade-2/screen-120.mp4",
+      "paused": false,
+      "phase": "idle",
+      "pid": 39852,
+      "source": "screen",
+      "state": "idle"
+    },
+    "frames": "367",
+    "duration": "3.058000"
+  },
+  {
+    "case": "independent_audio_tracks",
+    "track_titles": [
+      "mic",
+      "system"
+    ],
+    "streams": 3
+  },
+  {
+    "case": "mask_before_encoding",
+    "mask_pixel_std": 0.10782531046955708
+  },
+  {
+    "case": "live_scene_and_whiteboard",
+    "whiteboard_mean": 251.33333333333334,
+    "invalid_mask_rejected": true
+  },
+  {
+    "case": "scheduled_start_stop_cancel",
+    "duration": "2.000000",
+    "overlap_rejected": true,
+    "past_time_rejected": true
+  },
+  {
+    "case": "seven_export_formats_and_audio_cleanup",
+    "formats": {
+      "mp4": {
+        "duration": "2.000000",
+        "codecs": [
+          "h264",
+          "aac"
+        ]
+      },
+      "mov": {
+        "duration": "2.000000",
+        "codecs": [
+          "h264",
+          "aac"
+        ]
+      },
+      "mkv": {
+        "duration": "2.011000",
+        "codecs": [
+          "h264",
+          "aac"
+        ]
+      },
+      "webm": {
+        "duration": "2.008000",
+        "codecs": [
+          "vp9",
+          "opus"
+        ]
+      },
+      "gif": {
+        "duration": "2.000000",
+        "codecs": [
+          "gif"
+        ]
+      },
+      "m4a": {
+        "duration": "2.000000",
+        "codecs": [
+          "aac"
+        ]
+      },
+      "mp3": {
+        "duration": "2.040000",
+        "codecs": [
+          "mp3"
+        ]
+      }
+    },
+    "overwrite_rejected": true
+  },
+  {
+    "case": "offline_subtitles_and_embedding",
+    "srt_bytes": 145,
+    "expected_word_found": true,
+    "embedded": true
+  },
+  {
+    "case": "camera_acceptance_pending",
+    "reason": "Explicit --skip-camera; hardware access is not accepted"
+  },
+  {
+    "case": "upgrade_checks_complete",
+    "count": 9,
+    "camera_accepted": false
+  }
+]

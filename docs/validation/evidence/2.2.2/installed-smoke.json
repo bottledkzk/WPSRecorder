@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "system_path_only": true,
+  "version": "wpsrecorder 2.2.2",
+  "frames": 62,
+  "size": [
+    640,
+    360
+  ],
+  "color_space": "bt709",
+  "color_transfer": "iec61966-2-1",
+  "encoder": "Lavc61.19.101 h264_nvenc",
+  "complete_decode": true,
+  "automatic_hdr_device_readback": true
+}

@@ -1,0 +1,99 @@
+{
+  "version": "2.3.10",
+  "courseArchive": {
+    "name": "gongweichao.zip",
+    "bytes": 924929870,
+    "sha256": "b1c33d9b7427e34db22d907f6e91461c7dabaf2dd77ed65f4e4f8af1b2abb801",
+    "verifiedFiles": 3594,
+    "roots": [
+      "exe_cli",
+      "sample"
+    ]
+  },
+  "friendArchive": {
+    "name": "WPSRecorder-2.3.10-Windows-x64.zip",
+    "bytes": 867594735,
+    "sha256": "323558a1d45d930e09a0bb861d175277131cf36228a009e1f7913f358eff8c2a",
+    "verifiedFiles": 3594,
+    "runtimeMatchesCourseArchive": true
+  },
+  "approvedThemeStylesMatch": true,
+  "localRuntimeMatchesCourseArchive": true,
+  "programSha256": {
+    "wpsrecorder.exe": "ffe7b3943294c7e14362b9d66ef6a10c06095c53b3acb62fbbc18233063b82fa",
+    "wpsrecorder_cli.exe": "386c6afcf6757fc6983fe6974d66b74bbf1f679f30fd585209f2a5a1cbc18b10"
+  },
+  "sampleSha256": "984e6695b9dd24f509356653b4baebebaff80891f842666ab95d11a399ec1455",
+  "localValidationDate": "2026-11-23",
+  "studio": {
+    "version": "2.3.10",
+    "review": {
+      "normalBoundsRestored": true,
+      "maximizedRestoredByEscape": true,
+      "rapidExitRestoresMaximized": true,
+      "videoContinued": true,
+      "hiddenAtBottom": true,
+      "revealedByMovement": true
+    },
+    "composer": {
+      "mainWidth": 559.3646240234375,
+      "sidebarWidth": 296.66668701171875,
+      "aligned": true
+    },
+    "toolbar": {
+      "nativeFloatingWindow": true,
+      "nativeAnnotationWindow": true,
+      "nativePaletteCount": 13
+    },
+    "javascriptErrors": 0
+  },
+  "qtUI": {
+    "passed": true,
+    "toolbars": {
+      "button_px": [
+        44,
+        32
+      ],
+      "dark_palette_restored": true,
+      "emblem_px": [
+        51,
+        48,
+        44
+      ],
+      "light_palette_rendered": true,
+      "passed": true,
+      "shadow_vertical_margin_px": 23,
+      "sizes": true,
+      "startup_palette_rendered": true
+    },
+    "toolbarComparisonAt150PercentDpi": {
+      "oldExpandedWindow": [
+        627,
+        63
+      ],
+      "newExpandedWindow": [
+        748,
+        71
+      ],
+      "oldVisibleStripHeight": 40,
+      "newVisibleStripHeight": 48
+    },
+    "playerCasesPassed": [
+      "inline_click_seeks",
+      "inline_drag_seeks",
+      "workarea_controls_inside_taskbar_boundary",
+      "expanded_click_seeks",
+      "true_fullscreen_covers_monitor",
+      "top_right_close_preserves_playhead",
+      "escape_returns_preview"
+    ]
+  },
+  "cli": {
+    "version": "wpsrecorder 2.3.10",
+    "frames": 90,
+    "width": 1280,
+    "height": 720,
+    "seconds": 3.0,
+    "systemOnlyPath": true
+  }
+}

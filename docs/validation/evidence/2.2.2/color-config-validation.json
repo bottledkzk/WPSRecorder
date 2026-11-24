@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "option": "screen-color",
+      "value": "invalid",
+      "rejected": true
+    },
+    {
+      "option": "screen-exposure",
+      "value": "3",
+      "rejected": true
+    },
+    {
+      "option": "screen-white",
+      "value": "1001",
+      "rejected": true
+    },
+    {
+      "option": "screen-white",
+      "value": "NaN",
+      "rejected": true
+    },
+    {
+      "option": "screen-exposure",
+      "value": "abc",
+      "rejected": true
+    }
+  ]
+}

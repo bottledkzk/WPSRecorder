@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "main_frames": 183,
+  "camera_frames": 183,
+  "audio_tracks": 2,
+  "placements": [
+    {
+      "frame": 2,
+      "rectangle": [
+        448,
+        216,
+        160,
+        126
+      ],
+      "interior_mae": 2.5736176317162234
+    },
+    {
+      "frame": 50,
+      "rectangle": [
+        224,
+        126,
+        160,
+        126
+      ],
+      "interior_mae": 2.6040905929403584
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+适用于 .NET Framework MSBuild 版本 17.14.40+3e7442088
+
+  1>Checking Build System
+  Automatic MOC for target recorder_core
+  Automatic MOC for target recorder_qa_surface
+  Building Custom Rule D:/Study/Work/WPSwork/gongweichao/ClassExamProject/wpsrecorder/CMakeLists.txt
+  Building Custom Rule D:/Study/Work/WPSwork/gongweichao/ClassExamProject/wpsrecorder/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  testfixture.cpp
+  mocs_compilation_Debug.cpp
+  正在生成代码...
+  recordingconfig.cpp
+  recorder_qa_surface.vcxproj -> D:\Study\Work\WPSwork\build-recorder-v2\bin\Debug\recorder_qa_surface.exe
+  recordingclock.cpp
+  framecapture.cpp
+  desktopcapture.cpp
+  audiocapture.cpp
+  cameracapture.cpp
+  compositor.cpp
+  recordingengine.cpp
+  controlserver.cpp
+  mediaeditor.cpp
+  正在生成代码...
+  recorder_core.vcxproj -> D:\Study\Work\WPSwork\build-recorder-v2\Debug\recorder_core.lib
+  Automatic MOC for target wpsrecorder
+  Automatic MOC for target wpsrecorder_cli
+  Building Custom Rule D:/Study/Work/WPSwork/gongweichao/ClassExamProject/wpsrecorder/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  Building Custom Rule D:/Study/Work/WPSwork/gongweichao/ClassExamProject/wpsrecorder/CMakeLists.txt
+  climain.cpp
+  mocs_compilation_Debug.cpp
+  main.cpp
+  正在生成代码...
+  wpsrecorder_cli.vcxproj -> D:\Study\Work\WPSwork\build-recorder-v2\bin\Debug\wpsrecorder_cli.exe
+  mainwindow.cpp
+  regionselector.cpp
+  annotationoverlay.cpp
+  正在生成代码...
+  wpsrecorder.vcxproj -> D:\Study\Work\WPSwork\build-recorder-v2\bin\Debug\wpsrecorder.exe
+  Building Custom Rule D:/Study/Work/WPSwork/gongweichao/ClassExamProject/wpsrecorder/CMakeLists.txt

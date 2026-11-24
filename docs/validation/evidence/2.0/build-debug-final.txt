@@ -1,0 +1,19 @@
+适用于 .NET Framework MSBuild 版本 17.14.40+3e7442088
+
+  Automatic MOC for target recorder_core
+  Automatic MOC for target recorder_qa_surface
+  mocs_compilation_Debug.cpp
+  recorder_qa_surface.vcxproj -> D:\Study\Work\WPSwork\build-recorder-v2\bin\Debug\recorder_qa_surface.exe
+  mediaeditor.cpp
+  正在生成代码...
+  recorder_core.vcxproj -> D:\Study\Work\WPSwork\build-recorder-v2\Debug\recorder_core.lib
+  Automatic MOC for target wpsrecorder_cli
+  Automatic MOC for target wpsrecorder
+  climain.cpp
+  mocs_compilation_Debug.cpp
+  annotationoverlay.cpp
+  wpsrecorder_cli.vcxproj -> D:\Study\Work\WPSwork\build-recorder-v2\bin\Debug\wpsrecorder_cli.exe
+  main.cpp
+  mainwindow.cpp
+  正在生成代码...
+  wpsrecorder.vcxproj -> D:\Study\Work\WPSwork\build-recorder-v2\bin\Debug\wpsrecorder.exe

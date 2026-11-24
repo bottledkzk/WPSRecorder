@@ -1,0 +1,189 @@
+{
+  "version": "2.3.11",
+  "courseArchive": {
+    "name": "gongweichao.zip",
+    "bytes": 924929955,
+    "sha256": "318d122a54b69f3027fbcbf901f1a5167037f7409b3cf2a37ded216c0307459c",
+    "verifiedFiles": 3594,
+    "roots": [
+      "exe_cli",
+      "sample"
+    ]
+  },
+  "friendArchive": {
+    "name": "WPSRecorder-2.3.11-Windows-x64.zip",
+    "bytes": 867594764,
+    "sha256": "a4529b7dbbe16e0482e54058944d311408ccb397cb86c691b15d4882fc9dc637",
+    "verifiedFiles": 3594,
+    "runtimeMatchesCourseArchive": true
+  },
+  "approvedThemeStylesMatch": true,
+  "localRuntimeMatchesCourseArchive": true,
+  "programSha256": {
+    "wpsrecorder.exe": "33e5446ae8582624b0f83d8c53560eeec4684230341105f3594bed6667d7b5ae",
+    "wpsrecorder_cli.exe": "ecdc7de1155d8d69f3663db99131cde90db9dae76f463136fb69b44ffa00cc80"
+  },
+  "sampleSha256": "984e6695b9dd24f509356653b4baebebaff80891f842666ab95d11a399ec1455",
+  "courseSampleFullyDecoded": true,
+  "courseSampleDurationSeconds": 126.767,
+  "testedEnvironment": {
+    "monitorBoundsPhysicalPx": [
+      0,
+      0,
+      2560,
+      1600
+    ],
+    "devicePixelRatio": 1.5
+  },
+  "goldenWheatRegression": {
+    "before": {
+      "viewport": [
+        0,
+        0,
+        1707,
+        1067
+      ],
+      "panel": [
+        260,
+        68,
+        1185.3333740234375,
+        967.3333740234375
+      ],
+      "frame": [
+        260.66668701171875,
+        218.6666717529297,
+        1184,
+        666
+      ],
+      "position": "relative",
+      "chromeHidden": false,
+      "cornerCoverage": false
+    },
+    "after": {
+      "viewport": [
+        0,
+        0,
+        1707,
+        1067
+      ],
+      "panel": [
+        0,
+        0,
+        1707.3333740234375,
+        1067.3333740234375
+      ],
+      "frame": [
+        0,
+        53.47916793823242,
+        1707.322998046875,
+        960.3646240234375
+      ],
+      "position": "fixed",
+      "chromeHidden": true,
+      "cornerCoverage": true
+    },
+    "boxUnits": "CSS pixels"
+  },
+  "studioFullscreen": {
+    "reviewThemes": [
+      "golden-wheat",
+      "default",
+      "default-light",
+      "botanical-sage",
+      "wisteria-ribbon",
+      "spring-creek",
+      "riverside-sakura",
+      "snow-sakura",
+      "sakura-hillside",
+      "dusk-park",
+      "azure-sky",
+      "autumn-ginkgo",
+      "cobalt-seaside"
+    ],
+    "editorThemes": [
+      "default",
+      "golden-wheat"
+    ],
+    "recordThemes": [
+      "default",
+      "golden-wheat"
+    ],
+    "allSurfacesCoverViewport": true,
+    "allScreenCornersCovered": true,
+    "windowChromeHidden": true,
+    "normalWindowRestored": true,
+    "maximizedWindowRestored": true,
+    "controlsAndPlayback": {
+      "hideWhilePointerIsOverControls": true,
+      "revealOnMovement": true,
+      "before": 2.367779,
+      "after": 6.429241
+    },
+    "javascriptErrors": []
+  },
+  "nativeFloatingAndAnnotation": {
+    "button_px": [
+      44,
+      32
+    ],
+    "dark_palette_restored": true,
+    "emblem_px": [
+      51,
+      48,
+      44
+    ],
+    "light_palette_rendered": true,
+    "passed": true,
+    "rounded_dark": true,
+    "rounded_light": true,
+    "shadow_vertical_margin_px": 23,
+    "sizes": true,
+    "startup_palette_rendered": true,
+    "strip_height_px": 48
+  },
+  "nativeFloatingControls": {
+    "camera_signal": true,
+    "capture_excluded": true,
+    "collapsed": true,
+    "compact_draggable": true,
+    "error": "",
+    "expanded": true,
+    "mic_signal": true,
+    "passed": true,
+    "pause_signal": 1,
+    "paused_tooltip": true,
+    "saving_disabled": true,
+    "screenshot_signal": 1,
+    "start_signal": 1,
+    "stop_signal": 1
+  },
+  "nativePlayerTestsPassed": 7,
+  "mock": {
+    "expanded": {
+      "radius": "26px 20px",
+      "startButtonRadius": "12px"
+    },
+    "collapsed": {
+      "button": [
+        34,
+        34
+      ],
+      "icon": 29,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "fullscreen": {
+      "width": 800,
+      "height": 600,
+      "radius": "0px"
+    },
+    "passed": true
+  },
+  "cliCapture": {
+    "version": "wpsrecorder 2.3.11",
+    "frames": 90,
+    "width": 1280,
+    "height": 720,
+    "seconds": 3.0,
+    "systemOnlyPath": true
+  }
+}

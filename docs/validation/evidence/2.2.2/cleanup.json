@@ -1,0 +1,74 @@
+{
+  "applied": true,
+  "delivery_commit_verified_before_cleanup": "5e7cfcc2997c8f523e27d6c35fadb1641e4c067a",
+  "targets": [
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\recorder-qa-v222",
+      "files": 99,
+      "bytes": 22672729,
+      "already_absent": false
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\Programs\\WPSRecorder2-Preview222",
+      "files": 475,
+      "bytes": 787203776,
+      "already_absent": false
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder-editor-qa",
+      "files": 0,
+      "bytes": 0,
+      "already_absent": false
+    },
+    {
+      "path": "C:\\Users\\bottl\\AppData\\Local\\WPSCourse\\wpsrecorder-color-qa",
+      "files": 0,
+      "bytes": 0,
+      "already_absent": true
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_cleanup_qa.exe",
+      "files": 1,
+      "bytes": 23040,
+      "already_absent": false
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_color_qa.exe",
+      "files": 1,
+      "bytes": 199168,
+      "already_absent": false
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_display_probe.exe",
+      "files": 1,
+      "bytes": 28672,
+      "already_absent": false
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_editor_qa.exe",
+      "files": 1,
+      "bytes": 425472,
+      "already_absent": false
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_player_qa.exe",
+      "files": 1,
+      "bytes": 91136,
+      "already_absent": false
+    },
+    {
+      "path": "D:\\Study\\Work\\WPSwork\\build-recorder-v2\\bin\\Release\\recorder_qa_surface.exe",
+      "files": 1,
+      "bytes": 31744,
+      "already_absent": false
+    }
+  ],
+  "removed_files": 580.0,
+  "removed_bytes": 810675737.0,
+  "original_directory_preserved": true,
+  "original_video_hash_unchanged_since_diagnosis": true,
+  "all_existing_user_files_hashes_unchanged": true,
+  "user_files_checked": 11,
+  "formal_packages_installations_source_models_and_dependencies_kept": true,
+  "settings_backup_kept_locally": true
+}

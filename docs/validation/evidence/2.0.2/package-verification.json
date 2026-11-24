@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "zip_crc": true,
+  "manifest_files": 98,
+  "installed_runtime_files": 79,
+  "version": "wpsrecorder 2.0.2",
+  "system_path_only": true,
+  "archive_bytes": 215602004,
+  "archive_sha256": "d61d98295fd75d927b7cd9f8a3ad705cabf0c6401135170f7c7093e66ac1ddb8",
+  "sample_sha256": "2e4615a2852899e72aabcbbf3021a808cbe0277535c4d9b73cc1ae9e4a1c7ad4",
+  "media_files": [
+    "sample/screen-recording.mp4"
+  ],
+  "qa_programs_in_package": false,
+  "personal_settings_in_package": false
+}

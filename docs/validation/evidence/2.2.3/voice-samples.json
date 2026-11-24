@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "samples": {
+    "en-11": {
+      "duration_sec": 1.011,
+      "peak": 20852
+    },
+    "en-12": {
+      "duration_sec": 1.304,
+      "peak": 16439
+    },
+    "en-16": {
+      "duration_sec": 1.095,
+      "peak": 8016
+    },
+    "en-17": {
+      "duration_sec": 1.08,
+      "peak": 13833
+    },
+    "en-18": {
+      "duration_sec": 0.951,
+      "peak": 17585
+    },
+    "en-2": {
+      "duration_sec": 0.996,
+      "peak": 11554
+    },
+    "en-3": {
+      "duration_sec": 1.009,
+      "peak": 9649
+    },
+    "en-4": {
+      "duration_sec": 0.98,
+      "peak": 13697
+    },
+    "en-7": {
+      "duration_sec": 1.263,
+      "peak": 7021
+    },
+    "en-9": {
+      "duration_sec": 1.028,
+      "peak": 12906
+    },
+    "zh-14": {
+      "duration_sec": 1.164,
+      "peak": 12446
+    },
+    "zh-23": {
+      "duration_sec": 1.527,
+      "peak": 7666
+    },
+    "zh-3": {
+      "duration_sec": 1.2,
+      "peak": 12801
+    },
+    "zh-33": {
+      "duration_sec": 1.496,
+      "peak": 10521
+    },
+    "zh-58": {
+      "duration_sec": 1.216,
+      "peak": 12065
+    },
+    "zh-63": {
+      "duration_sec": 1.269,
+      "peak": 10763
+    },
+    "zh-69": {
+      "duration_sec": 1.399,
+      "peak": 9463
+    },
+    "zh-77": {
+      "duration_sec": 1.19,
+      "peak": 12760
+    },
+    "zh-8": {
+      "duration_sec": 1.379,
+      "peak": 11684
+    },
+    "zh-88": {
+      "duration_sec": 1.656,
+      "peak": 14794
+    }
+  }
+}

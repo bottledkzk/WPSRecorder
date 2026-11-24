@@ -1,0 +1,52 @@
+{
+    "cases": [
+        {
+            "audio_tracks": 2,
+            "case": "source_analysis",
+            "duration_ms": 6000,
+            "passed": true,
+            "thumbnails": 12,
+            "waveforms": 2
+        },
+        {
+            "case": "ruler_seek_and_picture",
+            "first_frame_sha256": "3585771f7264f801c2affcca03a750afaaf462e8e20cca323fc762fe3df9c8c6",
+            "passed": true,
+            "second_frame_sha256": "9c29b46f50ed354358a949b0903dd62fa98164cbd452de60f511181df09c0b8d",
+            "source_times_ms": [
+                500,
+                4500
+            ]
+        },
+        {
+            "case": "canvas_crop",
+            "crop": [
+                94,
+                36,
+                448,
+                288
+            ],
+            "passed": true
+        },
+        {
+            "after_delete_ms": 4500,
+            "after_undo_ms": 6000,
+            "case": "retain_delete_undo",
+            "passed": true,
+            "retained_ms": 1500
+        },
+        {
+            "caption_count": 1,
+            "case": "audio_and_manual_caption",
+            "mic_ranges": 2,
+            "passed": true,
+            "system_ranges": 1
+        }
+    ],
+    "complete": true,
+    "error": "Native playback frames=2 state=2 position=5966 error=",
+    "last_ui_status": "字幕已加入预览与时间轴；可修改文字和开始/结束时间。",
+    "passed": false,
+    "stage": 3,
+    "wall_ms": 8312
+}

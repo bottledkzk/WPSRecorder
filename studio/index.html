@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>WPS Recorder Studio</title>
+  <link rel="icon" href="assets/app.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="studio.css">
+  <link rel="stylesheet" href="editor-workbench.css">
+  <link rel="stylesheet" href="mixer-control.css">
+  <link rel="stylesheet" href="annotation.css">
+  <link rel="stylesheet" href="ai-workbench.css">
+  <link rel="stylesheet" href="ai-workspace-pages.css">
+  <link rel="stylesheet" href="themes.css">
+  <link rel="stylesheet" href="theme-artwork.css">
+  <script defer src="native-transport.js"></script>
+  <script defer src="studio-en.js"></script>
+  <script defer src="ui.js"></script>
+  <script defer src="themes.js"></script>
+  <script defer src="timeline.js"></script>
+  <script defer src="editor-projects.js"></script>
+  <script defer src="settings-editor.js"></script>
+  <script defer src="conversation-compact.js"></script>
+  <script defer src="ai-workspace-pages.js"></script>
+  <script defer src="ai-workbench.js"></script>
+  <script defer src="views.js"></script>
+  <script defer src="studio.js"></script>
+  <script defer src="native-studio.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header id="titlebar" class="titlebar"></header>
+    <div id="app-main">
+      <main id="workspace" tabindex="-1"></main>
+      <div id="assistant-divider" class="splitter" data-divider="assistant" role="separator" tabindex="0"
+        aria-orientation="vertical" aria-label="调整侧栏助手宽度" hidden></div>
+      <aside id="assistant" class="panel" aria-label="侧栏助手" hidden></aside>
+    </div>
+    <footer id="statusbar" class="statusbar"></footer>
+  </div>
+  <div id="floating"></div>
+  <dialog id="dialog"></dialog>
+  <div id="toast" role="status"></div>
+  <input id="local-video" type="file" accept="video/*,.mp4,.webm,.mov,.mkv" hidden>
+</body>
+</html>

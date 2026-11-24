@@ -1,0 +1,29 @@
+{
+  "passed": false,
+  "cases": [
+    {
+      "case": "timeline_concat_crop",
+      "frames": 90,
+      "duration": 3,
+      "crop": [
+        80,
+        40,
+        480,
+        240
+      ],
+      "source_unchanged": true
+    },
+    {
+      "case": "source_frame_mapping",
+      "source_times": [
+        1.2,
+        4.7
+      ],
+      "output_times": [
+        0.2,
+        2.2
+      ],
+      "crop_mae_below": 10
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": "2.0.1",
+  "release_build": "passed",
+  "debug_build": "passed",
+  "binaries": [
+    {
+      "name": "wpsrecorder.exe",
+      "sha256": "39c03c0e3aca4f76507931545bddef3457b6e3e1642c9c6be370ac244a228198",
+      "configuration": "Release"
+    },
+    {
+      "name": "wpsrecorder_cli.exe",
+      "sha256": "eb1633d58e6df928d39a8b394d9387189faffe84c11dc435293090bf186e8488",
+      "configuration": "Release"
+    },
+    {
+      "name": "recorder_camera_qa.exe",
+      "sha256": "d0c62825db2aea6e6bc219d7bec2d591a3d784be292f3f097bdb4c9c245411ce",
+      "configuration": "Release"
+    },
+    {
+      "name": "wpsrecorder.exe",
+      "sha256": "fbbc250dfa63be3f60681792dbc1ac2134f5c6d92ebad835e2593474bd6340e3",
+      "configuration": "Debug"
+    },
+    {
+      "name": "wpsrecorder_cli.exe",
+      "sha256": "79a94d8ded20fcebd315e1f4dbd4be34596d4c5495bc72e88d44ecb04a8798c5",
+      "configuration": "Debug"
+    },
+    {
+      "name": "recorder_camera_qa.exe",
+      "sha256": "f6f868fa884d6ef0f2f5bd504178361541787af8cf4784e3ae2f10226ad45f51",
+      "configuration": "Debug"
+    }
+  ]
+}

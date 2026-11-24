@@ -1,0 +1,5 @@
+适用于 .NET Framework MSBuild 版本 17.14.40+3e7442088
+
+  Automatic MOC for target recorder_qa_surface
+  testfixture.cpp
+  recorder_qa_surface.vcxproj -> D:\Study\Work\WPSwork\build-recorder\bin\Release\recorder_qa_surface.exe

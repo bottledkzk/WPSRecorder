@@ -1,0 +1,95 @@
+{
+  "version": "2.3.9",
+  "localValidationDate": "2026-11-23",
+  "courseDebug": {
+    "cmakeEntry": "docs/CMakeLists.txt",
+    "cliVersion": "wpsrecorder 2.3.9",
+    "studioWorkspacesLoaded": 4
+  },
+  "cliContract": {
+    "idleStatusSingleJsonLine": true,
+    "idleStatusRequiredFields": ["state", "duration_sec", "frames_written", "avg_fps", "mem_mb", "cpu_pct"],
+    "invalidDurationExitCode": 1,
+    "invalidDurationErrorReported": true
+  },
+  "continuousRecording": {
+    "source": "physical secondary display with changing test surface",
+    "encoder": "h264_nvenc",
+    "width": 1920,
+    "height": 1080,
+    "targetFps": 60,
+    "targetKbps": 6000,
+    "colorOutput": "SDR",
+    "audio": "none",
+    "activeSeconds": 602.2,
+    "fileSeconds": 602.2,
+    "decodedFrames": 36130,
+    "statusSamples": 117,
+    "serviceCpuMedianPercent": 2.03,
+    "serviceCpuPeakPercent": 6.15,
+    "serviceMemoryPeakMb": 309.46,
+    "duplicateFrames": 1,
+    "missedFrameSlots": 2,
+    "idleBeforeAndAfter": true,
+    "sampleSha256": "3e28eb616e654bf7ffe377fa20f446a6a25343fd3b05e497bf3d34cc1d1418e6"
+  },
+  "shortRecording": [
+    { "source": "window", "width": 1920, "height": 1080, "fps": 60, "seconds": 12, "decodedFrames": 720, "serviceCpuPeakPercent": 3.67 },
+    { "source": "uvc-camera", "width": 1280, "height": 720, "fps": 30, "seconds": 6, "decodedFrames": 180, "serviceCpuPeakPercent": 2.04 },
+    { "source": "hdr-display-with-uvc-pip-to-sdr", "width": 1920, "height": 1080, "fps": 30, "seconds": 9, "decodedFrames": 270, "serviceCpuPeakPercent": 4.76 },
+    { "source": "physical-secondary-display", "width": 2560, "height": 1440, "fps": 30, "seconds": 16, "decodedFrames": 480 }
+  ],
+  "studioThemeGeometryPassed": 104,
+  "editorRegressionCasesPassed": 7,
+  "courseSample": {
+    "entry": "sample/screen-recording.mp4",
+    "width": 2560,
+    "height": 1440,
+    "fps": 30,
+    "seconds": 126.767,
+    "videoFrames": 3803,
+    "chapters": 8,
+    "nativeRecordedSegments": 14,
+    "bilingualCaptionPairs": 17,
+    "selectableSubtitleStreams": 0,
+    "localAudio8NarrationSegments": 14,
+    "onlineMiniMaxNarrationSegments": 3,
+    "staticRegionWidth": 610,
+    "staticRegionHeight": 66,
+    "screenshotToNativeRecordingSsim": 0.984835,
+    "nativeRecordingToExportSsim": 0.9995,
+    "sha256": "984e6695b9dd24f509356653b4baebebaff80891f842666ab95d11a399ec1455"
+  },
+  "releaseProgramHashes": {
+    "wpsrecorder.exe": "030d476f4d0800b99dd36b7e9794a6fdbfed1633d4fcc28c3e083887df762b3b",
+    "wpsrecorder_cli.exe": "6a3506aea61ae6180527471719064cfba3a213651a79152f94d825a636d43fd3"
+  },
+  "courseArchive": {
+    "name": "gongweichao.zip",
+    "rootDirectories": ["exe_cli", "sample"],
+    "verifiedFiles": 3594,
+    "bytes": 924927810,
+    "sha256": "7f2a032fb306d80e2db4a963c8b864c380e3ad7e27ea46bced52c780b7f7651b"
+  },
+  "friendArchive": {
+    "name": "WPSRecorder-2.3.9-Windows-x64.zip",
+    "verifiedFiles": 3594,
+    "bytes": 867585273,
+    "sha256": "c64d905d71ce54382bffda3d91d2a09b04f52302116ed2da42b9c51e09632e89",
+    "runtimeMatchesCourseArchive": true,
+    "cleanLocalProfileSmoke": {
+      "cliVersion": "wpsrecorder 2.3.9",
+      "studioWorkspacesLoaded": 4,
+      "audio8MandarinFemaleListed": true,
+      "source": "bundled image",
+      "seconds": 3,
+      "decodedFrames": 90
+    },
+    "classmateDeviceTest": {
+      "result": "passed",
+      "reportedOn": "2026-11-23",
+      "source": "user report of classmate testing on another computer",
+      "issuesReported": false
+    }
+  }
+}
