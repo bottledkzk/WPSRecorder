@@ -54,6 +54,12 @@ std::future<QString> KRRAudioCapture::launch(const QString& path)
 {
 	std::promise<QString> initialized;
 	auto future = initialized.get_future();
+	if (m_thread.joinable())
+	{
+		initialized.set_value("Audio capture is already running");
+		return future;
+	}
+	m_stop.store(false);
 	m_thread = std::thread([this, path, initialized = std::move(initialized)]() mutable
 	{
 		HRESULT result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);

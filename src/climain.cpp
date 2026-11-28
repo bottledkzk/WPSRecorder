@@ -1,6 +1,7 @@
 // climain.cpp | 3226535826@qq.com | 2026-10-31 | Scriptable foreground and background recording.
 #include "controlserver.h"
 #include "compositor.h"
+#include "embeddedcli.h"
 #include "displaygeometry.h"
 #include "mediaeditor.h"
 #include "framecapture.h"
@@ -35,6 +36,7 @@
 #include <string_view>
 
 static std::atomic<bool> gs_interrupted{false};
+static constexpr int StopRequestTimeoutMs = 1920000;
 static BOOL WINAPI ConsoleInterrupt(DWORD type)
 {
 	if (type == CTRL_C_EVENT || type == CTRL_BREAK_EVENT || type == CTRL_CLOSE_EVENT)
@@ -52,6 +54,12 @@ static int Fail(const QString& message)
 static void PrintJson(const QJsonObject& object)
 {
 	std::cout << QJsonDocument(object).toJson(QJsonDocument::Compact).constData() << std::endl;
+}
+static QSize ParseResolution(const QString& value)
+{
+	static const QRegularExpression pattern("^(\\d+)x(\\d+)$");
+	const auto resolution = pattern.match(value);
+	return resolution.hasMatch() ? QSize(resolution.captured(1).toInt(), resolution.captured(2).toInt()) : QSize();
 }
 static QJsonDocument ReadStdinObject()
 {
@@ -136,7 +144,7 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 	QCommandLineParser parser;
-	parser.setApplicationDescription("Windows screen recorder with native GDI/WASAPI capture and FFmpeg encoding");
+	parser.setApplicationDescription("Windows screen, window and camera recording with WASAPI audio and FFmpeg editing");
 	parser.addHelpOption();
 	parser.addVersionOption();
 	const QStringList commands{"record", "start", "stop", "status", "pause", "resume", "serve", "trim", "split", "merge", "export", "edit-project", "transcribe", "devices", "apply-scene", "schedule", "cancel-schedule", "service-exit","synthesize","narrate","voices", "capture-check", "recover", "mark", "markers", "task", "translate-subtitles", "export-bilingual", "dub-track"};
@@ -144,7 +152,7 @@ int main(int argc, char* argv[])
 		parser.addOption({command, command + " operation"});
 	parser.addOption({"create-shortcut", "Create a Windows shortcut to this package's recorder"});
 	parser.addOptions({{{"o", "output"}, "Output video path", "path"}, {"duration", "Active recording seconds", "seconds"},
-		{"res", "Output resolution", "WIDTHxHEIGHT", "1920x1080"}, {"fps", "Frames per second", "number", "30"},
+		{"res", "Output resolution for recording or merge (merge defaults to first input)", "WIDTHxHEIGHT", "1920x1080"}, {"fps", "Frames per second", "number", "30"},
 		{"bitrate", "Video kbps", "number", "6000"}, {"audio", "none/mic/system/mix", "source", "none"},
 		{"source", "screen/region/window/camera/image", "source", "screen"}, {"region", "Physical x,y,width,height", "rectangle"},
 		{"window", "Native HWND as decimal", "handle"}, {"no-cursor", "Hide cursor"}, {"clicks", "Highlight held mouse clicks"},
@@ -156,7 +164,7 @@ int main(int argc, char* argv[])
 		{"camera", "Camera index from --devices", "index", "0"}, {"pip", "Overlay the camera"}, {"image", "Image source path", "path"},
 		{"preset", "Version 1 JSON scene preset", "path"}, {"denoise", "Audio noise reduction"}, {"max-duration", "Auto-stop active seconds", "seconds", "0"},
 		{"start-at", "Scheduled ISO8601 time with timezone", "time"}, {"whisper", "whisper-cli executable", "path"}, {"model", "Offline GGML model", "path"},
-		{"language", "Subtitle language or auto", "code", "auto"}, {"subtitles", "Embed existing SRT in video export", "path"}, {"copy-streams", "Repackage a complete video without re-encoding"}, {"mix-tracks","Mix timeline audio tracks"}, {"soft-captions","Keep timeline captions as an optional subtitle stream"},
+		{"language", "Subtitle language or auto", "code", "auto"}, {"subtitles", "Embed existing SRT in video export", "path"}, {"copy-streams", "Export or merge compatible video streams without re-encoding"}, {"mix-tracks","Mix timeline audio tracks"}, {"soft-captions","Keep timeline captions as an optional subtitle stream"},
 		{"burn-captions", "Burn timeline captions into the picture, including multi-source projects"},
 		{"label", "Optional recording marker label", "text"},
 		{"text-file","UTF-8 narration text file","path"},{"tts-engine","audio8 or a configured speech service","name","audio8"},{"voice","Voice ID for the selected engine","id"},{"speed","Speech speed 0.5 to 2","number","1"},{"voice-volume","Speech volume percent 0 to 150","number","100"},{"original-volume","Original audio volume percent 0 to 100","number","30"},{"speech","Narration WAV input","path"},
@@ -168,6 +176,8 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 	if (!parser.parse(app.arguments())) return Fail(parser.errorText());
+	if (qEnvironmentVariableIsSet(EmbeddedCliEnvironment) && parser.isSet("whisper"))
+		return Fail("The embedded terminal uses the bundled recognition engine");
 	if (parser.isSet("devices")) { PrintJson({{"monitors", KRRFrameCapture::Monitors()}, {"cameras", KRRCameraCapture::Devices()}, {"process_app_container", IsContainerProcess()}, {"process_integrity_rid", ProcessIntegrityRid()}}); return 0; }
 	if (parser.isSet("serve"))
 	{
@@ -378,6 +388,13 @@ int main(int argc, char* argv[])
 		if (inputs.isEmpty() || !parser.isSet("output")) return Fail("Editing requires --input and --output");
 		KRRExportOptions options; options.encoder = parser.value("encoder"); options.denoise = parser.isSet("denoise"); options.subtitles = parser.value("subtitles");
 		options.copyStreams = parser.isSet("copy-streams");
+		if (parser.isSet("bitrate"))
+		{
+			if (command != "merge" && command != "export") return Fail("Use --export or --merge to set the video bitrate");
+			bool valid = false;
+			options.videoKbps = parser.value("bitrate").toInt(&valid);
+			if (!valid || options.videoKbps < 100 || options.videoKbps > 100000) return Fail("Use 100 to 100000 kbps for --bitrate");
+		}
 		if (command == "transcribe")
 		{
 			QString executable = parser.value("whisper"), model = parser.value("model");
@@ -385,18 +402,49 @@ int main(int argc, char* argv[])
 			if (model.isEmpty()) model = app.applicationDirPath() + "/whisper/ggml-base.bin";
 			editor.transcribe(inputs[0], output, executable, model, parser.value("language"));
 		}
-		else if (command == "export") editor.exportMedia(inputs[0], output, parser.value("begin").toDouble(), parser.value("end").toDouble(), options);
-		else if (command == "trim")
-			editor.trim(inputs[0], output, parser.value("begin").toDouble(), parser.value("end").toDouble());
-		else if (command == "merge") editor.merge(inputs, output, options);
+		else if (command == "export" || command == "trim")
+		{
+			bool beginOk = false, endOk = false;
+			const auto begin = parser.value("begin").toDouble(&beginOk);
+			const auto end = parser.value("end").toDouble(&endOk);
+			if (!beginOk || !endOk || !std::isfinite(begin) || !std::isfinite(end) || begin < 0 || (end != -1 && end <= begin))
+				return Fail("Use a non-negative --begin and a later --end in seconds; -1 means end of video");
+			if (command == "trim") editor.trim(inputs[0], output, begin, end);
+			else editor.exportMedia(inputs[0], output, begin, end, options);
+		}
+		else if (command == "merge")
+		{
+			QSize resolution;
+			if (parser.isSet("fps"))
+			{
+				bool valid = false;
+				options.fps = parser.value("fps").toInt(&valid);
+				if (!valid || options.fps < 1 || options.fps > RecordingFrameRates.back()) return Fail("Invalid --fps for merge");
+			}
+			if (parser.isSet("res"))
+			{
+				resolution = ParseResolution(parser.value("res"));
+				if (resolution.isEmpty() || resolution.width() % 2 || resolution.height() % 2)
+					return Fail("Use positive even WIDTHxHEIGHT for --merge --res");
+			}
+			editor.merge(inputs, output, options, resolution);
+		}
 		else
 		{
+			const QFileInfo directory(output);
+			if (!directory.isDir() && QStringList{"mp4", "mov", "mkv", "avi", "flv", "webm", "m4v"}.contains(directory.suffix().toLower()))
+				return Fail("--split --output requires a directory path");
 			QList<QPair<double, double>> intervals;
 			for (const auto& range : parser.value("intervals").split(';', Qt::SkipEmptyParts))
 			{
 				QStringList parts = range.split('-');
 				if (parts.size() != 2) return Fail("Invalid split interval");
-				intervals.append({parts[0].toDouble(), parts[1].toDouble()});
+				bool beginOk = false, endOk = false;
+				const auto begin = parts[0].toDouble(&beginOk);
+				const auto end = parts[1].toDouble(&endOk);
+				if (!beginOk || !endOk || !std::isfinite(begin) || !std::isfinite(end) || begin < 0 || end <= begin)
+					return Fail("Invalid split interval");
+				intervals.append({begin, end});
 			}
 			editor.split(inputs[0], output, intervals);
 		}
@@ -412,27 +460,30 @@ int main(int argc, char* argv[])
 	}
 	if (command == "stop" || command == "pause" || command == "resume" || command == "service-exit" || command == "cancel-schedule")
 	{
-		if (!SendControl({{"command", command}}, response, error, 180000)) return Fail(error);
+		if (!SendControl({{"command", command}}, response, error, command == "stop" ? StopRequestTimeoutMs : 5000)) return Fail(error);
 		PrintJson(response);
 		return 0;
 	}
 	KRRRecordingConfig config;
 	config.output = QFileInfo(parser.value("output")).absoluteFilePath();
 	if (!parser.isSet("output")) return Fail("Recording requires --output");
-	auto resolution = QRegularExpression("^(\\d+)x(\\d+)$").match(parser.value("res"));
-	if (!resolution.hasMatch()) return Fail("Use WIDTHxHEIGHT for --res");
-	config.width = resolution.captured(1).toInt();
-	config.height = resolution.captured(2).toInt();
-	config.fps = parser.value("fps").toInt();
-	config.bitrate = parser.value("bitrate").toInt();
+	const auto resolution = ParseResolution(parser.value("res"));
+	if (resolution == QSize()) return Fail("Use WIDTHxHEIGHT for --res");
+	config.width = resolution.width();
+	config.height = resolution.height();
+	bool fpsOk = false, bitrateOk = false, monitorOk = false, cameraOk = false, windowOk = false;
+	config.fps = parser.value("fps").toInt(&fpsOk);
+	config.bitrate = parser.value("bitrate").toInt(&bitrateOk);
 	config.audio = parser.value("audio");
 	config.source = parser.value("source");
-	config.window = static_cast<quintptr>(parser.value("window").toULongLong());
+	config.window = static_cast<quintptr>(parser.value("window").toULongLong(&windowOk));
 	config.cursor = !parser.isSet("no-cursor");
 	config.clicks = parser.isSet("clicks");
-	config.monitor = parser.value("monitor").toInt(); config.encoder = parser.value("encoder");
+	config.monitor = parser.value("monitor").toInt(&monitorOk); config.encoder = parser.value("encoder");
 	config.separateAudio = parser.isSet("separate-audio"); config.cameraTrack = parser.isSet("camera-track");
-	config.camera = parser.value("camera").toInt(); config.cameraEnabled = parser.isSet("pip"); config.image = parser.value("image");
+	config.camera = parser.value("camera").toInt(&cameraOk); config.cameraEnabled = parser.isSet("pip"); config.image = parser.value("image");
+	if (!fpsOk || !bitrateOk || !monitorOk || !cameraOk || (parser.isSet("window") && !windowOk))
+		return Fail("Invalid numeric value for --fps, --bitrate, --monitor, --camera or --window");
 	config.denoise = parser.isSet("denoise");
 	config.outputColor = parser.value("output-color");
 	config.screenColor=parser.value("screen-color");bool whiteOk=false,exposureOk=false;config.screenWhiteNits=parser.value("screen-white").toDouble(&whiteOk);config.screenExposureEV=parser.value("screen-exposure").toDouble(&exposureOk);if(!whiteOk||!exposureOk)return Fail("Invalid screen color number");
@@ -442,7 +493,14 @@ int main(int argc, char* argv[])
 	{
 		QStringList parts = parser.value("region").split(',');
 		if (parts.size() != 4) return Fail("Use x,y,width,height for --region");
-		config.region = QRect(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), parts[3].toInt());
+		QVector<int> rectangle;
+		for (const auto& part : parts)
+		{
+			bool valid = false;
+			rectangle.append(part.toInt(&valid));
+			if (!valid) return Fail("Use integer x,y,width,height for --region");
+		}
+		config.region = QRect(rectangle[0], rectangle[1], rectangle[2], rectangle[3]);
 	}
 	if (!preset.isEmpty())
 	{
@@ -486,7 +544,7 @@ int main(int argc, char* argv[])
 		if (!SendControl({{"command", "status"}}, response, error, 2000)) return Fail(error);
 		if (response["state"] == "idle") return finished();
 	}
-	if (!SendControl({{"command", "stop"}}, response, error, 180000)) return Fail(error);
+	if (!SendControl({{"command", "stop"}}, response, error, StopRequestTimeoutMs)) return Fail(error);
 	PrintJson(response);
 	return 0;
 }

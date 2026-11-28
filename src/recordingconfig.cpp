@@ -5,6 +5,7 @@
 
 #include <windows.h>
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcess>
@@ -218,6 +219,7 @@ void HideConsoleProcess(QProcess& process, bool background)
 bool RunMediaProcess(const QString& executable, const QStringList& arguments, QString& error, int timeout,
 					 const std::atomic<bool>* cancel, bool background)
 {
+	if (cancel && cancel->load()) { error = Ui("任务已取消。"); return false; }
 	QProcess process;
 	HideConsoleProcess(process, background);
 	process.start(executable, arguments);
@@ -243,19 +245,22 @@ QString SelectVideoEncoder(const QString& requested, QString& error)
 {
 	if (requested == "libx264") return requested;
 	static QMutex mutex;
-	static QMap<QString, QString> failures;
+	struct Probe { QString error; qint64 checkedAt; };
+	static QMap<QString, Probe> probes;
 	QMutexLocker lock(&mutex);
 	QStringList candidates = requested == "auto" ? QStringList{"h264_nvenc", "h264_qsv", "h264_amf"} : QStringList{requested};
 	for (const QString& candidate : candidates)
 	{
-		if (!failures.contains(candidate))
+		const auto previous = probes.constFind(candidate);
+		const auto now = QDateTime::currentMSecsSinceEpoch();
+		if (previous == probes.cend() || (!previous->error.isEmpty() && (requested != "auto" || now - previous->checkedAt >= 30000)))
 		{
 			QString failure;
 			RunMediaProcess(FindFFmpeg(), {"-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i", "color=s=320x240:r=30", "-frames:v", "1", "-c:v", candidate, "-f", "null", "-"}, failure, 12000);
-			failures[candidate] = failure;
+			probes[candidate] = {failure, QDateTime::currentMSecsSinceEpoch()};
 		}
-		if (failures[candidate].isEmpty()) return candidate;
-		if (requested != "auto") error = failures[candidate];
+		if (probes[candidate].error.isEmpty()) return candidate;
+		if (requested != "auto") error = probes[candidate].error;
 	}
 	return requested == "auto" ? QString("libx264") : QString();
 }

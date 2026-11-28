@@ -59,7 +59,7 @@
 .agent-cut { display: grid; gap: 4px; margin-top: 8px; justify-items: start; }
 .agent-cut-summary { display: flex; align-items: baseline; gap: 10px; }
 .agent-cut-summary small, .agent-cut-row small { color: var(--muted); }
-.agent-cut-row { width: 100%; display: grid; gap: 4px; padding: 5px 7px; border: 1px solid var(--line); border-radius: 3px; }
+.agent-cut-row { width: 100%; display: grid; gap: 4px; padding: 5px 7px; border: 1px solid var(--stroke); border-radius: 3px; }
 .agent-cut-row label { overflow-wrap: anywhere; }
 .agent-cut-row input[type=number] { width: 7ch; min-width: 57px; }
 .agent-cut-preview { display: block; width: 100%; max-height: 60vh; background: #101115; }

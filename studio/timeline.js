@@ -316,7 +316,7 @@ class Timeline {
     const available = Math.max(1, this.root.clientWidth - (this.root.querySelector(".track-heads")?.offsetWidth || 184)) * this.zoom;
     const active = this.selectedTrack;
     const marks = this.markers.map(mark => `<button type="button" class="seek-marker timeline-marker" data-action="timeline-seek"
-      data-value="${mark.at}" title="${esc(mark.name)} · ${time(mark.at)}" aria-label="${esc(mark.name)}"
+      data-value="${esc(mark.at)}" title="${esc(mark.name)} · ${time(mark.at)}" aria-label="${esc(mark.name)}"
       style="--position:${pct(mark.at, seconds)}">${glyph("flag")}</button>`).join("");
     let ticks = "";
     for (let t = 0; t < seconds; t += tick / 2) {
@@ -340,18 +340,18 @@ class Timeline {
       ${ib("timeline-zoom", "放大时间轴", "plus", { value: 0.25 })}
     </div></div>`;
     const ordered = this.visualTracks;
-    const rowHeaders = ordered.map(track => `<div class="track-head ${track.kind}${track.id === this.track ? " active" : ""}" data-track-row="${esc(track.id)}">
+    const rowHeaders = ordered.map(track => `<div class="track-head ${esc(track.kind)}${track.id === this.track ? " active" : ""}" data-track-row="${esc(track.id)}">
       <button type="button" class="btn flat mini track-grip" data-track-grip="${esc(track.id)}"
         title="${esc(text("拖动调整轨道顺序"))} · ↑ ↓" aria-label="${esc(text("移动轨道"))} ${esc(track.name)}"
         aria-keyshortcuts="ArrowUp ArrowDown">${glyph("grip")}</button>
-      <button type="button" class="btn flat mini track-pick" data-action="track-select" data-value="${track.id}">
-        <span class="prefix mono">${track.id}</span><span class="truncate">${esc(track.name)}</span></button>
-      ${track.kind === "audio" ? ib("track-level", "音轨音量", "settings", { value: track.id }) : ""}
+      <button type="button" class="btn flat mini track-pick" data-action="track-select" data-value="${esc(track.id)}">
+        <span class="prefix mono">${esc(track.id)}</span><span class="truncate">${esc(track.name)}</span></button>
+      ${track.kind === "audio" ? ib("track-level", "音轨音量", "cog", { value: track.id }) : ""}
       ${track.kind === "video" ? "" : ib("track-mute", track.muted ? "启用轨道" : "静音或隐藏轨道",
         track.kind === "audio" ? (track.muted ? "mute" : "volume") : (track.muted ? "hidden" : "eye"), { value: track.id, pressed: !!track.muted })}
       ${ib("track-lock", track.locked ? "解锁轨道" : "锁定轨道", track.locked ? "lock" : "unlock", { value: track.id, pressed: !!track.locked })}
       </div>`).join("");
-    const rows = ordered.map(track => `<div class="lane ${track.kind}" data-lane="${track.id}" data-ruler>
+    const rows = ordered.map(track => `<div class="lane ${esc(track.kind)}" data-lane="${esc(track.id)}" data-ruler>
       ${track.clips.map(clip => this.renderClip(track, clip, available, seconds)).join("")}</div>`).join("");
     this.root.innerHTML = controls + `<div class="timeline-body">
       <div class="track-heads"><div class="track-ruler hstack spaced"><small>${esc(text("轨道"))}</small><div class="hstack">
@@ -396,8 +396,8 @@ class Timeline {
       content = `<div class="waveform" aria-hidden="true">${bars}</div>`;
     }
     const label = track.kind === "video" && !clip.stillId ? `${time(clip.at)} – ${time(clip.at + clip.length)}` : clip.name;
-    return `<button type="button" class="clip ${track.kind}${clip.id === this.selected ? " selected" : ""}"
-      style="--left:${pct(clip.at, total)};--width:${pct(clip.length, total)}" data-clip="${clip.id}" data-track="${track.id}"
+    return `<button type="button" class="clip ${esc(track.kind)}${clip.id === this.selected ? " selected" : ""}"
+      style="--left:${pct(clip.at, total)};--width:${pct(clip.length, total)}" data-clip="${esc(clip.id)}" data-track="${esc(track.id)}"
       title="${esc(label)}" aria-label="${esc(label)}" aria-pressed="${clip.id === this.selected}">${content}
       <span class="clip-label ${track.kind === "video" ? "mono" : ""}">${esc(label)}</span></button>`;
   }

@@ -248,7 +248,7 @@ const Views = (() => {
       const label = targetFor(item)[0];
       const name = label.split(" · ")[0];
       return `<div class="source-row${scene.selected === item.id ? " selected" : ""}">
-        <button type="button" class="source-pick hstack grow" data-action="source-select" data-value="${item.id}"
+        <button type="button" class="source-pick hstack grow" data-action="source-select" data-value="${esc(item.id)}"
           aria-pressed="${scene.selected === item.id}" title="${esc(label)}">
           <span class="source-icon${item.type === "camera" ? " camera" : ""}">${g(type.icon)}</span>
           <span class="truncate"><strong>${esc(name)}</strong></span>
@@ -277,15 +277,15 @@ const Views = (() => {
           ${ib("mixer-mute", channel.muted ? "取消" + name + "静音" : name + "静音", muteIcon,
             { variant: "flat mini mixer-mute " + (icon === "mic" ? "input-channel" : "output-channel"),
               pressed: channel.muted, value: id })}
-          <span class="truncate" title="${tr(name)}">${tr(name)}</span>
-          <span class="db mono" data-db="${id}">${channel.muted ? tr("静音") : db}</span>
+          <span class="truncate" title="${esc(tr(name))}">${esc(tr(name))}</span>
+          <span class="db mono" data-db="${esc(id)}">${esc(channel.muted ? tr("静音") : db)}</span>
           ${icon === "mic" ? b("denoise", "降噪", "spark", { value: id, variant: "flat mini noise-toggle", pressed: denoise, optional: true }) : ""}
           ${optional ? ib("mixer-remove", "移除" + name, "trash", { value: id }) : ""}</div>
-          <div class="mixer-meter" data-meter="${id}" role="meter" aria-label="${esc(name)}电平"
+          <div class="mixer-meter" data-meter="${esc(id)}" role="meter" aria-label="${esc(name)}电平"
             aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(level)}" style="--meter-level:${level}%"></div>
           <div class="mixer-level">
-          <input type="range" min="0" max="100" value="${channel.volume}" data-range="gain" data-channel="${id}" aria-label="${esc(name)}音量">
-          <output class="mono" data-gain="${id}">${channel.volume}%</output></div>
+          <input type="range" min="0" max="100" value="${esc(channel.volume)}" data-range="gain" data-channel="${esc(id)}" aria-label="${esc(name)}音量">
+          <output class="mono" data-gain="${esc(id)}">${esc(channel.volume)}%</output></div>
         </div>`;
       }).join("")}</div>
     </section>`;
@@ -330,8 +330,8 @@ const Views = (() => {
 
   function mediaItem(asset, action, active, long = true) {
     const thumbnail = asset.poster ? `<img alt="" src="${esc(asset.poster)}">` : `<span class="source-icon">${g("film")}</span>`;
-    return `<button type="button" class="media-item${active ? " selected" : ""}" data-action="${action}" data-value="${asset.id}">
-      <div class="media-thumb">${thumbnail}<time>${time(asset.duration)}</time></div><div class="media-summary">
+    return `<button type="button" class="media-item${active ? " selected" : ""}" data-action="${action}" data-value="${esc(asset.id)}">
+      <div class="media-thumb">${thumbnail}<time>${asset.duration > 0 ? time(asset.duration) : "—"}</time></div><div class="media-summary">
         <strong class="truncate" title="${esc(asset.title)}">${esc(asset.title)}</strong>
         ${long ? `<small class="truncate">${esc(asset.name)}</small><small class="hstack">
           <span>${asset.kind === "recoverable" ? "待恢复" : esc(asset.date)}</span>
@@ -505,14 +505,14 @@ const Views = (() => {
     return (track?.clips ?? []).filter(clip => `${clip.name} ${clip.translation || ""}`.toLowerCase().includes(q))
       .slice().sort((a, b) => a.at - b.at).map(clip => `
         <div class="subtitle-card"><div class="hstack spaced">
-          <button type="button" class="subtitle-time" data-action="editor-seek" data-value="${clip.at}">
+          <button type="button" class="subtitle-time" data-action="editor-seek" data-value="${esc(clip.at)}">
             <time>${time(clip.at)} → ${time(clip.at + clip.length)}</time></button>
           <div class="hstack">
             ${ib("subtitle-style", "字幕片段样式", "cog", { variant: "flat mini", value: "clip:" + clip.id })}
             ${b("retranslate", "重译", null, { variant: "flat mini", value: clip.id })}
             ${ib("remove-line", "删除字幕", "trash", { value: clip.id })}</div></div>
-          <input type="text" data-field="subtitle-original" data-clip-id="${clip.id}" value="${esc(clip.name)}" aria-label="字幕原文">
-          <input type="text" class="translation" data-field="subtitle-translation" data-clip-id="${clip.id}" value="${esc(clip.translation)}" aria-label="字幕译文">
+          <input type="text" data-field="subtitle-original" data-clip-id="${esc(clip.id)}" value="${esc(clip.name)}" aria-label="字幕原文">
+          <input type="text" class="translation" data-field="subtitle-translation" data-clip-id="${esc(clip.id)}" value="${esc(clip.translation)}" aria-label="字幕译文">
         </div>`).join("") || `<p class="empty">${tr("暂无字幕")}</p>`;
   }
 

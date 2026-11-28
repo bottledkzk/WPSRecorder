@@ -819,14 +819,28 @@ bool ProbeEditAudio(const QString &file, qint64 offset, qint64 duration, KRREdit
 			 QFileInfo(file).absoluteFilePath(), offset, length};
 	return true;
 }
-bool ProbeEditSource(const QString &input, KRREditProject &project, QString &error, QJsonObject *container)
+bool ProbeEditSource(const QString &input, KRREditProject &project, QString &error, QJsonObject *container,
+	int timeoutMs, const std::atomic<bool>* cancel)
 {
+	if (cancel && cancel->load()) { error = Ui("任务已取消。"); return false; }
 	QProcess p;
 	HideConsoleProcess(p);
 	QStringList args{"-v", "error", "-show_streams", "-show_format", "-of", "json"};
 	if (container) args << "-show_chapters";
 	p.start(FindFFprobe(), args << input);
-	if (!p.waitForFinished(15000) || p.exitStatus() != QProcess::NormalExit || p.exitCode() != 0)
+	QElapsedTimer deadline;
+	deadline.start();
+	while (p.state() != QProcess::NotRunning && !p.waitForFinished(qMin(timeoutMs, 100)))
+	{
+		if (deadline.hasExpired(timeoutMs) || (cancel && cancel->load()))
+		{
+			p.kill();
+			p.waitForFinished(1000);
+			error = cancel && cancel->load() ? Ui("任务已取消。") : Ui("读取视频信息超时。");
+			return false;
+		}
+	}
+	if (p.error() == QProcess::FailedToStart || p.exitStatus() != QProcess::NormalExit || p.exitCode() != 0)
 	{
 		error = Ui("无法读取视频信息：") + QString::fromUtf8(p.readAllStandardError());
 		return false;

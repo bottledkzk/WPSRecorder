@@ -1,0 +1,11 @@
+{
+    "batch_ms": 28136,
+    "case": "audio8-batch",
+    "individual_ms": 35450,
+    "passed": true,
+    "requests": 0,
+    "speech_ms": [
+        1022,
+        1626
+    ]
+}

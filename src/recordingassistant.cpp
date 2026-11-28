@@ -38,7 +38,8 @@ QJsonArray Tools(bool editing)
 {
 	QJsonArray tools{
 		Function("find_recordings", "Find recordings across local sessions using filenames, markers, and matching subtitle files. "
-			"Use inclusive local date filters for yesterday or a specific day.",
+			"Use inclusive local date filters for yesterday or a specific day. Each result has marker_count and markers, with "
+			"duration_ms when the file is readable. at_ms is the position of a matched marker or subtitle, not the duration.",
 			ObjectParameter({{"query", StringParameter("Short keywords separated by spaces; omit for latest/date-only requests.")},
 				{"from", StringParameter("First local date (YYYY-MM-DD), inclusive.")},
 				{"until", StringParameter("Last local date (YYYY-MM-DD), inclusive.")},

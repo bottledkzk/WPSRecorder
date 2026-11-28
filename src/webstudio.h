@@ -7,7 +7,10 @@
 #include <QHash>
 #include <QPointer>
 #include <QTemporaryDir>
+#include <QThreadPool>
 #include <QTimer>
+#include <QFutureWatcher>
+#include <QtConcurrentRun>
 #include <atomic>
 #include <memory>
 #include <optional>
@@ -28,6 +31,17 @@ public:
 	void startupFile(const QString& path) { m_startupFile = path; }
 
 private:
+	template<class Work, class Complete>
+	void background(Work work, Complete complete)
+	{
+		auto watcher = new QFutureWatcher<decltype(work())>(this);
+		connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher, complete = std::move(complete)]() mutable
+		{
+			watcher->deleteLater();
+			if (m_surface) complete(watcher->result());
+		});
+		watcher->setFuture(QtConcurrent::run(std::move(work)));
+	}
 	void dispatch(const QJsonObject& message);
 	bool editCommand(const QString& command, const QString& request, const QJsonObject& data);
 	bool assistantCommand(const QString& command, const QString& request, const QJsonObject& data);
@@ -53,8 +67,10 @@ private:
 	KRRMainWindow& m_window;
 	KRRWebStudioSurface* m_surface;
 	QTimer m_frameTimer, m_statusTimer, m_mixerTimer;
+	QThreadPool m_previewWorker;
 	bool m_handshake = false, m_encoding = false;
 	bool m_skipExitSave = false, m_exitSyncFailed = false;
+	bool m_voiceJob = false;
 	std::optional<Qt::WindowStates> m_previewWindowState;
 	qint64 m_lastFrame = 0;
 	quint64 m_previewGeneration = 0;
@@ -64,6 +80,7 @@ private:
 	QHash<QString, QString> m_media, m_tracks, m_projects, m_workspaces;
 	QHash<QString, QJsonObject> m_inspected;
 	QHash<QString, std::shared_ptr<std::atomic<bool>>> m_assistantJobs;
+	std::shared_ptr<std::atomic<bool>> m_backgroundCancel = std::make_shared<std::atomic<bool>>(false);
 	std::shared_ptr<std::atomic<bool>> m_modelCheck;
 	KRREditProject m_edit;
 	KRRMediaEditor m_jobs;

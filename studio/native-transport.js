@@ -20,9 +20,19 @@ const Native = (() => {
     rpc(command, data = {}) {
       if (!transport) return Promise.reject(new Error("请从 WPS Recorder 启动 Studio。"));
       const id = String(++sequence);
+      const message = { id, command, data };
       return new Promise((resolve, reject) => {
+        if (JSON.stringify(message).length > 2 * 1024 * 1024) {
+          reject(new Error("请求内容过大，请拆分后重试。"));
+          return;
+        }
         pending.set(id, { resolve, reject });
-        transport.postMessage({ id, command, data });
+        try {
+          transport.postMessage(message);
+        } catch (error) {
+          pending.delete(id);
+          reject(error);
+        }
       });
     },
     tell(command, data = {}) { transport?.postMessage({ command, data }); },

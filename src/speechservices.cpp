@@ -196,27 +196,6 @@ QString Audio8Python(const QString& root)
 	return {};
 }
 
-QString SynthAudio8(const QString& text, const QString& output, const KRRVoiceOptions& options,
-					const std::atomic<bool>* cancel)
-{
-	const auto root = Audio8Directory();
-	const auto python = Audio8Python(root);
-	const auto script = QCoreApplication::applicationDirPath() + "/tts/audio8_worker.py";
-	if (!Audio8Available() || !QFileInfo(script).isFile())
-		return Ui("未找到 Audio8 运行包。请在配音窗口选择本地模型目录。");
-	const auto voice = options.voice.isEmpty() ? QStringLiteral("default") : options.voice;
-	if (!Audio8Voices().contains(voice)) return Ui("所选 Audio8 音色不可用。");
-	QFile input(QFileInfo(output).absolutePath() + "/line.txt");
-	const auto bytes = text.toUtf8();
-	if (!input.open(QIODevice::WriteOnly) || input.write(bytes) != bytes.size())
-		return Ui("无法创建配音工作目录。");
-	input.close();
-	QString error;
-	const int timeout = qMin(900000, 180000 + text.size() * 150);
-	RunMediaProcess(python, {script, root, input.fileName(), voice, output}, error, timeout, cancel, true);
-	return error;
-}
-
 QByteArray ReadQwenAudio(const QByteArray& result, const std::atomic<bool>* cancel, QString& error, int timeout)
 {
 	const auto object = QJsonDocument::fromJson(result).object();
@@ -847,10 +826,39 @@ QString DefaultVoice(const QString& engine, const QString& language)
 	return {};
 }
 
+QString SynthesizeAudio8Raw(const QVector<KRRVoiceLine>& lines, const QString& selectedVoice, const std::atomic<bool>* cancel)
+{
+	const auto root = Audio8Directory();
+	const auto python = Audio8Python(root);
+	const auto script = QCoreApplication::applicationDirPath() + "/tts/audio8_worker.py";
+	if (!Audio8Available(root) || !QFileInfo(script).isFile())
+		return Ui("未找到 Audio8 运行包。请在配音窗口选择本地模型目录。");
+	const auto voice = selectedVoice.isEmpty() ? QStringLiteral("default") : selectedVoice;
+	if (!Audio8Voices().contains(voice)) return Ui("所选 Audio8 音色不可用。");
+	QTemporaryDir staging;
+	if (!staging.isValid()) return Ui("无法创建配音工作目录。");
+	QJsonArray manifest;
+	qint64 characters = 0;
+	for (const auto& line : lines)
+	{
+		manifest.append(QJsonObject{{"text", line.text}, {"output", line.output}});
+		characters += line.text.size();
+	}
+	QFile input(staging.filePath("lines.json"));
+	const auto bytes = QJsonDocument(manifest).toJson(QJsonDocument::Compact);
+	if (!input.open(QIODevice::WriteOnly) || input.write(bytes) != bytes.size() || !input.flush())
+		return Ui("无法创建配音工作目录。");
+	input.close();
+	QString error;
+	const auto timeout = static_cast<int>(qMin<qint64>(7200000, 180000 + characters * 150 + lines.size() * 5000LL));
+	RunMediaProcess(python, {script, root, input.fileName(), voice}, error, timeout, cancel, true);
+	return error;
+}
+
 QString SynthesizeWithService(const QString& text, const QString& output, const KRRVoiceOptions& options,
 							  const std::atomic<bool>* cancel, const KRRSpeechService* overrideService, int timeout)
 {
-	if (options.engine == "audio8") return SynthAudio8(text, output, options, cancel);
+	if (options.engine == "audio8") return SynthesizeAudio8Raw({{text, output}}, options.voice, cancel);
 	const auto service = overrideService ? *overrideService : SpeechService(options.engine);
 	const auto url = ServiceUrl(service.endpoint);
 	if (const auto invalid = CheckRequestAddress(url, service); !invalid.isEmpty()) return invalid;

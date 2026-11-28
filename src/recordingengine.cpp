@@ -172,7 +172,6 @@ bool KRRRecordingEngine::start(const KRRRecordingConfig& requested, QString& err
 	m_stop.store(false);
 	m_paused.store(false);
 	setPreviewPublication(config.publishPreview);
-	m_frames.store(0);
 	m_duplicates.store(0);
 	m_missedSlots.store(0);
 	m_stopTime.store(-1);
@@ -182,9 +181,13 @@ bool KRRRecordingEngine::start(const KRRRecordingConfig& requested, QString& err
 	for (auto& level : m_audioLevels) level.store(0);
 	m_clock.reset();
 	m_previewPublisher.reset();
-	m_active.store(true);
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
+		m_frames.store(0);
+		m_previousFpsSample = 0;
+		m_previousFrameCount = 0;
+		m_effectiveFps = 0;
+		m_active.store(true);
 		m_phase = "starting";m_captureInfo={};
 		m_output = config.output;
 		m_error.clear();
@@ -664,6 +667,7 @@ void KRRRecordingEngine::record(KRRRecordingConfig config)
 			{
 				m_clock.begin();
 				std::lock_guard<std::mutex> lock(m_mutex);
+				m_previousFrameCount = m_frames.load();
 				m_phase = "recording";
 			}
 			for (const auto& device : audio)
@@ -697,14 +701,20 @@ void KRRRecordingEngine::record(KRRRecordingConfig config)
 	}
 	// A marker accepted before finalizing must reach the workspace before it can be moved.
 	{ std::lock_guard<std::mutex> pendingMarker(m_markerWriteMutex); }
+	const auto reportEncoderFailure = [&](const QString& detail)
+	{
+		if (stoppedBeforeFirstFrame) return;
+		if (!failure.isEmpty()) failure += '\n';
+		failure += detail;
+		if (failureStage.isEmpty()) failureStage = QString::fromLatin1(m_pipelineStage.load());
+	};
 	if (encoder.state() != QProcess::NotRunning)
 	{
 		m_pipelineStage.store("finalize-video");
 		encoder.closeWriteChannel();
 		const int timeout = stoppedBeforeFirstFrame || (m_stop.load() && encoder.bytesToWrite() > 0) ? 3000 : 30000;
-		if (!encoder.waitForFinished(timeout)) { encoder.kill(); encoder.waitForFinished(3000); if (!stoppedBeforeFirstFrame) failure += " Encoder finalization timed out."; }
-		else if (encoder.exitCode() != 0 && !stoppedBeforeFirstFrame) failure += " Encoder failed; see " + workspace + "/encoder.log";
-		if (failureStage.isEmpty() && !failure.isEmpty()) failureStage = "finalize-video";
+		if (!encoder.waitForFinished(timeout)) { encoder.kill(); encoder.waitForFinished(3000); reportEncoderFailure("Encoder finalization timed out."); }
+		else if (encoder.exitCode() != 0) reportEncoderFailure("Encoder failed; see " + workspace + "/encoder.log");
 	}
 	m_encoderPid.store(0);
 	if (cameraEncoder.state() != QProcess::NotRunning)
@@ -712,9 +722,8 @@ void KRRRecordingEngine::record(KRRRecordingConfig config)
 		m_pipelineStage.store("finalize-camera-track");
 		cameraEncoder.closeWriteChannel();
 		const int timeout = stoppedBeforeFirstFrame || (m_stop.load() && cameraEncoder.bytesToWrite() > 0) ? 3000 : 30000;
-		if (!cameraEncoder.waitForFinished(timeout)) { cameraEncoder.kill(); cameraEncoder.waitForFinished(3000); if (!stoppedBeforeFirstFrame) failure += " Camera encoder timed out."; }
-		else if (cameraEncoder.exitCode() != 0 && !stoppedBeforeFirstFrame) failure += " Camera encoder failed.";
-		if (failureStage.isEmpty() && !failure.isEmpty()) failureStage = "finalize-camera-track";
+		if (!cameraEncoder.waitForFinished(timeout)) { cameraEncoder.kill(); cameraEncoder.waitForFinished(3000); reportEncoderFailure("Camera encoder timed out."); }
+		else if (cameraEncoder.exitCode() != 0) reportEncoderFailure("Camera encoder failed.");
 	}
 	m_cameraEncoderPid.store(0);
 	if (m_frames.load() > 0 && QFileInfo::exists(temporaryVideo))
@@ -765,7 +774,9 @@ void KRRRecordingEngine::record(KRRRecordingConfig config)
 		}
 		mux << partial;
 		QString muxError;
-		if (!RunMediaProcess(FindFFmpeg(), mux, muxError, 120000)) failure += " Mux failed: " + muxError;
+		const auto muxBudget = static_cast<int>(qBound(120000.,
+			60000. + m_duration.load() * 150. + QFileInfo(temporaryVideo).size() / 1048576. * 100., 1800000.));
+		if (!RunMediaProcess(FindFFmpeg(), mux, muxError, muxBudget)) failure += " Mux failed: " + muxError;
 		else if (!QFile::rename(partial, config.output)) failure += " Could not publish the completed output";
 		else
 		{
@@ -862,35 +873,50 @@ static double ProcessCpu(HANDLE process)
 }
 QJsonObject KRRRecordingEngine::status()
 {
-	PROCESS_MEMORY_COUNTERS memory{};
-	GetProcessMemoryInfo(GetCurrentProcess(), &memory, sizeof(memory));
-	double megabytes = static_cast<double>(memory.WorkingSetSize) / 1048576.0;
-	double cpuTime = ProcessCpu(GetCurrentProcess());
-	for (qint64 pid : {m_encoderPid.load(), m_cameraEncoderPid.load()})
-	{
-		if (!pid) continue;
-		HANDLE encoder = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, static_cast<DWORD>(pid));
-		if (!encoder) continue;
-		if (GetProcessMemoryInfo(encoder, &memory, sizeof(memory))) megabytes += static_cast<double>(memory.WorkingSetSize) / 1048576.0;
-		cpuTime += ProcessCpu(encoder);
-		CloseHandle(encoder);
-	}
-	double now = KRRRecordingClock::Now();
-	SYSTEM_INFO system{};
-	GetSystemInfo(&system);
-	const auto samplingTime = now - m_previousSample;
-	double cpu = m_previousSample > 0 && samplingTime > 0 ? std::max(0.0, (cpuTime - m_previousCpu) / samplingTime
-		* 100.0 / system.dwNumberOfProcessors) : 0;
-	const auto frameCount = m_frames.load();
-	const double effectiveRate = m_previousSample > 0 && samplingTime > .1 && frameCount >= m_previousFrameCount
-		? (frameCount - m_previousFrameCount) / samplingTime : 0.;
-	m_previousFrameCount = frameCount;
-	m_previousSample = now;
-	m_previousCpu = cpuTime;
 	std::lock_guard<std::mutex> lock(m_mutex);
+	const double now = KRRRecordingClock::Now();
+	const auto samplingTime = now - m_previousCpuSample;
 	const bool active = m_active.load();
 	const auto phase = active && m_stop.load() ? QStringLiteral("finalizing") : m_phase;
-	double duration = active && phase == "recording" ? m_clock.elapsed() : m_duration.load();
+	const bool recording = active && phase == "recording";
+	const bool paused = m_paused.load();
+	const double duration = recording ? m_clock.elapsed() : m_duration.load();
+	const auto frameCount = m_frames.load();
+	if (recording && !paused && duration - m_previousFpsSample >= .25)
+	{
+		m_effectiveFps = std::max<qint64>(0, frameCount - m_previousFrameCount) / (duration - m_previousFpsSample);
+		m_previousFrameCount = frameCount;
+		m_previousFpsSample = duration;
+	}
+	if (m_previousCpuSample == 0 || samplingTime >= .25)
+	{
+		PROCESS_MEMORY_COUNTERS memory{};
+		GetProcessMemoryInfo(GetCurrentProcess(), &memory, sizeof(memory));
+		m_memoryMB = static_cast<double>(memory.WorkingSetSize) / 1048576.0;
+		std::array<double, 3> cpuTime{ProcessCpu(GetCurrentProcess())};
+		const std::array<qint64, 2> encoders{m_encoderPid.load(), m_cameraEncoderPid.load()};
+		double cpuDelta = std::max(0.0, cpuTime[0] - m_previousCpu[0]);
+		for (size_t i = 0; i < encoders.size(); ++i)
+		{
+			if (!encoders[i]) continue;
+			const auto encoder = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, static_cast<DWORD>(encoders[i]));
+			if (!encoder) continue;
+			if (GetProcessMemoryInfo(encoder, &memory, sizeof(memory))) m_memoryMB += static_cast<double>(memory.WorkingSetSize) / 1048576.0;
+			cpuTime[i + 1] = ProcessCpu(encoder);
+			if (encoders[i] == m_sampledEncoders[i] && m_previousCpu[i + 1] > 0)
+				cpuDelta += std::max(0.0, cpuTime[i + 1] - m_previousCpu[i + 1]);
+			CloseHandle(encoder);
+		}
+		if (m_previousCpuSample > 0)
+		{
+			const auto processors = std::max<DWORD>(1, GetActiveProcessorCount(ALL_PROCESSOR_GROUPS));
+			m_cpuPercent = cpuDelta / samplingTime * 100.0 / processors;
+		}
+		m_previousCpuSample = now;
+		m_previousCpu = cpuTime;
+		m_sampledEncoders = encoders;
+	}
+	const double effectiveRate = recording && !paused ? m_effectiveFps : 0.;
 	QJsonObject extraLevels;
 	for (int i = 0; i < m_live.audioSources.size(); ++i)
 		extraLevels[m_live.audioSources[i].toObject()["id"].toString()] = m_audioLevels[i].load();
@@ -901,10 +927,10 @@ QJsonObject KRRRecordingEngine::status()
 		{"height", m_live.height}, {"bitrate", m_live.bitrate}, {"effective_fps", effectiveRate},
 		{"mic_level", m_micLevel.load()}, {"system_level", m_systemLevel.load()},
 		{"capture_control_error", m_captureControlError}, {"pip_enabled", m_live.cameraEnabled},
-		{"mic_enabled", m_live.audio == "mic" || m_live.audio == "mix"}, {"paused", m_paused.load()}, {"duration_sec", duration}, {"frames_written", m_frames.load()},
+		{"mic_enabled", m_live.audio == "mic" || m_live.audio == "mix"}, {"paused", paused}, {"duration_sec", duration}, {"frames_written", frameCount},
 		{"duplicate_frames", m_duplicates.load()}, {"missed_frame_slots", m_missedSlots.load()},
 		{"pipeline_stage", QString::fromLatin1(m_pipelineStage.load())},
-		{"avg_fps", duration > 0 ? m_frames.load() / duration : 0}, {"mem_mb", megabytes}, {"cpu_pct", cpu},
+		{"avg_fps", duration > 0 ? frameCount / duration : 0}, {"mem_mb", m_memoryMB}, {"cpu_pct", m_cpuPercent},
 		{"output", m_output}, {"error", m_error}, {"encoder", m_encoder}, {"source", m_live.source},
 		{"output_color", m_live.outputColor}, {"audio_mode", m_live.audio}, {"pid", static_cast<qint64>(GetCurrentProcessId())}};
 }

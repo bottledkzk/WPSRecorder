@@ -1,6 +1,7 @@
 #include "webstudio.h"
 
 #include "clipeditor.h"
+#include "embeddedcli.h"
 #include "mainwindow.h"
 #include "recordingassistant.h"
 #include "recordingmarkers.h"
@@ -60,25 +61,12 @@ QString DraftFor(const QString& id)
 	return id.isEmpty() ? QString{} : DataDirectory() + "/studio-drafts/" + id + ".krrproj";
 }
 
-template<class Work, class Complete>
-void Background(QObject* receiver, Work work, Complete complete)
-{
-	const QPointer<QObject> self(receiver);
-	QThreadPool::globalInstance()->start(QRunnable::create([self, work = std::move(work), complete = std::move(complete)]() mutable
-	{
-		auto result = work();
-		if (!self) return;
-		QMetaObject::invokeMethod(self.data(), [self, result = std::move(result), complete = std::move(complete)]() mutable
-		{ if (self) complete(std::move(result)); }, Qt::QueuedConnection);
-	}));
-}
-
 QString RateEncoder(const QString& label)
 {
-	if (label.contains("NVENC")) return "h264_nvenc";
-	if (label.contains("AMF")) return "h264_amf";
-	if (label.contains("QSV")) return "h264_qsv";
-	if (label.contains("x264")) return "libx264";
+	if (label.contains("NVENC", Qt::CaseInsensitive)) return "h264_nvenc";
+	if (label.contains("AMF", Qt::CaseInsensitive)) return "h264_amf";
+	if (label.contains("QSV", Qt::CaseInsensitive)) return "h264_qsv";
+	if (label.contains("x264", Qt::CaseInsensitive)) return "libx264";
 	return "auto";
 }
 
@@ -205,7 +193,7 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 		if (!choosing)
 		{
 			if (m_inspected.contains(file)) { done(libraryEntry(file)); return true; }
-			Background(this, [file]
+			background([file]
 			{
 				QString error;
 				const auto metadata = ReadVideoInfo(file, error);
@@ -222,8 +210,6 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 		if (choosing && !asset.isEmpty())
 		{
 			w.openPreview(file);
-			w.m_player->stop();
-			w.selectWorkspace(KRRMainWindow::Review);
 		}
 		done(asset, error);
 	}
@@ -235,11 +221,27 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 	}
 	else if (name == "remove-video")
 	{
+		if (!data["confirmed"].toBool()) { done({}, Ui("请确认移到回收站。")); return true; }
 		const auto file = mediaFile(id);
-		if (file.isEmpty() || file == m_edit.input) { done({}, Ui("请先关闭正在使用此素材的工程。")); return true; }
-		w.openPreview(file);
-		w.deletePreview();
-		done(library());
+		if (file.isEmpty() || !QFileInfo(file).isFile()) { done({}, Ui("视频已不存在。")); return true; }
+		const auto inEdit = [&]
+		{
+			return m_jobs.isBusy() || file.compare(m_edit.input, Qt::CaseInsensitive) == 0 ||
+				std::any_of(m_edit.audio.cbegin(), m_edit.audio.cend(), [&](const auto& track)
+				{ return track.file.compare(file, Qt::CaseInsensitive) == 0; });
+		};
+		if (inEdit()) { done({}, Ui("请先关闭正在使用此素材的工程或等待导出结束。")); return true; }
+		QString error, recovered;
+		m_surface->releaseResource(id);
+		if (!w.removeRecording(file, error, &recovered))
+		{
+			if (m_surface) m_surface->localResource(file);
+			done({}, error);
+			return true;
+		}
+		m_media.remove(id);
+		m_inspected.remove(file);
+		done(QJsonObject{{"removed", true}, {"entries", library()}, {"recoveryPath", recovered}});
 	}
 	else if (name == "marks")
 	{
@@ -268,7 +270,7 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 			return true;
 		}
 		const auto temporary = m_cache.filePath(NewId() + ".mp4");
-		Background(this, [file, target, temporary]
+		background([file, target, temporary]
 		{
 			QString error;
 			if (!RunMediaProcess(FindFFmpeg(), {"-nostdin", "-v", "error", "-i", file, "-map", "0:v:0", "-map", "0:a:0?",
@@ -292,7 +294,7 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 		const auto target = m_cache.filePath(QString("%1-%2-%3.m4a").arg(id).arg(sourceTime).arg(stream));
 		if (QFileInfo(target).size() > 0) { done(m_surface->localResource(target)); return true; }
 		const auto temporary = m_cache.filePath(NewId() + ".m4a");
-		Background(this, [input, target, temporary, stream]
+		background([input, target, temporary, stream]
 		{
 			QString error;
 			if (!RunMediaProcess(FindFFmpeg(), {"-nostdin", "-v", "error", "-n", "-i", input,
@@ -501,8 +503,10 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 		const auto folder = data["folder"].toString();
 		const auto basename = data["name"].toString().trimmed();
 		const auto ext = data["format"].toString("mp4").toLower();
+		const bool supported = QStringList{"mp4", "mkv", "mov"}.contains(ext) ||
+			(!edited && QStringList{"webm", "gif", "m4a", "mp3", "wav"}.contains(ext));
 		if (source.isEmpty() || !QFileInfo(folder).isDir() || basename.isEmpty() || QFileInfo(basename).fileName() != basename ||
-			!QStringList{"mp4", "mkv", "mov", "webm", "avi", "flv"}.contains(ext))
+			!supported)
 		{ done({}, Ui("请选择素材和有效的保存路径。")); return true; }
 		const auto target = QDir(folder).filePath(basename + "." + ext);
 		if (QFileInfo::exists(target)) { done({}, Ui("该文件名已存在。")); return true; }
@@ -681,7 +685,7 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 			project.subtitleGlossary = glossary;
 			project.translationLanguage = target;
 		}
-		Background(this, [cues, target, glossary, review, project]
+		background([cues, target, glossary, review, project]
 		{
 			QVector<QString> source, translations;
 			QJsonArray result;
@@ -704,6 +708,7 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 	}
 	else if (name == "dubbing")
 	{
+		if (m_voiceJob) { done({}, Ui("正在生成旁白，请稍候…")); return true; }
 		const auto samples = data["lines"].toArray();
 		const auto duration = Millis(data["duration"], data["audition"].toBool() ? 30000 : m_edit.outputDuration());
 		if (samples.isEmpty() || samples.size() > 200 || duration < 100) { done({}, Ui("请选择有效的配音内容。")); return true; }
@@ -723,14 +728,22 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 		QDir().mkpath(folder);
 		const auto output = folder + "/" + NewId() + ".wav";
 		const bool chapter = data["mode"] == "chapter" && !data["audition"].toBool();
-		Background(this, [samples, duration, output, opts, chapter]() -> QPair<QJsonArray, QString>
+		m_voiceJob = true;
+		background([samples, duration, output, opts, chapter, cancel = m_backgroundCancel]() -> QPair<QJsonArray, QString>
 		{
 			QTemporaryDir temp;
 			if (!temp.isValid()) return {{}, Ui("无法创建语音缓存。")};
-			QVector<KRRDubLine> lines;
-			QJsonArray speech;
+			struct Cue
+			{
+				qint64 begin, end;
+				QString title;
+				QVector<KRRVoiceLine> parts;
+			};
+			QVector<Cue> cues;
+			QVector<KRRVoiceLine> batch;
 			for (const auto& value : samples)
 			{
+				if (cancel->load()) return {{}, Ui("任务已取消。")};
 				const auto item = value.toObject();
 				auto text = item["text"].toString().trimmed();
 				const int limit = chapter ? 60000 : 4000;
@@ -749,7 +762,7 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 				const auto begin = Millis(item["at"], duration);
 				const auto end = qMin(duration, begin + Millis(item["length"]));
 				if (end - begin < 100) continue;
-				auto cursor = begin;
+				Cue cue{begin, end, item["title"].toString().left(120), {}};
 				while (!text.isEmpty())
 				{
 					int count = text.size();
@@ -761,23 +774,43 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 					}
 					const auto segment = text.left(count).trimmed();
 					text = text.mid(count).trimmed();
-					const auto wav = temp.filePath(NewId() + ".wav");
-					const auto error = SynthesizeSpeech(segment, wav, opts);
-					if (!error.isEmpty()) return {{}, error};
-					const auto actual = SpeechWaveDuration(wav);
+					cue.parts.append({segment, temp.filePath(NewId() + ".wav")});
+					if (opts.engine == "audio8") batch.append(cue.parts.back());
+				}
+				cues.append(std::move(cue));
+			}
+			if (cues.isEmpty()) return {{}, Ui("配音文本为空。")};
+			if (opts.engine == "audio8")
+			{
+				const auto error = SynthesizeAudio8Speech(batch, opts, cancel.get());
+				if (!error.isEmpty()) return {{}, error};
+			}
+			QVector<KRRDubLine> lines;
+			QJsonArray speech;
+			for (const auto& cue : cues)
+			{
+				auto cursor = cue.begin;
+				for (const auto& part : cue.parts)
+				{
+					if (opts.engine != "audio8")
+					{
+						const auto error = SynthesizeSpeech(part.text, part.output, opts, cancel.get());
+						if (!error.isEmpty()) return {{}, error};
+					}
+					const auto actual = SpeechWaveDuration(part.output);
 					if (actual <= 0) return {{}, Ui("无法读取合成的配音。")};
-					if (cursor + actual > end)
-						return {{}, chapter ? Ui("章节「%1」的稿件超过时长，请缩短稿件或提高语速。").arg(item["title"].toString().left(120))
+					if (cursor + actual > cue.end)
+						return {{}, chapter ? Ui("章节「%1」的稿件超过时长，请缩短稿件或提高语速。").arg(cue.title)
 							: Ui("配音超过可用时长，请缩短文本或提高语速。")};
 					speech.append(QJsonObject{{"at", cursor / 1000.}, {"length", actual / 1000.}});
-					lines.append({cursor, cursor + actual, wav});
+					lines.append({cursor, cursor + actual, part.output});
 					cursor += actual;
 				}
 			}
-			if (lines.isEmpty()) return {{}, Ui("配音文本为空。")};
-			return {speech, MixDubbingTrack(duration, lines, output)};
+			return {speech, MixDubbingTrack(duration, lines, output, cancel.get())};
 		}, [this, request, output, duration](const QPair<QJsonArray, QString>& result)
 		{
+			m_voiceJob = false;
 			const auto& error = result.second;
 			const auto url = error.isEmpty() ? m_surface->localResource(output) : QString{};
 			const auto key = url.section('/', -1);
@@ -791,6 +824,8 @@ bool KRRWebStudio::editCommand(const QString& name, const QString& request, cons
 
 KRRWebStudio::~KRRWebStudio()
 {
+	m_previewWorker.clear();
+	m_previewWorker.waitForDone();
 	cancelExitWork();
 	m_window.m_webStudio = nullptr;
 }
@@ -855,7 +890,7 @@ bool KRRWebStudio::assistantCommand(const QString& name, const QString& request,
 		}
 		const auto cancel = newJob();
 		if (!cancel) { done({}, Ui("当前助手任务较多，请稍后再试。")); return true; }
-		Background(this, [context, service, prompt, history, summary, editing, cancel]
+		background([context, service, prompt, history, summary, editing, cancel]
 		{ return AskRecordingAssistant(prompt, context, service, history, cancel.get(), summary, editing); },
 		[this, request, jobId, before = context.settings,
 			revision = data["side"].toBool() && !m_edit.input.isEmpty() ? SmartCutRevision(m_edit) : QString{}](const KRRAssistantReply& answer)
@@ -902,7 +937,7 @@ bool KRRWebStudio::assistantCommand(const QString& name, const QString& request,
 		const auto projectPath = data["projectPath"].toString();
 		const auto selection = data["selection"].toObject();
 		const auto materials = data["materials"].toArray();
-		Background(this, [files, project, side, goal, params, projectPath, selection, materials, plan, cancel]
+		background([files, project, side, goal, params, projectPath, selection, materials, plan, cancel]
 		{
 			QString error;
 			QJsonArray targets;
@@ -1150,7 +1185,7 @@ bool KRRWebStudio::assistantCommand(const QString& name, const QString& request,
 		auto output = QFileDialog::getSaveFileName(&w, Ui("保存多素材草稿"), w.m_directory->text() + "/sequence.json", Ui("剪辑工程 (*.json)"));
 		if (output.isEmpty()) { done(); return true; }
 		if (!output.endsWith(".json", Qt::CaseInsensitive)) output += ".json";
-		Background(this, [clips, output, target = Millis(data["target"])]
+		background([clips, output, target = Millis(data["target"])]
 		{
 			QString error;
 			KRREditSequence sequence;
@@ -1180,7 +1215,7 @@ bool KRRWebStudio::assistantCommand(const QString& name, const QString& request,
 		const auto history = data["messages"].toArray();
 		const auto cancel = newJob();
 		if (!cancel) { done({}, Ui("当前助手任务较多，请稍后再试。")); return true; }
-		Background(this, [service, history, cancel]
+		background([service, history, cancel]
 		{
 			QJsonObject result;
 			const auto error = RequestAssistantReply(service, {{"messages", history}, {"max_tokens", 700}}, result, cancel.get());
@@ -1200,7 +1235,9 @@ bool KRRWebStudio::assistantCommand(const QString& name, const QString& request,
 		auto args = QProcess::splitCommand(data["input"].toString().left(4096));
 		if (!args.isEmpty() && (args.first() == "wpsrecorder_cli" || args.first() == "wpsrecorder_cli.exe")) args.removeFirst();
 		if (args.isEmpty()) args << "--help";
+		if (!EmbeddedCliAllows(args)) { done({}, Ui("内置终端请使用随软件提供的识别引擎。自定义识别程序及服务命令可在系统终端使用。")); return true; }
 		auto process = new QProcess(this);
+		ConfigureEmbeddedCli(*process);
 		HideConsoleProcess(*process);
 		process->setProcessChannelMode(QProcess::MergedChannels);
 		const auto root = m_workspaces.value(data["workspace"].toString(), data["folder"].toString());
@@ -1217,12 +1254,14 @@ bool KRRWebStudio::assistantCommand(const QString& name, const QString& request,
 			process->deleteLater();
 		});
 		process->start(QCoreApplication::applicationDirPath() + "/wpsrecorder_cli.exe", args);
+		process->closeWriteChannel();
+		QTimer::singleShot(7200000, process, [process] { if (process->state() != QProcess::NotRunning) process->kill(); });
 	}
 	else if (name == "workspace-media")
 	{
 		const auto file = mediaFile(data["id"].toString());
 		if (file.isEmpty()) { done({}, Ui("请刷新工作区后重新选择视频。")); return true; }
-		Background(this, [file]
+		background([file]
 		{
 			KRREditProject video;
 			QString error;
@@ -1248,7 +1287,7 @@ bool KRRWebStudio::assistantCommand(const QString& name, const QString& request,
 		if (root.isEmpty()) { done(); return true; }
 		const auto key = refresh ? data["workspace"].toString().left(64) : NewId();
 		if (refresh && (key.isEmpty() || !QDir::isAbsolutePath(root))) { done({}, Ui("工作区路径无效。")); return true; }
-		Background(this, [root]
+		background([root]
 		{
 			QJsonArray files;
 			const QDir directory(root);

@@ -50,7 +50,11 @@ void ContinueTransfer(QTcpSocket* socket, MediaTransfer& transfer)
 		if (bytes.isEmpty() || socket->write(bytes) < 0) { socket->abort(); return; }
 		transfer.left -= bytes.size();
 	}
-	if (!transfer.left) socket->disconnectFromHost();
+	if (!transfer.left)
+	{
+		transfer.file.close();
+		socket->disconnectFromHost();
+	}
 }
 }
 
@@ -92,8 +96,12 @@ void KRRWebStudioSurface::start()
 	{
 		while (auto socket = p->media.nextPendingConnection())
 		{
-			connect(socket, &QTcpSocket::disconnected, socket, &QObject::deleteLater);
 			auto state = std::make_shared<MediaTransfer>();
+			connect(socket, &QTcpSocket::disconnected, socket, [socket, state]
+			{
+				state->file.close();
+				socket->deleteLater();
+			});
 			connect(socket, &QTcpSocket::bytesWritten, socket, [socket, state]
 			{
 				if (state->started) ContinueTransfer(socket, *state);
@@ -147,6 +155,7 @@ void KRRWebStudioSurface::start()
 					return;
 				}
 				const auto length = state->file.size();
+				socket->setProperty("media-id", QString::fromLatin1(id));
 				qint64 first = 0, last = length - 1;
 				if (!range.isEmpty())
 				{
@@ -163,6 +172,7 @@ void KRRWebStudioSurface::start()
 				}
 				if (first > last || !state->file.seek(first))
 				{
+					state->file.close();
 					finish("HTTP/1.1 416 Range Not Satisfiable\r\nContent-Length: 0\r\nContent-Range: bytes */" +
 						QByteArray::number(length) + "\r\n" + allowed + "\r\n");
 					return;
@@ -174,7 +184,7 @@ void KRRWebStudioSurface::start()
 				if (!range.isEmpty())
 					header += "Content-Range: bytes " + QByteArray::number(first) + "-" + QByteArray::number(last) + "/" + QByteArray::number(length) + "\r\n";
 				header += allowed + "\r\n";
-				if (method == "HEAD") { finish(header); return; }
+				if (method == "HEAD") { state->file.close(); finish(header); return; }
 				state->started = true;
 				socket->write(header);
 				ContinueTransfer(socket, *state);
@@ -300,6 +310,15 @@ QString KRRWebStudioSurface::localResource(const QString& file)
 QString KRRWebStudioSurface::fileForResource(const QString& id) const
 {
 	return p->files.value(id);
+}
+
+void KRRWebStudioSurface::releaseResource(const QString& id)
+{
+	const auto path = p->files.take(id);
+	if (path.isEmpty()) return;
+	p->ids.remove(path);
+	for (auto socket : p->media.findChildren<QTcpSocket*>(QString{}, Qt::FindDirectChildrenOnly))
+		if (socket->property("media-id").toString() == id) socket->abort();
 }
 
 void KRRWebStudioSurface::resizeEvent(QResizeEvent* event)

@@ -2,6 +2,7 @@
 /build/
 /bin/
 /dist/
+/debug.log
 __pycache__/
 *.f32
 settings.ini

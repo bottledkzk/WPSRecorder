@@ -282,7 +282,7 @@ KRRMainWindow::KRRMainWindow(QWidget* parent) : QMainWindow(parent)
 	auto refresh = new QPushButton(Ui("刷新窗口列表"), this);
 	form->addRow(Ui("窗口"), m_window); form->addRow("", refresh);
 	connect(refresh, &QPushButton::clicked, this, &KRRMainWindow::refreshWindows);
-	m_countdown = new QComboBox(this); m_countdown->addItem(Ui("立即开始"), 0); m_countdown->addItem(Ui("3 秒"), 3); m_countdown->addItem(Ui("5 秒"), 5);
+	m_countdown = new QComboBox(this); m_countdown->addItem(Ui("立即开始"), 0); m_countdown->addItem(Ui("3 秒"), 3); m_countdown->addItem(Ui("5 秒"), 5); m_countdown->addItem(Ui("10 秒"), 10);
 	saveForm->addRow(Ui("录制倒计时"), m_countdown);
 	m_cursor = new QCheckBox(Ui("显示鼠标指针"), this); effectForm->addRow("", m_cursor);
 	m_clicks = new QCheckBox(Ui("按下鼠标时高亮"), this); effectForm->addRow("", m_clicks);
@@ -1837,15 +1837,18 @@ void KRRMainWindow::openPreview(const QString& selected)
 	m_trimEnd->setValue(0);
 	if (!m_fullscreen->isVisible()) m_previewStack->setCurrentIndex(1);
 	m_playbackControls->show(); m_seek->show();
-	if (NeedsCompatiblePreview(file))
+	if (!m_webStudio)
 	{
-		m_message->setText(Ui("正在准备兼容预览…"));
-		m_compatiblePreview->prepare(file);
-	}
-	else
-	{
-		m_player->setMedia(QUrl::fromLocalFile(file));
-		m_player->play();
+		if (NeedsCompatiblePreview(file))
+		{
+			m_message->setText(Ui("正在准备兼容预览…"));
+			m_compatiblePreview->prepare(file);
+		}
+		else
+		{
+			m_player->setMedia(QUrl::fromLocalFile(file));
+			m_player->play();
+		}
 	}
 	updatePlaybackMarkers();
 	const bool trial = file == m_trialPath;
@@ -1867,7 +1870,7 @@ void KRRMainWindow::openPreview(const QString& selected)
 	auto item = new QListWidgetItem(QFileInfo(file).fileName()); item->setData(Qt::UserRole, file); item->setToolTip(file); m_recent->insertItem(0, item);
 	while (m_recent->count() > 50) delete m_recent->takeItem(m_recent->count() - 1);
 	updatePlaybackMarkers();
-	describePreview(file);
+	if (!m_webStudio) describePreview(file);
 	updateReviewLibrary();
 	m_deletePreview->setEnabled(QFileInfo(file).isFile() && file == m_lastOutput);
 	saveSettings();
@@ -1881,41 +1884,113 @@ void KRRMainWindow::deletePreview()
 							  QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
 		return;
 	if (m_preview != file || m_active) return;
+	QString error;
+	if (!removeRecording(file, error)) showError(error);
+}
+
+bool KRRMainWindow::removeRecording(const QString& file, QString& error, QString* recoveryPath)
+{
+	if (m_active || !QFileInfo(file).isFile())
+	{
+		error = Ui("录制中或视频已不存在，无法移到回收站。");
+		return false;
+	}
 	const auto absolute = QFileInfo(file).absoluteFilePath();
+	const auto sameFile = [&](const QString& path) { return QFileInfo(path).absoluteFilePath().compare(absolute, Qt::CaseInsensitive) == 0; };
 	const bool usedForExport = m_editor.isBusy() && std::any_of(m_editorInputs.cbegin(), m_editorInputs.cend(),
-		[&](const QString& input) { return QFileInfo(input).absoluteFilePath().compare(absolute, Qt::CaseInsensitive) == 0; });
+		sameFile);
 	if (usedForExport || (m_clipEditor && !m_clipEditor->releaseIdleSource(file)))
 	{
-		showError(Ui("请先结束正在使用该视频的剪辑或导出。"));
-		return;
+		error = Ui("请先结束正在使用该视频的剪辑或导出。");
+		return false;
 	}
-	m_player->stop();
-	m_player->setMedia(QMediaContent());
-	m_compatiblePreview->clear();
-	m_video->clear();
-	if (!QFile::moveToTrash(file))
+	const bool readingThumbnail = m_reviewThumbnail.state() != QProcess::NotRunning && sameFile(m_pendingThumbnail);
+	const auto retryThumbnail = [&]
 	{
-		openPreview(file);
-		showError(Ui("无法移到回收站。请检查文件是否正在被其他程序使用。"));
-		return;
+		if (!readingThumbnail) return;
+		for (int i = 0; i < m_recent->count(); ++i)
+		{
+			auto item = m_recent->item(i);
+			if (sameFile(item->data(Qt::UserRole).toString())) item->setData(Qt::UserRole + 4, false);
+		}
+	};
+	if (readingThumbnail)
+	{
+		m_pendingThumbnail.clear();
+		m_reviewThumbnail.kill();
+		if (!m_reviewThumbnail.waitForFinished(1000) && m_reviewThumbnail.state() != QProcess::NotRunning)
+		{
+			retryThumbnail();
+			error = Ui("无法停止正在读取此视频的缩略图任务。");
+			return false;
+		}
+	}
+	const bool previewing = sameFile(m_preview);
+	if (previewing)
+	{
+		m_player->stop();
+		m_player->setMedia(QMediaContent());
+		m_compatiblePreview->clear();
+		m_video->clear();
+	}
+	const auto restorePreview = [&]
+	{
+		retryThumbnail();
+		if (previewing && !m_webStudio) openPreview(file);
+		else if (readingThumbnail) updateReviewLibrary();
+	};
+	QFile recording(file);
+	QString recovered;
+	if (!recording.moveToTrash() || QFileInfo::exists(file))
+	{
+		const auto directory = QFileInfo(file).absoluteDir();
+		const auto folder = directory.filePath(".wpsrecorder-trash");
+		const auto expected = QDir(directory.canonicalPath()).filePath(".wpsrecorder-trash");
+		if (!directory.mkpath(folder) || QDir(folder).canonicalPath().compare(expected, Qt::CaseInsensitive) != 0)
+		{
+			restorePreview();
+			error = Ui("无法创建同盘回收目录。");
+			return false;
+		}
+		QTemporaryDir entry(QDir(folder).filePath("recording-XXXXXX"));
+		const auto target = entry.filePath(QFileInfo(file).fileName());
+		const auto sourcePath = QDir::toNativeSeparators(absolute).toStdWString();
+		const auto targetPath = QDir::toNativeSeparators(target).toStdWString();
+		if (!entry.isValid() || !MoveFileExW(sourcePath.c_str(), targetPath.c_str(), MOVEFILE_WRITE_THROUGH))
+		{
+			restorePreview();
+			error = Ui("无法移到回收目录，请检查文件占用和目录权限。");
+			return false;
+		}
+		entry.setAutoRemove(false);
+		recovered = QDir::toNativeSeparators(target);
+		const auto markerPath = QDir::toNativeSeparators(RecordingMarkersPath(absolute)).toStdWString();
+		const auto markerTarget = QDir::toNativeSeparators(RecordingMarkersPath(target)).toStdWString();
+		if (QFileInfo::exists(RecordingMarkersPath(absolute)))
+			MoveFileExW(markerPath.c_str(), markerTarget.c_str(), MOVEFILE_WRITE_THROUGH);
 	}
 	if (m_clipEditor) m_clipEditor->discardReleasedSource(file);
-	m_preview.clear();
-	refreshMediaActions();
-	m_lastOutput.clear();
+	if (sameFile(m_lastOutput)) m_lastOutput.clear();
 	for (int i = m_recent->count() - 1; i >= 0; --i)
-		if (m_recent->item(i)->data(Qt::UserRole).toString() == file) delete m_recent->takeItem(i);
+		if (sameFile(m_recent->item(i)->data(Qt::UserRole).toString())) delete m_recent->takeItem(i);
 	for (int i = m_clips->count() - 1; i >= 0; --i)
-		if (m_clips->item(i)->data(Qt::UserRole).toString() == file) delete m_clips->takeItem(i);
-	m_previewStack->setCurrentIndex(0);
-	describePreview({});
-	updatePlaybackMarkers();
+		if (sameFile(m_clips->item(i)->data(Qt::UserRole).toString())) delete m_clips->takeItem(i);
+	if (previewing)
+	{
+		m_preview.clear();
+		m_previewStack->setCurrentIndex(0);
+		describePreview({});
+		updatePlaybackMarkers();
+		m_playbackControls->hide();
+		m_seek->hide();
+		m_deletePreview->setEnabled(false);
+	}
+	refreshMediaActions();
 	updateReviewLibrary();
-	m_playbackControls->hide();
-	m_seek->hide();
-	m_deletePreview->setEnabled(false);
-	m_message->setText(Ui("已移到回收站"));
+	m_message->setText(recovered.isEmpty() ? Ui("已移到回收站") : Ui("已移到回收目录：") + recovered);
+	if (recoveryPath) *recoveryPath = recovered;
 	saveSettings();
+	return true;
 }
 void KRRMainWindow::syncCaptureButtons()
 {

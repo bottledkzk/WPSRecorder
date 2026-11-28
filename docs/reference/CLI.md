@@ -115,7 +115,7 @@ wpsrecorder_cli.exe --record --duration 15 --output region.mp4 --source region -
 
 state 为 idle 或 recording，phase 进一步区分 starting、recording、finalizing 和 idle。duration_sec 在录制中表示活动时长，保存后为视频时间轴时长。frames_written 为交给编码器的完整帧数，avg_fps 为这些帧除以对应时长。missed_frame_slots 为未写入新画面的帧位数量，播放器会把前一帧保留到下一帧的时间戳。duplicate_frames 统计为达到停止时刻而写入的末尾保留帧。
 
-mem_mb 为服务进程和当前 FFmpeg 视频编码进程的工作集之和，单位 MiB；cpu_pct 为两者 CPU 时间差除以墙钟差和逻辑 CPU 数。首次采样为 0。空闲时无服务则输出全部必需字段的零值 idle JSON；服务仍在空闲期时会保留上一任务的结果和错误。
+`mem_mb` 为服务进程和当前 FFmpeg 视频编码进程的工作集之和，单位 MiB。`cpu_pct` 按同一窗口内各进程的 CPU 时间差计算，除以采样间隔和逻辑 CPU 数。首次采样为 0，后续每 250 毫秒最多更新一次。服务处于空闲期时会保留上一任务的结果和错误。
 
 ## 剪辑命令
 
@@ -123,9 +123,15 @@ mem_mb 为服务进程和当前 FFmpeg 视频编码进程的工作集之和，�
 wpsrecorder_cli.exe --trim --input input.mp4 --output clip.mp4 --begin 2.5 --end 8
 wpsrecorder_cli.exe --split --input input.mp4 --output D:\Videos\parts --intervals "0-3;3-6;10-15"
 wpsrecorder_cli.exe --merge --input first.mp4 --input second.mp4 --output joined.mp4
+wpsrecorder_cli.exe --merge --input first.mp4 --input second.mp4 --output joined-1080p.mp4 --res 1920x1080 --fps 60 --bitrate 12000
+wpsrecorder_cli.exe --merge --input first.mp4 --input second.mp4 --output joined-copy.mp4 --copy-streams
 ```
 
-区间单位为秒。拆分文件为 part-001.mp4、part-002.mp4 等，已有文件拒绝覆盖。合并按 --input 参数顺序进行，并统一为 1280×720/30fps；缺失音轨自动补等长静音。
+区间单位为秒。拆分文件为 `part-001.mp4`、`part-002.mp4` 等，已有文件拒绝覆盖。
+
+`--merge` 按 `--input` 的顺序拼接为 MP4。普通合并默认继承首段的显示分辨率和帧率，奇数宽高补齐为偶数，画面等比适配。可用 `--res 宽x高`、`--fps` 和 `--bitrate` 覆盖输出尺寸、帧率和视频目标码率。音轨按输入顺序分别合并，缺少音轨的片段补等长静音，全程静音素材输出无音轨视频。`--subtitles` 可添加 SRT 字幕轨，`--denoise` 可整理已有音轨。
+
+`--merge --copy-streams` 复制首路视频和已有音轨的编码数据。各段需为兼容的本地视频，流顺序、编码参数、时间基和分辨率须一致。可传入与原始编码尺寸或显示方向一致的 `--res`。HDR 素材用此模式保留 HDR 信号。普通合并支持 SDR 素材。
 
 ## 2.1 可视化工程导出
 
@@ -163,7 +169,7 @@ wpsrecorder_cli.exe --export --input lesson.mp4 --output subtitled.mp4 --subtitl
 
 预约时间必须在未来，带时区的 ISO8601 值可避免歧义；必须有正 max-duration。已有预约时拒绝重叠开始。预约不唤醒休眠、服务重启后不恢复；状态含 scheduled_start、scheduled_output、schedule_error。
 
-`--export` 的 end 默认 -1，表示完整结尾。MP4/MOV/MKV 可硬件编码；WebM 为 VP9/Opus，GIF 为 12fps、960px 宽的调色板输出，M4A/MP3 只取第一个音轨。`--copy-streams` 只支持完整视频的 MP4/MOV/MKV 封装，不支持选区、降噪或新增字幕；目标容器不兼容源编码时会失败。
+`--export` 的 `--end` 默认 `-1`，表示视频结尾。MP4/MOV/MKV 可硬件编码，WebM 为 VP9/Opus，GIF 为 12 fps、960 px 宽的调色板输出。M4A/MP3/WAV 提取第一个音轨，WAV 使用 PCM 16 位。`--bitrate` 设置重新编码的视频的目标码率。`--export --copy-streams` 将完整视频封装为与源编码兼容的 MP4/MOV/MKV，用于原样复制编码数据。
 
 字幕工具默认查找应用目录下 whisper/whisper-cli.exe 和 whisper/ggml-base.bin，也可通过 --whisper、--model 指定。识别完全在本地，先转 16kHz 单声道 WAV，再调用 whisper.cpp 输出 SRT。--subtitles 以可选字幕轨嵌入，不烧录到画面；播放器需开启字幕显示。
 

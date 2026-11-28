@@ -492,7 +492,7 @@ const AgentWorkspace = (() => {
           data-agent-candidate="${messageIndex}:${index}" data-edge="end">
         ${ib("aiw-cut-preview", "预览片段", "play", { value: `${messageIndex}:${index}` })}
         ${reorder ? ib("aiw-cut-order", "上移", "up", { value: `${messageIndex}:${index}:-1`, disabled: index === 0 }) +
-          ib("aiw-cut-order", "下移", "down", { value: `${messageIndex}:${index}:1`, disabled: index === cut.targets.length - 1 }) : ""}</div></article>`).join("")}
+          ib("aiw-cut-order", "下移", "chevron", { value: `${messageIndex}:${index}:1`, disabled: index === cut.targets.length - 1 }) : ""}</div></article>`).join("")}
       ${cut.applied ? "<small>已应用到剪辑工坊</small>" : `<div class="hstack">
         ${b("aiw-cut-apply", "预览并应用", "check", { variant: "mini", value: messageIndex, disabled: !selected.length || multiple })}
         ${b("aiw-cut-export", "保存多素材草稿", "save", { variant: "mini", value: messageIndex, disabled: !multiple })}</div>`}</div>`;
@@ -623,7 +623,7 @@ const AgentWorkspace = (() => {
       const selected = tab.id === current.id;
       return `<div class="agent-right-tab${selected ? " active" : ""}">
         <button type="button" class="agent-tab-button" role="tab" data-action="aiw-tab-select"
-          data-value="${tab.id}" id="agent-tab-${tab.id}" aria-controls="agent-tab-panel"
+          data-value="${esc(tab.id)}" id="agent-tab-${esc(tab.id)}" aria-controls="agent-tab-panel"
           aria-selected="${selected}" tabindex="${selected ? "0" : "-1"}">${g(icon)}<span>${tr(label)}</span></button>
         ${ib("aiw-tab-close", "关闭" + label, "close", { value: tab.id })}</div>`;
     }).join("");

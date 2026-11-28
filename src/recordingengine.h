@@ -62,8 +62,11 @@ private:
 	QString m_error;
 	QString m_encoder;
 	KRRRecordingConfig m_live;
-	double m_previousCpu = 0;
-	double m_previousSample = 0;
+	std::array<double, 3> m_previousCpu{};
+	std::array<qint64, 2> m_sampledEncoders{};
+	double m_previousCpuSample = 0;
+	double m_previousFpsSample = 0;
 	qint64 m_previousFrameCount = 0;
+	double m_cpuPercent = 0, m_memoryMB = 0, m_effectiveFps = 0;
 };
 #endif

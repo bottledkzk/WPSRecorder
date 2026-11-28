@@ -1,12 +1,10 @@
-# WPS Recorder 2.3.11 录制与剪辑工作台
+# WPS Recorder 2.3.13 录制与剪辑工作台
 
 本项目是 Windows 10/11 x64 上的桌面应用。Studio 窗口在 Microsoft Edge WebView2 中加载随程序附带的 HTML、CSS 和 JavaScript。C++17 和 Qt 负责 Windows 设备、录制控制和本地文件操作，FFmpeg 负责编码与剪辑导出。
 
 ## 使用
 
-从 [GitHub Releases](https://github.com/bottledkzk/WPSRecorder/releases/tag/v2.3.11) 下载 `WPSRecorder-2.3.11-Windows-x64.zip`。将 ZIP 完整解压到 Windows 下载目录，双击包内的 `wpsrecorder.exe`。课程提交包的运行入口是 `exe_cli/wpsrecorder.exe`。
-
-自动评测可调用同目录的 `wpsrecorder_cli.exe`。系统有 Microsoft Edge WebView2 Runtime 时使用 Studio 界面，加载失败时切换到 Qt 工作台。录制文件默认保存在用户视频目录下的 `WPSRecorder` 文件夹，路径可在录制工作台中更改。
+从 [GitHub Releases](https://github.com/bottledkzk/WPSRecorder/releases/tag/v2.3.13) 下载 `WPSRecorder-2.3.13-Windows-x64.zip`，将 ZIP 完整解压到 Windows 下载目录，双击包内的 `wpsrecorder.exe`。课程包的启动入口为 `exe_cli/wpsrecorder.exe`。自动评测可调用同目录的 `wpsrecorder_cli.exe`。系统有 Microsoft Edge WebView2 Runtime 时使用 Studio 界面，加载失败时切换到 Qt 工作台。录制文件默认保存在用户视频目录下的 `WPSRecorder` 文件夹，路径可在录制工作台中更改。
 
 - **录制工作台**　打开即显示当前来源的实时画面。预览下方可切换目标、打开当前源属性、缩放或适配画面。底部的场景、源、混音器、录制设置和录制控制可拖动调整宽度及顺序。源列表保存当前场景中的可切换主画面源，摄像头画中画可叠加。混音器支持默认麦克风和系统声，也可添加系统枚举的音频设备。
 - **录制与预约**　可选 30、60、90、144 fps。码率的「默认」随分辨率和帧率计算，手动调整后保留用户输入。「预约录制」支持多任务、冲突和过期状态，时、分、秒留空或填 0 时由用户手动停录。悬浮条可拖动、收起、开始或停止录制，并打开工作台或讲解工具。
@@ -32,7 +30,7 @@ GUI 与 CLI 通过当前用户的本机套接字控制录制服务，采集、�
 | 副屏画中画 1920×1080、30 fps | 9.00 秒 | 270 |
 | 实体副屏 2560×1440、30 fps | 16.00 秒 | 480 |
 
-上述 2.3.9 实录使用 NVIDIA H.264 硬件编码。长录的录制服务 CPU 采样中位数 2.03%，内存采样峰值 309.46 MB。场景条件、帧位和测量范围见 [2.3.9 验收](docs/validation/VALIDATION-V239.md) 与 [性能细节](docs/reference/PERFORMANCE.md)。本版界面与打包复测见 [2.3.11 验收](docs/validation/VALIDATION-V2311.md)。
+上述 2.3.9 实录使用 NVIDIA H.264 硬件编码。长录的录制服务 CPU 采样中位数 2.03%，内存采样峰值 309.46 MB。场景条件、帧位和测量范围见 [2.3.9 验收](docs/validation/VALIDATION-V239.md) 与 [性能细节](docs/reference/PERFORMANCE.md)。CLI 合并与 WorkView 复测见 [2.3.13 验收](docs/validation/VALIDATION-V2313.md)。
 
 ## 命令行
 
@@ -46,6 +44,7 @@ bin\wpsrecorder_cli.exe --status
 bin\wpsrecorder_cli.exe --pause
 bin\wpsrecorder_cli.exe --resume
 bin\wpsrecorder_cli.exe --stop
+bin\wpsrecorder_cli.exe --merge --input first.mp4 --input second.mp4 --output joined.mp4 --res 1920x1080
 ```
 
 开发构建的程序在 `build/bin/Release/`；交付包在 `exe_cli/`，将示例中的 bin 替换为对应位置即可。完整参数和剪辑命令见 [CLI 文档](docs/reference/CLI.md)。

@@ -440,7 +440,7 @@ kbd { font: 10px var(--mono); padding: 2px 4px; color: var(--secondary); border:
 .subtitle-time:hover { text-decoration: underline; }
 .subtitle-overlay { position: absolute; right: 6%; bottom: 7%; left: 6%; color: #fff; text-align: center; font-size: clamp(12px, 1.3vw, 18px); text-shadow: 0 1px 4px #000; pointer-events: none; white-space: pre-line; }
 
-.timeline { background: var(--field); }
+.timeline { container-type: inline-size; background: var(--field); }
 .timeline-toolbar { justify-content: space-between; }
 .timeline-toolbar .tool-divider { margin-inline: 3px; }
 .timeline-zoom { width: 75px; }

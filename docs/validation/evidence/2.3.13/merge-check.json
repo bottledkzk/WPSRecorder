@@ -1,0 +1,118 @@
+{
+  "version": "wpsrecorder 2.3.13",
+  "passed": true,
+  "cases": {
+    "default_1080p": {
+      "size": [
+        1920,
+        1080
+      ],
+      "frames": 30,
+      "input_order_verified": true
+    },
+    "default_first_canvas": {
+      "size": [
+        640,
+        480
+      ]
+    },
+    "explicit_1080p": {
+      "size": [
+        1920,
+        1080
+      ],
+      "frames": 60,
+      "letterbox": true,
+      "silence": true
+    },
+    "first_display_orientation": {
+      "size": [
+        480,
+        640
+      ]
+    },
+    "copy_display_orientation": {
+      "encoded_size": [
+        640,
+        480
+      ],
+      "display_size": [
+        480,
+        640
+      ]
+    },
+    "two_tracks_with_gap": {
+      "tracks": 2,
+      "silent_second_clip_on_both_tracks": true
+    },
+    "no_audio_streams": {
+      "tracks": 0
+    },
+    "fps_and_bitrate": {
+      "inherited_fps": 60,
+      "explicit_fps": 60,
+      "requested_kbps": [
+        300,
+        12000
+      ],
+      "measured_bps": [
+        276132,
+        13510176
+      ]
+    },
+    "merged_subtitles_and_denoise": {
+      "subtitle_stream": "mov_text"
+    },
+    "copy_1080p": {
+      "size": [
+        1920,
+        1080
+      ],
+      "unchanged_encoded_packets": {
+        "v:0": 30,
+        "a:0": 50
+      }
+    },
+    "copy_mixed": {
+      "rejected": true
+    },
+    "copy_resize": {
+      "rejected": true
+    },
+    "copy_denoise": {
+      "rejected": true
+    },
+    "odd_size": {
+      "rejected": true
+    },
+    "invalid_size": {
+      "rejected": true
+    },
+    "oversize_canvas": {
+      "rejected": true
+    },
+    "invalid_fps": {
+      "rejected": true
+    },
+    "copy_rate": {
+      "rejected": true
+    },
+    "copy_fps": {
+      "rejected": true
+    },
+    "originals_and_output_preserved": {
+      "overwrite_rejected": true
+    },
+    "trim_1080p_regression": {
+      "size": [
+        1920,
+        1080
+      ],
+      "frames": 9
+    },
+    "cli_validation_and_wav": {
+      "invalid_intervals_rejected": true,
+      "wav_codec": "pcm_s16le"
+    }
+  }
+}

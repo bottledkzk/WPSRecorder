@@ -93,7 +93,6 @@ struct Match
 Match FindMatch(const QFileInfo& file, const QStringList& words, bool& openedSidecar)
 {
 	const auto name = file.completeBaseName();
-	if (ContainsWords(name, words)) return {words.isEmpty() ? "date" : "filename", {}, -1};
 	const auto video = file.absoluteFilePath();
 	const auto markers = ReadRecordingMarkers(video);
 	for (const auto& value : markers)
@@ -316,7 +315,25 @@ QJsonObject FindAssistantRecordings(const KRRAssistantContext& context, const QJ
 	std::sort(matches.begin(), matches.end(), [](const QJsonObject& a, const QJsonObject& b)
 		{ return a["recorded_at"].toString() > b["recorded_at"].toString(); });
 	QJsonArray results;
-	for (const auto& match : matches.mid(0, query.limit)) results.append(match);
+	QElapsedTimer metadataDeadline;
+	metadataDeadline.start();
+	for (auto match : matches.mid(0, query.limit))
+	{
+		if (cancel && cancel->load()) return Failure("cancelled");
+		const auto path = match["path"].toString();
+		const auto markers = ReadRecordingMarkers(path);
+		QJsonArray preview;
+		for (int i = 0; i < qMin(markers.size(), 20); ++i) preview.append(markers.at(i));
+		match["marker_count"] = markers.size();
+		match["markers"] = preview;
+		const auto remainingMs = 3500 - metadataDeadline.elapsed();
+		KRREditProject media;
+		QString error;
+		if (remainingMs > 0 && ProbeEditSource(path, media, error, nullptr, static_cast<int>(qMin<qint64>(1000, remainingMs)), cancel))
+			match["duration_ms"] = media.duration;
+		results.append(match);
+	}
+	if (cancel && cancel->load()) return Failure("cancelled");
 	return {{"ok", true}, {"results", results}, {"examined", examined},
 		{"truncated", stopped() || inspectedMetadata >= 320 || matches.size() > query.limit},
 		{"searched_subtitle_files", openedSidecars}};

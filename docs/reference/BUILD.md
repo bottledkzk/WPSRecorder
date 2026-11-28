@@ -50,6 +50,8 @@ cmake --build build --config Release --parallel 4
 python tests/e2e.py --bin build/bin/Release --output D:/temp/recorder-qa --evidence D:/temp/recorder-qa-evidence --long-seconds 600
 ```
 
+使用 `python tests/merge.py --bin build/bin/Release --output D:/temp/recorder-merge-qa` 可单独复测合并尺寸、混合输入、流复制和剪切。测试自动生成素材并解码核对结果。
+
 Python 验收环境需要 NumPy 测量解码音频和画面变化。本地 Audio8 的 Python 依赖随完整发行包提供。测试写入独立的新目录，使用自有动画窗口和低音量测试音测量真实采集、编码与解码。长测会使用实际桌面，运行前准备可录制的测试画面。
 
 ## 打包

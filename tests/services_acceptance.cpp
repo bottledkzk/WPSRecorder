@@ -1,5 +1,9 @@
 #include "subtitledialog.h"
+#include "dubbing.h"
+#include "recordingassistanttools.h"
 #include "recordingconfig.h"
+#include "recordingmarkers.h"
+#include "speech.h"
 #include "speechservices.h"
 #include "speechsettingsdialog.h"
 #include "uitheme.h"
@@ -264,11 +268,62 @@ int main(int argc, char** argv)
 	app.setApplicationName("wpsrecorder-services-qa-" + mode);
 	QStandardPaths::setTestModeEnabled(true);
 	Fixture mock(QFileInfo(report).absolutePath());
-	if (!mock.listen(QHostAddress::LocalHost)) return 2;
+	if (mode != "recording-metadata" && mode != "audio8-batch" && !mock.listen(QHostAddress::LocalHost)) return 2;
 	std::atomic<bool> cancel{false};
 	QJsonObject result{{"case", mode}};
 	bool passed = false;
-	if (mode == "fresh")
+	if (mode == "recording-metadata")
+	{
+		QTemporaryDir fixture;
+		if (!fixture.isValid()) return 2;
+		const auto video = fixture.filePath("recording-metadata.mp4");
+		QString error;
+		if (!RunMediaProcess(FindFFmpeg(), {"-v", "error", "-nostdin", "-f", "lavfi", "-i", "color=s=320x180:r=30:d=1.2",
+			"-c:v", "libx264", video}, error, 15000)) return 2;
+		const QJsonArray marks{QJsonObject{{"at_ms", 200}, {"label", "overview"}},
+			QJsonObject{{"at_ms", 820}, {"label", "camera-switch"}}};
+		if (!WriteRecordingMarkers(RecordingMarkersPath(video), marks, error)) return 2;
+		const KRRAssistantContext context{fixture.path(), {}, {}};
+		const auto find = [&](const QJsonObject& query)
+		{ return FindAssistantRecordings(context, query)["results"].toArray().first().toObject(); };
+		const auto filename = find({{"query", "recording-metadata"}});
+		const auto date = find({});
+		const auto marker = find({{"query", "camera-switch"}});
+		passed = filename["match"] == "filename" && date["match"] == "date" && marker["match"] == "marker" &&
+			marker["at_ms"] == 820;
+		for (const auto& row : {filename, date, marker})
+			passed = passed && row["marker_count"] == 2 && row["markers"].toArray() == marks && row["duration_ms"] == 1200;
+		result["duration_ms"] = filename["duration_ms"];
+		result["markers"] = filename["markers"];
+	}
+	else if (mode == "audio8-batch")
+	{
+		if (!Audio8Available()) return 2;
+		QTemporaryDir fixture;
+		if (!fixture.isValid()) return 2;
+		KRRVoiceOptions voice;
+		voice.voice = "mandarin-female";
+		const QVector<KRRVoiceLine> batch{{QStringLiteral("准备录制。"), fixture.filePath("first.wav")},
+			{QStringLiteral("现在开始剪辑。"), fixture.filePath("second.wav")}};
+		QElapsedTimer elapsed;
+		elapsed.start();
+		auto error = SynthesizeAudio8Speech(batch, voice, &cancel);
+		result["batch_ms"] = elapsed.restart();
+		QJsonArray durations;
+		passed = error.isEmpty();
+		for (int i = 0; passed && i < batch.size(); ++i)
+		{
+			const auto target = fixture.filePath(QString("single-%1.wav").arg(i));
+			error = SynthesizeSpeech(batch[i].text, target, voice, &cancel);
+			const auto length = SpeechWaveDuration(batch[i].output);
+			passed = error.isEmpty() && length > 0 && length == SpeechWaveDuration(target);
+			durations.append(length);
+		}
+		result["individual_ms"] = elapsed.elapsed();
+		result["speech_ms"] = durations;
+		if (!error.isEmpty()) result["error"] = error;
+	}
+	else if (mode == "fresh")
 	{
 		qputenv("WPSRECORDER_VIDEO_KEY", "unused-fixture-key");
 		passed = TtsServiceIds().isEmpty();

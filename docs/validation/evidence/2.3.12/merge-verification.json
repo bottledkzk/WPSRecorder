@@ -1,0 +1,110 @@
+{
+  "baseline_version": "2.3.11",
+  "baseline": [
+    {
+      "case": "default",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "case": "explicit-1080",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "case": "copy",
+      "width": 1280,
+      "height": 720
+    }
+  ],
+  "release_checks": {
+    "version": "wpsrecorder 2.3.12",
+    "passed": true,
+    "cases": {
+      "default_1080p": {
+        "size": [
+          1920,
+          1080
+        ],
+        "frames": 30,
+        "input_order_verified": true
+      },
+      "default_first_canvas": {
+        "size": [
+          640,
+          480
+        ]
+      },
+      "explicit_1080p": {
+        "size": [
+          1920,
+          1080
+        ],
+        "letterbox": true,
+        "silence": true
+      },
+      "first_display_orientation": {
+        "size": [
+          480,
+          640
+        ]
+      },
+      "copy_1080p": {
+        "size": [
+          1920,
+          1080
+        ],
+        "unchanged_encoded_packets": {
+          "v:0": 30,
+          "a:0": 50
+        }
+      },
+      "copy_mixed": {
+        "rejected": true
+      },
+      "copy_resize": {
+        "rejected": true
+      },
+      "copy_denoise": {
+        "rejected": true
+      },
+      "odd_size": {
+        "rejected": true
+      },
+      "invalid_size": {
+        "rejected": true
+      },
+      "originals_and_output_preserved": {
+        "overwrite_rejected": true
+      },
+      "trim_1080p_regression": {
+        "size": [
+          1920,
+          1080
+        ],
+        "frames": 9
+      }
+    }
+  },
+  "portable_cli_tested_with_system_path_only": true,
+  "editor_regressions_passed": [
+    "timeline_concat_crop",
+    "source_frame_mapping",
+    "burned_and_optional_captions",
+    "independent_audio_edits",
+    "mixed_audio_export",
+    "track_enable_disable",
+    "validation_and_original_safety"
+  ],
+  "portable_archive": {
+    "version": "2.3.12",
+    "name": "WPSRecorder-2.3.12-Windows-x64.zip",
+    "bytes": 867606157,
+    "sha256": "a8f769dd5d3a2a2b5a9eb2c18234ee206c67815363fadf776d5fd99cfb1a0624",
+    "files": 3594,
+    "program_sha256": {
+      "wpsrecorder.exe": "0aa930f45e1d206f126858959aad6cc1f791fc99d95ddf42236ef3519701dced",
+      "wpsrecorder_cli.exe": "bb2eaaf4685fd24571f65065fb4aa7c3465844c0dfbb7f971567409026229c1f"
+    }
+  }
+}

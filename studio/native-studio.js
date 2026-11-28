@@ -606,16 +606,43 @@ Object.assign(actions, {
     }
   },
   "review-select": id => reviewMedia(id),
-  "remove-video": () => Native.rpc("remove-video", { id: state.asset }).then(entries => {
-    if (!entries?.some(item => item.id === state.asset)) {
-      const at = assets.findIndex(asset => asset.id === state.asset);
-      if (at >= 0) assets.splice(at, 1);
-      state.asset = "";
+  "remove-video": () => {
+    const asset = Views.currentAsset();
+    if (!asset.id) return;
+    showDialog("remove-video", "删除录制", `<p>${esc(UI.text("将此视频移到回收站？"))}</p><p>${esc(asset.name)}</p>`,
+      b("confirm-remove-video", "移到回收站", "trash", { variant: "primary", value: asset.id }));
+  },
+  "confirm-remove-video": async id => {
+    if (dialogName !== "remove-video") return;
+    dialog.close();
+    const video = $("#review-video");
+    if (video?.dataset.assetId === id) {
+      thumbnailJob?.controller.abort();
+      state.review.playing = false;
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
     }
-    acceptLibrary(entries);
-    if (state.asset) reviewMedia(state.asset);
-    else render();
-  }, reportNativeError),
+    try {
+      const result = await Native.rpc("remove-video", { id, confirmed: true });
+      if (!result?.removed) return;
+      const at = assets.findIndex(asset => asset.id === id);
+      if (at >= 0) assets.splice(at, 1);
+      if (state.asset === id) {
+        state.asset = "";
+        state.review.at = 0;
+      }
+      acceptLibrary(result.entries);
+      if (result.recoveryPath) toast(UI.text("已移到回收目录：") + result.recoveryPath);
+    } catch (error) {
+      reportNativeError(error);
+    } finally {
+      if (state.page === "review" && (!video || video.isConnected)) {
+        render();
+        refreshReviewSelection();
+      }
+    }
+  },
   "reveal-media": () => Native.tell("reveal-media", { id: state.asset }),
   "recover-recording": () => Native.rpc("recover").then(acceptLibrary, reportNativeError),
   "open-editor-project": showEditorProjectPicker,
@@ -712,13 +739,17 @@ Object.assign(actions, {
   "srt-export": () => flushEditorChanges().then(() => Native.rpc("srt-export", {
     track: timeline.tracks.filter(item => item.kind === "subtitle").indexOf(locateSubtitleTrack())
   })).then(path => { if (path) toast("字幕已导出"); }, reportNativeError),
-  "export-select-srt": () => Native.rpc("select-srt").then(file => {
-    if (!exportDraft || !file?.id) return;
-    exportDraft.subtitleId = file.id;
-    exportDraft.subtitleFile = file.name;
-    exportDialog("subtitleFile");
-  }, reportNativeError),
-  "export-clear-srt": () => { exportDraft.subtitleFile = ""; exportDraft.subtitleId = ""; exportDialog("subtitleFile"); },
+  "export-select-srt": () => {
+    const draft = exportDraft;
+    if (!draft || draft.project || draft.copyStreams || !supportsExportSrt(draft.format)) return;
+    return Native.rpc("select-srt").then(file => {
+      if (draft !== exportDraft || !dialog.open || dialogName !== "export" || draft.copyStreams ||
+          !supportsExportSrt(draft.format) || !file?.id) return;
+      draft.subtitleId = file.id;
+      draft.subtitleFile = file.name;
+      exportDialog("subtitleFile");
+    }, reportNativeError);
+  },
   help: () => settingsDialog("system"),
   "native-guide": () => Native.tell("open-guide"),
 });
@@ -811,6 +842,24 @@ Native.on("levels", levels => {
   }
 });
 Native.on("library", acceptLibrary);
+Native.on("library-metadata", ({ id, duration, poster }) => {
+  const asset = assets.find(entry => entry.id === id);
+  if (!asset) return;
+  if (!asset.duration && duration > 0) asset.duration = duration;
+  if (poster && !asset.poster) asset.poster = poster;
+  const thumb = $(`.library-list [data-value="${CSS.escape(id)}"] .media-thumb`);
+  if (thumb) {
+    $("time", thumb).textContent = asset.duration > 0 ? time(asset.duration) : "—";
+    const placeholder = $(".source-icon", thumb);
+    if (placeholder && poster) {
+      const image = document.createElement("img");
+      image.alt = "";
+      image.src = poster;
+      placeholder.replaceWith(image);
+    }
+  }
+  if (state.page === "review" && state.asset === id) refreshReviewMetadata();
+});
 Native.on("navigate", navigate);
 Native.on("annotation", active => {
   state.annotation.open = active;

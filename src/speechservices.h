@@ -10,6 +10,7 @@
 #include <functional>
 
 struct KRRVoiceOptions;
+struct KRRVoiceLine;
 
 struct KRRSpeechService
 {
@@ -34,6 +35,7 @@ QString Audio8Directory();
 void SetAudio8Directory(const QString& directory);
 bool Audio8Available(const QString& directory = {});
 QStringList Audio8Voices();
+QString SynthesizeAudio8Raw(const QVector<KRRVoiceLine>& lines, const QString& voice, const std::atomic<bool>* cancel);
 QString SpeechServiceHost(const QString& id);
 QString DefaultVoice(const QString& engine, const QString& language);
 QString RequestVideoReview(const KRRSpeechService& service, QJsonObject payload,

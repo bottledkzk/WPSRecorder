@@ -1,6 +1,6 @@
 # WPS Recorder 2.3.9 课程提交与打包核对
 
-现行包见 [2.3.11 验收](../validation/VALIDATION-V2311.md)。下面保留 2.3.9 的课程要求逐项核对及同学反馈。
+现行源码与回归结果见 [2.3.13 验收](../validation/VALIDATION-V2313.md)。下面保留 2.3.9 的课程要求逐项核对及同学反馈。
 
 2026-11-23 对照《大项目：wpsrecorder 屏幕录制工具开发》第 1–5、7–8 页和《VS Qt 打包发布方法》第 1–4、12 页核对。版本实测按 [2.3.9 验收记录](../validation/VALIDATION-V239.md) 追溯，历史项目按 [验收索引](../validation/README.md) 追溯。
 

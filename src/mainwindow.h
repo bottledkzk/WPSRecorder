@@ -70,6 +70,7 @@ signals:
 	void minimalRecorderRequested();
 	void backgroundRequested();
 	void workbenchRestored();
+	void reviewThumbnailReady(const QString& file, const QByteArray& jpeg, qint64 duration);
 
 protected:
 	void closeEvent(QCloseEvent* event) override;
@@ -142,6 +143,7 @@ private:
 	void takeScreenshot();
 	void openPreview(const QString& file);
 	void deletePreview();
+	bool removeRecording(const QString& file, QString& error, QString* recoveryPath = nullptr);
 	void toggleMic(bool enabled);
 	void syncCaptureButtons();
 	bool saveSettings();

@@ -3,6 +3,7 @@
 #include "assistanthistory.h"
 #include "clipeditor.h"
 #include "editsequence.h"
+#include "embeddedcli.h"
 #include "playbackslider.h"
 #include "previewvideo.h"
 #include "recordingassistantdialog.h"
@@ -1096,10 +1097,16 @@ QWidget* KRRStudioAssistant::terminalPage()
 		auto arguments = QProcess::splitCommand(text);
 		if (!arguments.isEmpty() && (arguments.front() == "wpsrecorder_cli" || arguments.front() == "wpsrecorder_cli.exe"))
 			arguments.removeFirst();
+		if (!EmbeddedCliAllows(arguments))
+		{
+			output->appendPlainText(Ui("内置终端请使用随软件提供的识别引擎。自定义识别程序及服务命令可在系统终端使用。"));
+			return;
+		}
 		output->appendPlainText("> wpsrecorder_cli " + arguments.join(' '));
 		input->clear();
 		input->setEnabled(false);
 		cancel->setEnabled(true);
+		ConfigureEmbeddedCli(*process);
 		process->start(QCoreApplication::applicationDirPath() + "/wpsrecorder_cli.exe", arguments);
 		process->closeWriteChannel();
 	});

@@ -1,0 +1,16 @@
+{
+    "case": "recording-metadata",
+    "duration_ms": 1200,
+    "markers": [
+        {
+            "at_ms": 200,
+            "label": "overview"
+        },
+        {
+            "at_ms": 820,
+            "label": "camera-switch"
+        }
+    ],
+    "passed": true,
+    "requests": 0
+}

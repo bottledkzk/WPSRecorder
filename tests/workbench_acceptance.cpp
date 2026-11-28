@@ -12,6 +12,7 @@
 #include "recordingassistantdialog.h"
 #include "studioassistant.h"
 #include "recordingconfig.h"
+#include "recordingengine.h"
 #include "recordingmarkers.h"
 #include "recordingwidgets.h"
 #include "uitheme.h"
@@ -60,6 +61,7 @@
 #include <QToolBar>
 #include <QWindow>
 #include <algorithm>
+#include <cmath>
 #include <functional>
 static void Mouse(QWidget *w, QEvent::Type type, const QPoint &p)
 {
@@ -153,6 +155,49 @@ class KRRWorkbenchAcceptance : public QObject
 	{
 		const auto input = QFileInfo(argument).isFile() ? QFileInfo(argument).absoluteFilePath() : argument;
 		if (name == "preflight-desktop") return CheckDesktopPreview(input, root, result);
+		if (name == "repeat-fps")
+		{
+			KRRRecordingConfig config;
+			config.source = "image";
+			config.image = QDir(root).filePath("fps-source.png");
+			config.width = 320;
+			config.height = 180;
+			config.fps = 60;
+			config.cursor = false;
+			config.encoder = "libx264";
+			QImage image(config.width, config.height, QImage::Format_RGB32);
+			image.fill(QColor("#355d9b"));
+			if (!image.save(config.image)) return false;
+			KRRRecordingEngine engine;
+			engine.status();
+			QJsonArray sessions;
+			for (int i = 1; i <= 2; ++i)
+			{
+				QThread::msleep(1000);
+				config.output = QDir(root).filePath(QString("fps-%1.mp4").arg(i));
+				QString error;
+				if (!engine.start(config, error)) { result["error"] = error; return false; }
+				if (!WaitFor([&] { return engine.preview()["sequence"].toInt() >= 2; }, 5000))
+				{
+					result["error"] = "Recording did not produce two frames";
+					return false;
+				}
+				QThread::msleep(350);
+				const auto first = engine.status();
+				const double seconds = first["duration_sec"].toDouble();
+				const double fps = first["effective_fps"].toDouble();
+				engine.requestStop();
+				if (!WaitFor([&] { return !engine.isActive(); }, 10000)) return false;
+				const auto final = engine.status();
+				sessions.append(QJsonObject{{"active_seconds", seconds}, {"frames", first["frames_written"]},
+					{"effective_fps", fps}, {"output_published", final["output_published"]}});
+				result["sessions"] = sessions;
+				if (seconds < .25 || fps < 30 || std::abs(fps - (first["frames_written"].toDouble() - 1) / seconds) > .001 ||
+					!final["output_published"].toBool() || !final["error"].toString().isEmpty())
+					return false;
+			}
+			return true;
+		}
 		KRRMainWindow w;
 		w.show();
 		w.m_directory->setText(root);
@@ -174,6 +219,26 @@ class KRRWorkbenchAcceptance : public QObject
 			}
 			return false;
 		};
+		if (name == "thumbnail-delete")
+		{
+			const auto scanned = QDir(root).filePath("recording-scanned.mp4");
+			const auto other = QDir(root).filePath("recording-other.mp4");
+			if (!QFile::copy(input, scanned) || !QFile::copy(input, other)) return fail("Could not create test recordings");
+			w.m_pendingThumbnail = scanned;
+			auto& thumbnail = w.m_reviewThumbnail;
+			thumbnail.start(FindFFmpeg(), {"-v", "error", "-nostdin", "-stream_loop", "-1", "-re", "-i", scanned,
+				"-progress", "pipe:1", "-map", "0:v:0", "-f", "null", "-"});
+			if (!thumbnail.waitForStarted(3000) || !thumbnail.waitForReadyRead(3000)) return fail("Could not start the background media reader");
+			const auto reader = thumbnail.processId();
+			QString error;
+			if (!w.removeRecording(other, error) || QFileInfo::exists(other) || thumbnail.processId() != reader)
+				return fail("Removing a different recording disturbed the reader: " + error);
+			result["unrelated_reader_retained"] = true;
+			if (!w.removeRecording(scanned, error) || QFileInfo::exists(scanned) || thumbnail.state() != QProcess::NotRunning)
+				return fail("Removing the scanned recording did not release the reader: " + error);
+			result["selected_reader_stopped"] = true;
+			return true;
+		}
 		if (name == "lecture-recording")
 		{
 			QImage pattern(640, 360, QImage::Format_RGB32);

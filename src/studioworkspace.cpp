@@ -1607,17 +1607,26 @@ void KRRMainWindow::initializeReviewProbe()
 	});
 	connect(&m_reviewThumbnail, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [this](int code, QProcess::ExitStatus)
 	{
-		const auto image = QImage::fromData(m_reviewThumbnail.readAllStandardOutput());
+		const auto file = std::exchange(m_pendingThumbnail, QString{});
+		if (file.isEmpty()) return;
+		const auto jpeg = m_reviewThumbnail.readAllStandardOutput();
+		const auto image = QImage::fromData(jpeg);
 		static const QRegularExpression durationPattern(R"(Duration: (\d+):(\d+):(\d+\.\d+))");
 		const auto duration = durationPattern.match(QString::fromUtf8(m_reviewThumbnail.readAllStandardError()));
 		for (int i = 0; i < m_recent->count(); ++i)
 		{
 			auto row = m_recent->item(i);
-			if (row->data(Qt::UserRole).toString() != m_pendingThumbnail) continue;
-			if (!code && !image.isNull()) row->setIcon(QPixmap::fromImage(image));
+			if (row->data(Qt::UserRole).toString() != file) continue;
+			const auto validImage = !code && !image.isNull();
+			if (validImage)
+			{
+				row->setIcon(QPixmap::fromImage(image));
+				row->setData(Qt::UserRole + 5, jpeg);
+			}
 			if (duration.hasMatch() && !row->data(Qt::UserRole + 3).isValid())
 				row->setData(Qt::UserRole + 3, qRound64(1000. * (duration.captured(1).toDouble() * 3600
 					+ duration.captured(2).toDouble() * 60 + duration.captured(3).toDouble())));
+			emit reviewThumbnailReady(file, validImage ? jpeg : QByteArray{}, row->data(Qt::UserRole + 3).toLongLong());
 			break;
 		}
 		if (m_workspace->currentIndex() == Review)

@@ -1404,17 +1404,24 @@ function settingsDialog(tab = "general", model = "") {
   $(".settings-nav [aria-pressed='true']", dialog)?.focus({ preventScroll: true });
 }
 
+const exportContainers = ["MP4", "MOV", "MKV"];
+const reviewExportFormats = [...exportContainers, "WebM", "GIF", "M4A", "MP3", "WAV"];
+const supportsExportSrt = format => exportContainers.includes(format) || format === "WebM";
+
 function openExport(mode) {
   const project = state.page === "editor";
   const clip = project ? timeline.selectedClip : null;
   if (mode === "clip" && !clip) { toast("请先选择要导出的片段。"); return; }
   const asset = project ? Views.editorAsset() : Views.currentAsset();
   if (!asset.id) { toast("请先选择视频。"); return; }
+  const formats = project ? exportContainers : reviewExportFormats;
+  const preferredFormat = state.settings.format?.toUpperCase();
   exportDraft = {
     project, asset, clip, scope: mode === "clip" ? "clip" : "all",
-    format: state.settings.format, encoder: "auto", audio: "separate", subtitles: "burn",
+    format: formats.find(format => format.toUpperCase() === preferredFormat) ?? formats[0],
+    encoder: "auto", audio: "separate", subtitles: "burn",
     height: "0", bitrate: clamp(Math.round(asset.bitrate || state.settings.bitrate || 6000), 100, 100000), audioBitrate: "192",
-    copyStreams: false, denoise: false, subtitleFile: "",
+    copyStreams: false, denoise: false, subtitleFile: "", subtitleId: "",
     name: asset.name.replace(/\.[^.]+$/, "") + (project ? "-成片" : "-导出"),
     folder: state.settings.outputPath,
   };
@@ -1427,9 +1434,8 @@ function exportDialog(focusField) {
   const partial = project && scope === "clip";
   const duration = project ? (partial ? clip.length : timeline.duration) : asset.duration;
   const summary = partial ? time(clip.at) + "–" + time(clip.at + clip.length) : time(duration);
-  const containers = ["MP4", "MOV", "MKV"];
-  const formats = project ? containers : [...containers, "WebM", "AVI", "FLV"];
-  const compatible = containers.includes(format);
+  const formats = project ? exportContainers : reviewExportFormats;
+  const compatible = exportContainers.includes(format);
   const gifTooLong = format === "GIF" && duration > 60;
   const field = (name, label, choices, disabled = false) =>
     `<label for="export-${name}">${tr(label)}</label>${select("export-" + name, label, choices, draft[name],
@@ -1445,7 +1451,7 @@ function exportDialog(focusField) {
     field("audio", "音轨", [["separate", "保留独立音轨"], ["mix", "混合成一轨"]]) +
     (partial ? `<label>${tr("字幕")}</label><span>${tr("可选字幕轨")}</span>` :
       field("subtitles", "字幕", [["burn", "写入画面"], ["track", "可选字幕轨"]])) : "";
-  const sourceOptions = !project ? `${compatible || format === "WebM" ? `<label for="export-srt">${tr("字幕文件")}</label>
+  const sourceOptions = !project ? `${supportsExportSrt(format) ? `<label for="export-srt">${tr("字幕文件")}</label>
     <div class="form-row export-srt">
       <input id="export-srt" type="file" name="subtitleFile" accept=".srt" hidden>
       ${b("export-select-srt", "选择 SRT…", "folder", { variant: "mini", disabled: copyStreams })}
@@ -1458,7 +1464,8 @@ function exportDialog(focusField) {
     <label>${tr("来源")}</label><div class="hstack spaced"><strong class="truncate" title="${esc(asset.name)}">${esc(asset.title)}</strong>
       <time class="soft">${summary}</time></div>
     ${scopeField}${field("format", "格式", formats)}
-    ${compatible ? field("encoder", "编码", [["auto", "自动 · 优先 GPU"], ["libx264", "CPU · x264"], ["h264_nvenc", "NVIDIA · NVENC"]], copyStreams) : ""}
+    ${compatible ? field("encoder", "编码", [["auto", "自动 · 优先 GPU"], ["libx264", "CPU · x264"], ["h264_nvenc", "NVIDIA · NVENC"],
+      ["h264_qsv", "Intel · QSV"], ["h264_amf", "AMD · AMF"]], copyStreams) : ""}
     ${projectOptions}${sourceOptions}
     <label for="export-name">${tr("文件名")}</label><div class="form-row"><input id="export-name" name="name" type="text"
       value="${esc(draft.name)}" required maxlength="100" autocomplete="off"><small class="mono">.${format.toLowerCase()}</small></div>
@@ -1466,7 +1473,7 @@ function exportDialog(focusField) {
       value="${esc(draft.folder)}" title="${esc(draft.folder)}" readonly>${b("export-path", "浏览…", null, { variant: "mini" })}</div>
     ${gifTooLong ? `<small class="export-wide export-warning" role="status">${tr("GIF 最长 60 秒")}</small>` : ""}
     </form>`, `<button type="submit" form="export-form"
-      class="btn primary"${gifTooLong ? " disabled" : ""}>${g("download")}${tr("开始导出")}</button>`);
+      class="btn primary"${gifTooLong ? " disabled" : ""}>${g("download")}<span>${tr("开始导出")}</span></button>`);
   const form = $("#export-form", dialog);
   form.addEventListener("input", event => {
     if (event.target.name === "name") {
@@ -1478,8 +1485,8 @@ function exportDialog(focusField) {
     const { name, type, value, checked, files } = event.target;
     if (name === "name" || !Object.hasOwn(draft, name)) return;
     draft[name] = type === "checkbox" ? checked : type === "file" ? files[0]?.name || "" : value;
-    if (!containers.includes(draft.format)) draft.copyStreams = false;
-    if (![...containers, "WebM"].includes(draft.format)) draft.subtitleFile = "";
+    if (!exportContainers.includes(draft.format)) draft.copyStreams = false;
+    if (!supportsExportSrt(draft.format)) Object.assign(draft, { subtitleFile: "", subtitleId: "" });
     if (draft.format === "GIF") draft.denoise = false;
     if (["scope", "format", "copyStreams", "denoise", "subtitleFile"].includes(name)) exportDialog(name);
   });
@@ -1493,17 +1500,18 @@ function exportDialog(focusField) {
       return;
     }
     const button = $("[form='export-form']", dialog);
+    const buttonLabel = $("span", button);
     button.disabled = true;
-    button.textContent = "导出中…";
+    buttonLabel.textContent = tr("导出中…");
     (project ? flushEditorChanges() : Promise.resolve()).then(() => Native.rpc("export", {
       id: asset.id, kind: project ? "editor" : "review", name, folder: draft.folder, format, encoder: draft.encoder,
       selected: partial, start: partial ? clip.at : 0, length: duration, mix: draft.audio === "mix",
       height: Number(draft.height), bitrate: Number(draft.bitrate), audioBitrate: Number(draft.audioBitrate),
       burn: !partial && draft.subtitles === "burn", copy: draft.copyStreams, denoise: draft.denoise,
-      subtitle: draft.subtitleId,
+      subtitle: !project && supportsExportSrt(format) && !draft.copyStreams ? draft.subtitleId : "",
     })).then(path => { if (dialog.open) dialog.close(); toast("已导出 " + path); }, error => {
       reportNativeError(error);
-      if (button.isConnected) { button.disabled = false; button.textContent = "开始导出"; }
+      if (button.isConnected) { button.disabled = false; buttonLabel.textContent = tr("开始导出"); }
     });
 
   });
@@ -1817,7 +1825,10 @@ const actions = {
     });
   },
   "export-select-srt": () => $("#export-srt", dialog)?.click(),
-  "export-clear-srt": () => { exportDraft.subtitleFile = ""; exportDialog("subtitleFile"); },
+  "export-clear-srt": () => {
+    Object.assign(exportDraft, { subtitleFile: "", subtitleId: "" });
+    exportDialog("subtitleFile");
+  },
   save: saveProject,
   "reset-rate": () => { state.settings.customBitrate = false; state.settings.bitrate = recommendedBitrate(); render(); },
   "choose-output-path": chooseOutputPath,
@@ -1892,7 +1903,7 @@ const actions = {
     state.audio[id] = { volume: 80, muted: false, denoise: false };
     dialog.close();
     renderMixer({ reveal: true });
-    $(`[data-action="mixer-mute"][data-value="${id}"]`)?.focus({ preventScroll: true });
+    $(`[data-action="mixer-mute"][data-value="${CSS.escape(id)}"]`)?.focus({ preventScroll: true });
   },
   "mixer-remove": id => {
     if (!mixerSources[id]?.optional) return;
@@ -1903,13 +1914,13 @@ const actions = {
   "mixer-mute": id => {
     state.audio[id].muted = !state.audio[id].muted;
     renderMixer();
-    $(`[data-action="mixer-mute"][data-value="${id}"]`)?.focus({ preventScroll: true });
+    $(`[data-action="mixer-mute"][data-value="${CSS.escape(id)}"]`)?.focus({ preventScroll: true });
   },
   denoise: id => {
     if (id === "mic") state.settings.denoise = !state.settings.denoise;
     else state.audio[id].denoise = !state.audio[id].denoise;
     renderMixer();
-    $(`[data-action="denoise"][data-value="${id}"]`)?.focus({ preventScroll: true });
+    $(`[data-action="denoise"][data-value="${CSS.escape(id)}"]`)?.focus({ preventScroll: true });
   },
   schedule: scheduleDialog,
   "remove-schedule": index => { state.schedule.splice(Number(index), 1); scheduleDialog(); },

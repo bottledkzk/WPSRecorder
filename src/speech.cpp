@@ -11,8 +11,9 @@
 #include <QProcess>
 #include <QTemporaryDir>
 #include <cmath>
-QString SynthesizeSpeech(const QString &text, const QString &output, const KRRVoiceOptions &options,
-						 const std::atomic<bool> *cancel)
+namespace
+{
+QString ValidateSpeech(const QString& text, const QString& output, const KRRVoiceOptions& options)
 {
 	if (text.trimmed().isEmpty() || text.size() > 4000)
 		return Ui("请输入 1–4000 字的旁白。");
@@ -23,17 +24,13 @@ QString SynthesizeSpeech(const QString &text, const QString &output, const KRRVo
 		return Ui("目标文件已存在，请选择新文件名。");
 	if (QFileInfo(output).suffix().toLower() != "wav")
 		return Ui("独立配音请保存为 WAV。");
-	QTemporaryDir temp(QFileInfo(output).absolutePath() + "/.voice-XXXXXX");
-	if (!temp.isValid())
-		return Ui("无法创建配音工作目录。");
-	QString raw = temp.filePath("raw.wav"), error;
-	if (options.engine == "audio8" || IsTtsService(options.engine))
-		error = SynthesizeWithService(text, raw, options, cancel);
-	else
-		return Ui("未知配音引擎。");
-	if (!error.isEmpty())
-		return error;
-	QString ready = temp.filePath("speech.wav");
+	return {};
+}
+
+QString NormalizeSpeech(const QString& raw, const QString& ready, const QString& output, const KRRVoiceOptions& options,
+	const std::atomic<bool>* cancel)
+{
+	QString error;
 	QString filter = QString("volume=%1,alimiter=limit=0.95:level=0").arg(options.volume, 0, 'f', 4);
 	if (std::abs(options.speed - 1.0) > .001 &&
 		(options.engine == "audio8" || (IsTtsService(options.engine) && SpeechService(options.engine).protocol == "dashscope")))
@@ -47,6 +44,42 @@ QString SynthesizeSpeech(const QString &text, const QString &output, const KRRVo
 		return Ui("无法保存配音文件。");
 	return {};
 }
+}
+
+QString SynthesizeSpeech(const QString &text, const QString &output, const KRRVoiceOptions &options,
+						 const std::atomic<bool> *cancel)
+{
+	if (const auto error = ValidateSpeech(text, output, options); !error.isEmpty()) return error;
+	if (options.engine != "audio8" && !IsTtsService(options.engine)) return Ui("未知配音引擎。");
+	QTemporaryDir temp(QFileInfo(output).absolutePath() + "/.voice-XXXXXX");
+	if (!temp.isValid()) return Ui("无法创建配音工作目录。");
+	const auto raw = temp.filePath("raw.wav");
+	const auto error = SynthesizeWithService(text, raw, options, cancel);
+	if (!error.isEmpty()) return error;
+	return NormalizeSpeech(raw, temp.filePath("speech.wav"), output, options, cancel);
+}
+
+QString SynthesizeAudio8Speech(const QVector<KRRVoiceLine>& lines, const KRRVoiceOptions& options,
+	const std::atomic<bool>* cancel)
+{
+	if (lines.isEmpty()) return Ui("配音文本为空。");
+	QTemporaryDir temp(QFileInfo(lines.front().output).absolutePath() + "/.voice-XXXXXX");
+	if (!temp.isValid()) return Ui("无法创建配音工作目录。");
+	QVector<KRRVoiceLine> raw;
+	for (const auto& line : lines)
+	{
+		if (const auto error = ValidateSpeech(line.text, line.output, options); !error.isEmpty()) return error;
+		raw.append({line.text, temp.filePath(QString("raw-%1.wav").arg(raw.size()))});
+	}
+	if (const auto error = SynthesizeAudio8Raw(raw, options.voice, cancel); !error.isEmpty()) return error;
+	for (int i = 0; i < lines.size(); ++i)
+	{
+		const auto error = NormalizeSpeech(raw[i].output, temp.filePath("speech.wav"), lines[i].output, options, cancel);
+		if (!error.isEmpty()) return error;
+	}
+	return {};
+}
+
 QString MixNarration(const QString &input, const QString &speech, const QString &output, double begin,
 					 double originalVolume, const std::atomic<bool> *cancel)
 {

@@ -3,6 +3,7 @@
 #define WPSRECORDER_MEDIAEDITOR_H
 #include <QObject>
 #include <QPair>
+#include <QSize>
 #include <QStringList>
 #include <atomic>
 #include <functional>
@@ -21,6 +22,8 @@ struct KRRExportOptions
 	bool denoise = false;
 	QString subtitles;
 	bool copyStreams = false;
+	int videoKbps = 0;
+	int fps = 0;
 };
 
 class KRRMediaEditor : public QObject
@@ -31,7 +34,8 @@ public:
 	~KRRMediaEditor() override;
 	bool trim(const QString& input, const QString& output, double begin, double end);
 	bool split(const QString& input, const QString& directory, const QList<QPair<double, double>>& intervals);
-	bool merge(const QStringList& inputs, const QString& output, const KRRExportOptions& options = {});
+	bool merge(const QStringList& inputs, const QString& output, const KRRExportOptions& options = {},
+			   const QSize& resolution = {});
 	bool exportMedia(const QString& input, const QString& output, double begin, double end, const KRRExportOptions& options = {});
 	bool transcribe(const QString& input, const QString& output, const QString& executable, const QString& model, const QString& language, int audioTrack = 0);
 	bool renderTimeline(const KRREditProject& project, const QString& output, const QString& encoder = "auto",

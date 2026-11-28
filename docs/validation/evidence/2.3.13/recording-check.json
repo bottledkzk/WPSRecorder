@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "source": "synthetic image",
+  "samples": 318,
+  "active_samples": 311,
+  "frames": 420,
+  "seconds": 7,
+  "nominal_rate": "60/1",
+  "missed_frame_slots": 0
+}

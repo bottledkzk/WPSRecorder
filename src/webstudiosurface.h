@@ -14,6 +14,7 @@ public:
 	void start();
 	bool send(const QJsonObject& message);
 	QString localResource(const QString& file);
+	void releaseResource(const QString& id);
 	QString fileForResource(const QString& id) const;
 signals:
 	void ready();

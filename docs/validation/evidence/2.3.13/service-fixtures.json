@@ -1,0 +1,42 @@
+[
+  {
+    "case": "anthropic",
+    "passed": true,
+    "requests": 6
+  },
+  {
+    "case": "assistant",
+    "passed": true,
+    "requests": 3
+  },
+  {
+    "case": "fresh",
+    "passed": true,
+    "requests": 0
+  },
+  {
+    "case": "profiles",
+    "passed": true,
+    "requests": 0
+  },
+  {
+    "case": "settings",
+    "passed": true,
+    "requests": 1
+  },
+  {
+    "case": "translate",
+    "passed": true,
+    "requests": 3
+  },
+  {
+    "case": "tts",
+    "passed": true,
+    "requests": 3
+  },
+  {
+    "case": "video",
+    "passed": true,
+    "requests": 3
+  }
+]

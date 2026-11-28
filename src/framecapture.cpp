@@ -247,6 +247,10 @@ QImage KRRFrameCapture::capture(const KRRRecordingConfig &config, QString &error
 			SelectObject(m_memory, m_previous);
 		if (m_bitmap)
 			DeleteObject(m_bitmap);
+		m_bitmap = nullptr;
+		m_previous = nullptr;
+		m_pixels = nullptr;
+		m_size = {};
 		BITMAPINFO information{};
 		information.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 		information.bmiHeader.biWidth = bitmapSize.width();
@@ -254,14 +258,24 @@ QImage KRRFrameCapture::capture(const KRRRecordingConfig &config, QString &error
 		information.bmiHeader.biPlanes = 1;
 		information.bmiHeader.biBitCount = 32;
 		information.bmiHeader.biCompression = BI_RGB;
-		m_bitmap = CreateDIBSection(m_screen, &information, DIB_RGB_COLORS, &m_pixels, nullptr, 0);
-		if (!m_bitmap)
+		void* pixels = nullptr;
+		const auto bitmap = CreateDIBSection(m_screen, &information, DIB_RGB_COLORS, &pixels, nullptr, 0);
+		if (!bitmap || !pixels)
 		{
-			m_previous = nullptr;
+			if (bitmap) DeleteObject(bitmap);
 			error = "Could not allocate capture bitmap";
 			return {};
 		}
-		m_previous = SelectObject(m_memory, m_bitmap);
+		const auto previous = SelectObject(m_memory, bitmap);
+		if (!previous || previous == HGDI_ERROR)
+		{
+			DeleteObject(bitmap);
+			error = "Could not select capture bitmap";
+			return {};
+		}
+		m_bitmap = bitmap;
+		m_previous = previous;
+		m_pixels = pixels;
 		m_size = bitmapSize;
 	}
 	BOOL captured = FALSE;

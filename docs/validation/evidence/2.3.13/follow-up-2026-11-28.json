@@ -1,0 +1,60 @@
+{
+  "version": "wpsrecorder 2.3.13",
+  "date": "2026-11-28",
+  "studio_checks": [
+    "Studio init, CSP, bundled CLI, oversized request rejection",
+    "AVI/FLV defaults in Review and Editor, including preservation of supported MKV",
+    "Three previews loaded, library durations and posters, timeline visible, export encoder choices",
+    "Cancel preserves fixture and confirmation moves just the selected older file"
+  ],
+  "exported_after_srt": [
+    "WAV",
+    "MP3",
+    "M4A",
+    "GIF"
+  ],
+  "thumbnail": {
+    "case": "thumbnail-delete",
+    "passed": true,
+    "selected_reader_stopped": true,
+    "unrelated_reader_retained": true
+  },
+  "repeat_recording": {
+    "case": "repeat-fps",
+    "passed": true,
+    "sessions": [
+      {
+        "active_seconds": 0.4002817000000505,
+        "effective_fps": 57.45953412308656,
+        "frames": 24,
+        "output_published": true
+      },
+      {
+        "active_seconds": 0.4184722999998485,
+        "effective_fps": 59.74111070197252,
+        "frames": 26,
+        "output_published": true
+      }
+    ]
+  },
+  "stopping": {
+    "passed": true,
+    "ctrl_c": {
+      "duration_sec": 0.6166666666666667,
+      "frames_written": 37,
+      "output_published": true
+    },
+    "stop_command": {
+      "duration_sec": 0.6666666666666666,
+      "frames_written": 40,
+      "output_published": true
+    }
+  },
+  "merge_cases": 22,
+  "editor_cases": 7,
+  "invalid_image": {
+    "separate_encoder_diagnostic": true,
+    "output_published": false,
+    "capture_error": "Cannot decode the selected image"
+  }
+}

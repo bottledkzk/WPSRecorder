@@ -148,7 +148,8 @@ QRect FitEditCrop(QRect desired, QSize frame, QSize ratio, bool byHeight = false
 bool ProbeEditAudio(const QString &file, qint64 offset, qint64 duration, KRREditTrack &track, QString &error);
 QImage LoadEditStill(const QString &image);
 bool ReadEditSubtitleStyle(const QString &file, KRREditSubtitleStyle &style, QString &error);
-bool ProbeEditSource(const QString &input, KRREditProject &project, QString &error, QJsonObject *container = nullptr);
+bool ProbeEditSource(const QString &input, KRREditProject &project, QString &error, QJsonObject *container = nullptr,
+	int timeoutMs = 15000, const std::atomic<bool>* cancel = nullptr);
 bool ReadEditSubtitles(const QString &file, QVector<KRREditCaption> &captions, QString &error);
 QStringList AdjacentEditSubtitlePaths(const QString& input);
 QVector<KRREditCaption> ReadAdjacentEditSubtitles(const QString& input, qint64 duration);

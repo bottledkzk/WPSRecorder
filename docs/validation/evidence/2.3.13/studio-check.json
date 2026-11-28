@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "Studio init, CSP, bundled CLI, oversized request rejection",
+    "Three previews loaded, library durations and posters, timeline visible, export encoder choices",
+    "Cancel preserves fixture and confirmation moves just the selected older file"
+  ],
+  "errors": [],
+  "nvenc": "Lavc61.19.101 h264_nvenc",
+  "removalNotice": "Moved to the same-volume Recorder recovery directory",
+  "recovery": "same-volume Recorder recovery directory with byte-identical original",
+  "passed": true
+}

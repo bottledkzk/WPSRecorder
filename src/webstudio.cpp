@@ -124,6 +124,7 @@ KRRWebStudio::KRRWebStudio(KRRMainWindow& window)
 	native->hide();
 	window.setCentralWidget(m_surface);
 	window.statusBar()->hide();
+	m_previewWorker.setMaxThreadCount(1);
 	connect(m_surface, &KRRWebStudioSurface::request, this, &KRRWebStudio::dispatch);
 	connect(m_surface, &KRRWebStudioSurface::failed, this, [this, native](const QString& error)
 	{
@@ -132,6 +133,8 @@ KRRWebStudio::KRRWebStudio(KRRMainWindow& window)
 		m_statusTimer.stop();
 		m_mixerTimer.stop();
 		m_handshake = false;
+		++m_previewGeneration;
+		cancelExitWork();
 		m_window.m_webStudio = nullptr;
 		m_window.takeCentralWidget();
 		m_surface->hide();
@@ -147,6 +150,15 @@ KRRWebStudio::KRRWebStudio(KRRMainWindow& window)
 	connect(&m_statusTimer, &QTimer::timeout, this, &KRRWebStudio::updateStatus);
 	connect(&m_mixerTimer, &QTimer::timeout, this, &KRRWebStudio::updateMixerLevels);
 	connect(&window, &KRRMainWindow::workbenchRestored, this, [this] { event("navigate", "record"); });
+	connect(&window, &KRRMainWindow::reviewThumbnailReady, this, [this](const QString& file, const QByteArray& jpeg, qint64 duration)
+	{
+		if (!m_handshake || !m_surface || !QFileInfo(file).isFile()) return;
+		const auto id = m_surface->localResource(file).section('/', -1);
+		if (id.isEmpty() || !m_media.contains(id)) return;
+		QJsonObject updates{{"id", id}, {"duration", duration / 1000.}};
+		if (!jpeg.isEmpty()) updates["poster"] = "data:image/jpeg;base64," + QString::fromLatin1(jpeg.toBase64());
+		event("library-metadata", updates);
+	});
 	connect(window.m_overlay, &KRRAnnotationOverlay::activeChanged, this, [this](bool active) { event("annotation", active); });
 	connect(window.m_floatBar, &KRRRecordingToolbar::hideRequested, this, [this] { event("floating", false); });
 	connect(qApp, &QCoreApplication::aboutToQuit, this, [this] { if (m_handshake && !m_skipExitSave) saveDraft(); });
@@ -177,7 +189,7 @@ bool KRRWebStudio::requestFrontendMinimal()
 
 bool KRRWebStudio::workInProgress() const
 {
-	return m_jobs.isBusy() || !m_assistantJobs.isEmpty();
+	return m_jobs.isBusy() || m_voiceJob || !m_assistantJobs.isEmpty();
 }
 
 bool KRRWebStudio::saveExitDraft()
@@ -189,6 +201,7 @@ void KRRWebStudio::cancelExitWork()
 {
 	m_skipExitSave = true;
 	m_jobs.cancel();
+	m_backgroundCancel->store(true);
 	if (m_modelCheck) m_modelCheck->store(true);
 	for (const auto& job : std::as_const(m_assistantJobs)) job->store(true);
 }
@@ -206,7 +219,7 @@ void KRRWebStudio::event(const QString& type, const QJsonValue& value)
 void KRRWebStudio::updateFrame()
 {
 	auto& w = m_window;
-	if (!m_handshake || !w.isVisible() || w.isMinimized() ||
+	if (!m_surface || !m_handshake || !w.isVisible() || w.isMinimized() ||
 		w.m_workspace->currentIndex() != KRRMainWindow::Record) return;
 	const QImage frame = w.m_liveFrame->frame();
 	if (frame.isNull())
@@ -224,25 +237,25 @@ void KRRWebStudio::updateFrame()
 	if (m_encoding || frame.cacheKey() == m_lastFrame) return;
 	const auto generation = m_previewGeneration;
 	m_encoding = true;
-	const QPointer<KRRWebStudio> self(this);
-	QThreadPool::globalInstance()->start(QRunnable::create([self, frame, generation]
+	const QSize previewBounds(1920, 1200);
+	m_previewWorker.start(QRunnable::create([this, frame, generation, previewBounds]
 	{
+		const auto preview = frame.width() > previewBounds.width() || frame.height() > previewBounds.height()
+			? frame.scaled(previewBounds, Qt::KeepAspectRatio, Qt::SmoothTransformation) : frame;
 		QByteArray jpeg;
 		QBuffer buffer(&jpeg);
 		buffer.open(QIODevice::WriteOnly);
-		frame.save(&buffer, "JPEG", 88);
-		if (!self) return;
+		preview.save(&buffer, "JPEG", 88);
 		const auto data = QString::fromLatin1(jpeg.toBase64());
-		QMetaObject::invokeMethod(self.data(), [self, data, size = frame.size(), key = frame.cacheKey(), generation]
+		QMetaObject::invokeMethod(this, [this, data, size = frame.size(), key = frame.cacheKey(), generation]
 		{
-			if (!self) return;
-			self->m_encoding = false;
-			if (generation != self->m_previewGeneration || data.isEmpty()) return;
+			m_encoding = false;
+			if (!m_surface || !m_handshake || generation != m_previewGeneration || data.isEmpty()) return;
 			const QJsonObject payload{{"src", "data:image/jpeg;base64," + data}, {"width", size.width()}, {"height", size.height()}};
-			if (self->m_surface->send({{"event", "frame"}, {"value", payload}}))
+			if (m_surface->send({{"event", "frame"}, {"value", payload}}))
 			{
-				self->m_lastFrame = key;
-				self->m_previewNotice.clear();
+				m_lastFrame = key;
+				m_previewNotice.clear();
 			}
 		}, Qt::QueuedConnection);
 	}));
@@ -346,6 +359,7 @@ QJsonObject KRRWebStudio::snapshot()
 
 QJsonObject KRRWebStudio::libraryEntry(const QString& file)
 {
+	if (!m_surface) return {};
 	const QFileInfo info(file);
 	const auto url = m_surface->localResource(file);
 	if (url.isEmpty()) return {};
@@ -374,9 +388,14 @@ QJsonArray KRRWebStudio::library()
 	QJsonArray result;
 	for (int i = 0; i < qMin(120, m_window.m_recent->count()); ++i)
 	{
-		const auto file = m_window.m_recent->item(i)->data(Qt::UserRole).toString();
-		const auto entry = libraryEntry(file);
-		if (!entry.isEmpty()) result.append(entry);
+		const auto* row = m_window.m_recent->item(i);
+		const auto file = row->data(Qt::UserRole).toString();
+		auto entry = libraryEntry(file);
+		if (entry.isEmpty()) continue;
+		if (entry["duration"].toDouble() <= 0) entry["duration"] = row->data(Qt::UserRole + 3).toLongLong() / 1000.;
+		const auto jpeg = row->data(Qt::UserRole + 5).toByteArray();
+		if (!jpeg.isEmpty()) entry["poster"] = "data:image/jpeg;base64," + QString::fromLatin1(jpeg.toBase64());
+		result.append(entry);
 	}
 	return result;
 }
@@ -581,6 +600,7 @@ void KRRWebStudio::applyMixer(const QJsonObject& data)
 
 void KRRWebStudio::dispatch(const QJsonObject& message)
 {
+	if (!m_surface) return;
 	auto& w = m_window;
 	const auto name = message["command"].toString();
 	const auto request = message["id"].toString();
@@ -676,10 +696,29 @@ void KRRWebStudio::dispatch(const QJsonObject& message)
 	else if (name == "choose-image" || name == "choose-audio")
 	{
 		const auto file = openMediaDialog(name == "choose-image" ? "image" : "audio");
+		if (file.isEmpty() || !m_surface) { done(); return; }
 		const auto url = m_surface->localResource(file);
 		const auto id = url.section('/', -1);
-		if (!id.isEmpty()) m_tracks[id] = file;
-		done(QJsonObject{{"id", id}, {"url", url}, {"file", file}, {"name", QFileInfo(file).fileName()}});
+		const QJsonObject asset{{"id", id}, {"url", url}, {"file", file}, {"name", QFileInfo(file).fileName()}};
+		if (name == "choose-image")
+		{
+			if (!id.isEmpty()) m_tracks[id] = file;
+			done(asset);
+		}
+		else background([file]
+		{
+			KRREditTrack track;
+			QString error;
+			const auto ok = ProbeEditAudio(file, 0, 86400000, track, error);
+			return qMakePair(ok ? track.length : qint64{0}, error);
+		}, [this, request, file, id, asset](const auto& result) mutable
+		{
+			if (result.first <= 0) { reply(request, {}, UiDiagnostic(result.second)); return; }
+			if (!id.isEmpty()) m_tracks[id] = file;
+			auto audio = asset;
+			audio["duration"] = result.first / 1000.;
+			reply(request, audio);
+		});
 	}
 	else if (name == "choose-directory")
 	{
@@ -768,20 +807,25 @@ void KRRWebStudio::dispatch(const QJsonObject& message)
 		m_modelCheck = cancel;
 		const auto id = data["id"].toString();
 		const auto service = ModelForm(data["service"].toObject());
-		const QPointer<KRRWebStudio> self(this);
-		QThreadPool::globalInstance()->start(QRunnable::create([self, request, cancel, id, service]
+		background([cancel, id, service]
 		{
-			const auto error = CheckSpeechService(id, service, cancel.get());
-			if (!self) return;
-			QMetaObject::invokeMethod(self.data(), [self, request, cancel, error]
-			{
-				if (!self) return;
-				if (self->m_modelCheck == cancel) self->m_modelCheck.reset();
-				self->reply(request, error.isEmpty(), UiDiagnostic(error));
-			}, Qt::QueuedConnection);
-		}));
+			return CheckSpeechService(id, service, cancel.get());
+		}, [this, request, cancel](const QString& error)
+		{
+			if (m_modelCheck == cancel) m_modelCheck.reset();
+			reply(request, error.isEmpty(), UiDiagnostic(error));
+		});
 	}
-	else if (name == "language") { done(); emit w.languageChangeRequested(data["language"].toString()); }
+	else if (name == "language")
+	{
+		if (w.m_active || w.m_startPending || w.m_countdownRemaining || workInProgress())
+		{
+			done({}, Ui("请在录制或处理任务结束后切换界面语言。"));
+			return;
+		}
+		done();
+		emit w.languageChangeRequested(data["language"].toString());
+	}
 	else if (name == "recover") { w.showRecoveries(); done(library()); }
 	else if (name == "library") done(library());
 	else if (name == "open-guide")
@@ -823,8 +867,7 @@ void KRRWebStudio::dispatch(const QJsonObject& message)
 			command["startAt"] = data["at"];
 			command["config"] = cfg.toJson();
 		}
-		const QPointer<KRRWebStudio> self(this);
-		QThreadPool::globalInstance()->start(QRunnable::create([self, request, command, adding = name == "schedule-add", refresh = name != "schedule-list"]
+		background([command, adding = name == "schedule-add", refresh = name != "schedule-list"]
 		{
 			const QJsonObject listRequest{{"command", "schedules"}};
 			QJsonObject response;
@@ -836,12 +879,11 @@ void KRRWebStudio::dispatch(const QJsonObject& message)
 				if (ready && SendControl(command, response, error, 1800) && refresh)
 					SendControl(listRequest, response, error, 1800);
 			}
-			if (!self) return;
-			QMetaObject::invokeMethod(self.data(), [self, request, schedules = response["schedules"].toArray(), error]
-			{
-				if (self) self->reply(request, schedules, error.isEmpty() ? error : UiDiagnostic(error));
-			}, Qt::QueuedConnection);
-		}));
+			return qMakePair(response["schedules"].toArray(), error);
+		}, [this, request](const QPair<QJsonArray, QString>& result)
+		{
+			reply(request, result.first, UiDiagnostic(result.second));
+		});
 	}
 	else if (!editCommand(name, request, data) && !assistantCommand(name, request, data))
 		done({}, Ui("此操作不可用。"));
